@@ -31,38 +31,40 @@ import './App.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <NotificationProvider>
-          <Router>
-            <MainLayout>
-              <Routes>
-                {/* Citizen Routes */}
-                <Route path="/" element={<Home />} />
-                <Route path="/report" element={<ReportIssue />} />
-                <Route path="/my-reports" element={<MyReports />} />
-                <Route path="/area-health" element={<AreaHealth />} />
+    <div className="min-h-screen bg-[#F5F3EF]">
+      <AuthProvider>
+        <ThemeProvider>
+          <NotificationProvider>
+            <Router>
+              <MainLayout>
+                <Routes>
+                  {/* Citizen Routes */}
+                  <Route path="/" element={<Home />} />
+                  <Route path="/report" element={<ReportIssue />} />
+                  <Route path="/my-reports" element={<MyReports />} />
+                  <Route path="/area-health" element={<AreaHealth />} />
 
-                {/* Authority Routes */}
-                <Route path="/authority/dashboard" element={<AuthorityDashboard />} />
-                <Route path="/authority/issues" element={<IssueManagement />} />
-                <Route path="/authority/analytics" element={<Analytics />} />
-                <Route path="/authority/teams" element={<TeamManagement />} />
+                  {/* Authority Routes */}
+                  <Route path="/authority/dashboard" element={<AuthorityDashboard />} />
+                  <Route path="/authority/issues" element={<IssueManagement />} />
+                  <Route path="/authority/analytics" element={<Analytics />} />
+                  <Route path="/authority/teams" element={<TeamManagement />} />
 
-                {/* Public Routes */}
-                <Route path="/dashboard" element={<PublicDashboard />} />
-                <Route path="/map" element={<MapView />} />
-                <Route path="/statistics" element={<Statistics />} />
+                  {/* Public Routes */}
+                  <Route path="/dashboard" element={<PublicDashboard />} />
+                  <Route path="/map" element={<MapView />} />
+                  <Route path="/statistics" element={<Statistics />} />
 
-                {/* Auth Routes */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-              </Routes>
-            </MainLayout>
-          </Router>
-        </NotificationProvider>
-      </ThemeProvider>
-    </AuthProvider>
+                  {/* Auth Routes */}
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                </Routes>
+              </MainLayout>
+            </Router>
+          </NotificationProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </div>
   );
 }
 
