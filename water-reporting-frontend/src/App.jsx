@@ -31,7 +31,7 @@ import './App.css';
 
 function App() {
   return (
-    <div className="min-h-screen bg-[#F5F3EF]">
+    <div className="min-h-screen">
       <AuthProvider>
         <ThemeProvider>
           <NotificationProvider>
