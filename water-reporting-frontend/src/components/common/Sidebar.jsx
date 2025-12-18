@@ -6,10 +6,9 @@ const Sidebar = ({ onClose }) => {
 
   const menuItems = [
     { icon: "home", label: "Home", path: "/" },
-    { icon: "grid", label: "Projects", path: "/projects", hasAdd: true },
-    { icon: "check", label: "Tasks", path: "/my-reports", hasAdd: true },
-    { icon: "users", label: "Team", path: "/team" },
-    { icon: "settings", label: "Settings", path: "/settings" },
+    { icon: "grid", label: "Dashboard", path: "/dashboard" },
+    { icon: "check", label: "My Reports", path: "/my-reports", hasAdd: true },
+    { icon: "users", label: "Area Health", path: "/area-health" },
   ];
 
   const Icon = ({ name }) => {
@@ -56,7 +55,7 @@ const Sidebar = ({ onClose }) => {
     <div className="w-full h-full bg-white flex flex-col p-6 border-r border-gray-200">
       {/* Logo */}
       <div className="flex items-center gap-2 mb-8 px-2">
-        <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+        <div className="w-8 h-8 bg-water-600 rounded-lg flex items-center justify-center">
           <span className="text-white font-bold text-sm">💧</span>
         </div>
         <h1 className="text-lg font-bold text-gray-900">WaterSys</h1>
@@ -96,19 +95,7 @@ const Sidebar = ({ onClose }) => {
         </ul>
       </nav>
 
-      {/* Upgrade Section */}
-      <div className="mt-auto pt-6 border-t border-gray-200">
-        <div className="bg-gray-50 rounded-xl p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-1">Upgrade to Pro</h3>
-          <p className="text-xs text-gray-500 mb-3">Get 1 month free and unlock</p>
-          <button className="w-full py-2 bg-water-600 text-white text-sm font-medium rounded-lg hover:bg-water-700 transition-colors">
-            Upgrade
-          </button>
-        </div>
-      </div>
-
-      {/* Help & Logout */}
-      <div className="mt-4 space-y-1">
+      <div className="mt-auto pt-6 border-t border-gray-200 space-y-1">
         <button className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg transition-colors">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="10"></circle>

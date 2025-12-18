@@ -54,7 +54,48 @@ export const getUserReports = async () => {
         setTimeout(() => {
             resolve({
                 success: true,
-                reports: []
+                reports: [
+                    {
+                        id: 'R123456',
+                        type: 'pipeline_leakage',
+                        priority: 'high',
+                        status: 'in_progress',
+                        location: {
+                            address: '123 Main St, Colombo 03',
+                            lat: 6.915,
+                            lng: 79.855
+                        },
+                        description: 'Major leak near the junction. Water is wasting rapidly.',
+                        createdAt: new Date(Date.now() - 86400000 * 2).toISOString(), // 2 days ago
+                    },
+                    {
+                        id: 'R789012',
+                        type: 'water_quality',
+                        priority: 'medium',
+                        status: 'pending',
+                        location: {
+                            address: '45 Park Road, Colombo 05',
+                            lat: 6.890,
+                            lng: 79.865
+                        },
+                        description: 'Tap water looks brown since morning.',
+                        createdAt: new Date(Date.now() - 3600000 * 5).toISOString(), // 5 hours ago
+                    },
+                    {
+                        id: 'R345678',
+                        type: 'no_supply',
+                        priority: 'critical',
+                        status: 'resolved',
+                        location: {
+                            address: '77 Galle Road, Dehiwala',
+                            lat: 6.845,
+                            lng: 79.868
+                        },
+                        description: 'No water supply for the whole building since yesterday.',
+                        createdAt: new Date(Date.now() - 86400000 * 5).toISOString(), // 5 days ago
+                        resolvedAt: new Date(Date.now() - 86400000 * 4).toISOString(),
+                    }
+                ]
             });
         }, 500);
     });
