@@ -27,6 +27,9 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { NotificationProvider } from './context/NotificationContext';
 
+// Components
+import NotificationToast from './components/common/NotificationToast';
+
 import './App.css';
 
 function App() {
@@ -35,6 +38,7 @@ function App() {
       <AuthProvider>
         <ThemeProvider>
           <NotificationProvider>
+            <NotificationToast />
             <Router>
               <MainLayout>
                 <Routes>

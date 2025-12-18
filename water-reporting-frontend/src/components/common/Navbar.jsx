@@ -66,7 +66,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="px-4 py-2 bg-water-600 hover:bg-water-700 text-white rounded-lg transition-colors font-medium"
+                                    className="px-4 py-2 bg-water-600 hover:bg-water-700 !text-white rounded-lg transition-colors font-medium"
                                 >
                                     Sign Up
                                 </Link>
