@@ -6,53 +6,53 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
     const { isAuthenticated, user, logout } = useAuth();
 
     return (
-        <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-40 transition-all">
-            <div className="max-w-full px-4 md:px-8">
-                <div className="flex justify-between items-center h-20">
-                    <div className="flex items-center gap-4">
-                        {/* Mobile Menu Button */}
+        <nav className="bg-white/70 backdrop-blur-xl border-b border-gray-100/50 sticky top-0 z-40">
+            <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+                <div className="flex justify-between items-center h-[52px]"> {/* Standard Apple Nav Height */}
+                    <div className="flex items-center gap-6">
+                        {/* Mobile Menu Icon - Clean Apple Style */}
                         <button
                             onClick={() => setSidebarOpen(!sidebarOpen)}
-                            className="md:hidden p-2.5 hover:bg-gray-50 rounded-xl transition-colors text-gray-600 focus:outline-none focus:ring-2 focus:ring-water-500/20"
+                            className="md:hidden p-1 text-gray-800 focus:outline-none"
                         >
-                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                             </svg>
                         </button>
                     </div>
 
-                    {/* Right Side - Auth Actions (keeping it right-aligned) */}
-                    <div className="flex items-center gap-3">
+                    {/* Minimalist Navigation - Hidden as per user request to move all to sidebar */}
+                    <div className="hidden md:flex items-center gap-8">
+                        {/* Space for future minimal items if needed */}
+                    </div>
+
+                    {/* Auth Actions - Very Clean */}
+                    <div className="flex items-center gap-6">
                         {isAuthenticated ? (
-                            <div className="flex items-center gap-4">
-                                <div className="hidden sm:flex flex-col items-end mr-1">
-                                    <span className="text-sm font-bold text-gray-900 leading-none">
-                                        {user?.name || 'User'}
-                                    </span>
-                                    <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">
-                                        Citizen
-                                    </span>
-                                </div>
+                            <div className="flex items-center gap-6">
+                                <span className="text-[12px] font-bold text-gray-500 uppercase tracking-widest hidden sm:inline">
+                                    {user?.name}
+                                </span>
                                 <button
                                     onClick={logout}
-                                    className="px-6 py-2.5 bg-gray-900 hover:bg-black !text-white rounded-xl font-bold transition-all shadow-lg shadow-gray-200 text-sm"
+                                    className="text-[13px] font-bold text-gray-900 bg-gray-100 hover:bg-gray-200 px-4 py-1.5 rounded-full transition-all active:scale-95"
                                 >
-                                    Log Out
+                                    Sign out
                                 </button>
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-6">
                                 <Link
                                     to="/login"
-                                    className="px-6 py-2.5 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors"
+                                    className="text-[13px] font-bold text-gray-500 hover:text-gray-900 transition-colors"
                                 >
                                     Sign In
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="px-6 py-2.5 bg-water-600 hover:bg-water-700 !text-white rounded-xl font-bold transition-all shadow-lg shadow-water-200 text-sm"
+                                    className="text-[13px] font-bold !text-white bg-gray-900 hover:bg-black px-4 py-1.5 rounded-full transition-all active:scale-95"
                                 >
-                                    Sign Up
+                                    Get Started
                                 </Link>
                             </div>
                         )}

@@ -10,82 +10,63 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Mock login - replace with actual API call
         login({ name: 'Test User', email, role: 'citizen' });
         navigate('/');
     };
 
     return (
-        <div className="w-full p-6 max-w-md mx-auto">
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                <div className="text-center mb-8">
-                    <div className="w-16 h-16 bg-water-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#20897E" strokeWidth="2">
-                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-                        </svg>
-                    </div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                        Welcome Back
+        <div className="w-full bg-[#fbfbfd] min-h-screen p-6 flex items-center justify-center">
+            <div className="max-w-md w-full animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                <div className="text-center mb-12">
+                    <span className="text-water-600 font-black text-3xl mb-6 block">💧</span>
+                    <h1 className="text-[40px] md:text-[48px] font-black tracking-tight text-gray-900 leading-none mb-4">
+                        Sign In.
                     </h1>
-                    <p className="text-gray-500">
-                        Sign in to your Water Reporting account
-                    </p>
+                    <p className="text-[17px] text-gray-400 font-medium">Continue your mission to save water.</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            Email Address
-                        </label>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Enter your email"
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-water-500/20 focus:border-water-500 outline-none transition-all"
-                            required
-                        />
+                <div className="bg-white rounded-[40px] p-10 md:p-12 shadow-apple border border-gray-50/50">
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        <div className="space-y-2">
+                            <label className="text-[13px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="name@company.com"
+                                className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gray-200 rounded-2xl font-medium outline-none transition-all placeholder:text-gray-300"
+                                required
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center ml-1">
+                                <label className="text-[13px] font-bold text-gray-400 uppercase tracking-widest">Password</label>
+                                <Link to="/forgot" className="text-[12px] font-bold text-water-600 hover:underline">Forgot?</Link>
+                            </div>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="••••••••"
+                                className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gray-200 rounded-2xl font-medium outline-none transition-all placeholder:text-gray-300"
+                                required
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="w-full py-5 bg-gray-900 !text-white rounded-full font-black text-[17px] hover:bg-black transition-all shadow-xl active:scale-95"
+                        >
+                            Sign In
+                        </button>
+                    </form>
+
+                    <div className="mt-12 text-center pt-8 border-t border-gray-50">
+                        <p className="text-[15px] font-bold text-gray-400">
+                            New here? <Link to="/register" className="text-water-600 hover:underline ml-1">Create an account</Link>
+                        </p>
                     </div>
-
-                    <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Enter your password"
-                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-water-500/20 focus:border-water-500 outline-none transition-all"
-                            required
-                        />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                        <label className="flex items-center">
-                            <input type="checkbox" className="w-4 h-4 text-water-600 border-gray-300 rounded focus:ring-water-500" />
-                            <span className="ml-2 text-sm text-gray-600">Remember me</span>
-                        </label>
-                        <Link to="/forgot-password" className="text-sm text-water-600 hover:text-water-700 font-medium">
-                            Forgot password?
-                        </Link>
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="w-full py-3 bg-water-600 hover:bg-water-700 !text-white rounded-xl font-semibold transition-colors shadow-sm"
-                    >
-                        Sign In
-                    </button>
-                </form>
-
-                <div className="mt-6 text-center">
-                    <p className="text-gray-600">
-                        Don't have an account?{' '}
-                        <Link to="/register" className="text-water-600 hover:text-water-700 font-semibold">
-                            Create Account
-                        </Link>
-                    </p>
                 </div>
             </div>
         </div>
