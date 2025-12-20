@@ -1,38 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  /* Apple-inspired Color Palette */
-  --color-water-50: #f5faff;
-  --color-water-100: #e6f2fe;
-  --color-water-200: #cfe4fd;
-  --color-water-300: #a7ccfb;
-  --color-water-400: #76aff8;
-  --color-water-500: #4a8df1;
-  --color-water-600: #0071e3;
-  /* Classic Apple Blue */
-  --color-water-700: #005bb2;
-  --color-water-800: #004481;
-  --color-water-900: #002d51;
+  /* Material Design 3 (M3) Color Roles - Water Blue Theme */
+  --color-md-primary: #0061A4;
+  --color-md-on-primary: #FFFFFF;
+  --color-md-primary-container: #D1E4FF;
+  --color-md-on-primary-container: #001D36;
 
-  /* Neutral tones for that "Apple" clean look */
-  --color-gray-50: #fbfbfd;
-  --color-gray-100: #f5f5f7;
-  --color-gray-200: #e8e8ed;
-  --color-gray-300: #d2d2d7;
-  --color-gray-400: #86868b;
-  --color-gray-500: #6e6e73;
-  --color-gray-600: #424245;
-  --color-gray-700: #333336;
-  --color-gray-800: #1d1d1f;
-  --color-gray-900: #000000;
+  --color-md-secondary: #535F70;
+  --color-md-on-secondary: #FFFFFF;
+  --color-md-secondary-container: #D7E3F7;
+  --color-md-on-secondary-container: #101C2B;
 
-  /* Typography - using Inter as a close system alternative to SF Pro */
-  --font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --color-md-surface: #FDFCFF;
+  --color-md-on-surface: #1A1C1E;
+  --color-md-surface-variant: #DFE2EB;
+  --color-md-on-surface-variant: #43474E;
 
-  /* Sophisticated Shadows & Blur */
-  --shadow-apple: 0 4px 24px 0 rgba(0, 0, 0, 0.04);
-  --shadow-apple-hover: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
-  --blur-glass: 20px;
+  --color-md-error: #BA1A1A;
+  --color-md-on-error: #FFFFFF;
+
+  --color-md-outline: #73777F;
+
+  /* Water Specific Accents */
+  --color-water-600: #0061A4;
+  --color-water-500: #2196F3;
+
+  /* M3 Typography */
+  --font-family-sans: "Roboto", "Inter", sans-serif;
+
+  /* M3 Elevation (Shadows) */
+  --shadow-md-1: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md-2: 0 2px 6px 2px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+
+  /* M3 Shapes */
+  --radius-md-xs: 4px;
+  --radius-md-sm: 8px;
+  --radius-md-md: 12px;
+  --radius-md-lg: 16px;
+  --radius-md-xl: 28px;
 }
 
 :root {

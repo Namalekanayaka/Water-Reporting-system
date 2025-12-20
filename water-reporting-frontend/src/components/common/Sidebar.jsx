@@ -81,21 +81,23 @@ const Sidebar = ({ onClose }) => {
   };
 
   return (
-    <div className="w-full h-full bg-[#f5f5f7] flex flex-col px-4 py-8 pointer-events-auto">
-      {/* Sidebar Profile Circle - Classic Apple Settings Look */}
-      <div className="flex items-center gap-3 mb-10 px-4">
-        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-200 text-xl">
-          <img src="/logo.png" className="w-7 h-7 object-contain opacity-80" />
+    <div className="w-full h-full bg-md-surface flex flex-col px-3 py-6 pointer-events-auto">
+      {/* Drawer Header - M3 Logo/Title Style */}
+      <div className="flex items-center gap-4 mb-8 px-4 py-2">
+        <div className="w-10 h-10 bg-md-primary-container text-md-on-primary-container rounded-[12px] flex items-center justify-center shadow-sm">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
         </div>
         <div>
-          <h2 className="text-[15px] font-bold text-gray-900 leading-tight">WaterSys</h2>
-          <p className="text-[12px] text-gray-400 font-medium">Standard Edition</p>
+          <h2 className="text-[14px] font-black text-md-on-surface uppercase tracking-widest">WaterSys</h2>
+          <p className="text-[11px] text-md-on-surface-variant font-medium">Infrastructure v1.2</p>
         </div>
       </div>
 
-      <nav className="flex-1">
-        <div className="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">
-          {role === 'authority' ? 'Management' : 'Activity'}
+      <nav className="flex-1 overflow-y-auto">
+        <div className="px-4 text-[12px] font-bold text-md-on-surface-variant uppercase tracking-wider mb-2">
+          {role === 'authority' ? 'Management Console' : 'Citizen Workspace'}
         </div>
         <ul className="space-y-1">
           {menuItems.map((item) => {
@@ -106,14 +108,22 @@ const Sidebar = ({ onClose }) => {
                   to={item.path}
                   onClick={onClose}
                   className={`
-                    flex items-center gap-3 px-4 py-2.5 rounded-xl text-[14px] font-medium transition-colors
+                    group relative flex items-center gap-4 px-4 py-3 rounded-full text-[14px] font-bold transition-all
                     ${isActive
-                      ? "bg-water-600 !text-white"
-                      : "text-gray-800 hover:bg-gray-200/50"}
+                      ? "bg-md-primary-container text-md-on-primary-container"
+                      : "text-md-on-surface-variant hover:bg-md-surface-variant hover:text-md-on-surface"}
                   `}
                 >
-                  <Icon name={item.icon} />
-                  <span>{item.label}</span>
+                  <div className={`
+                    p-1 transition-transform group-active:scale-90
+                    ${isActive ? "scale-110" : ""}
+                  `}>
+                    <Icon name={item.icon} />
+                  </div>
+                  <span className="flex-1">{item.label}</span>
+                  {isActive && (
+                    <div className="w-1.5 h-1.5 rounded-full bg-md-primary animate-pulse"></div>
+                  )}
                 </Link>
               </li>
             );
@@ -121,32 +131,27 @@ const Sidebar = ({ onClose }) => {
         </ul>
       </nav>
 
-      {/* Account Info - Role Based Card */}
-      <div className="mt-auto px-2">
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
-          {role === 'authority' ? (
-            <>
-              <h3 className="text-[13px] font-bold text-gray-900 mb-1">System Ops</h3>
-              <p className="text-[11px] text-gray-400 mb-3 leading-tight">Monitor regional throughput and active technician load.</p>
-              <div className="h-1 bg-gray-100 rounded-full overflow-hidden mb-3">
-                <div className="w-1/4 h-full bg-red-500"></div>
-              </div>
-              <Link to="/authority/issues" className="block text-center py-2 bg-gray-900 !text-white text-[12px] font-bold rounded-full hover:bg-black transition-all">
-                Urgent Queue
-              </Link>
-            </>
-          ) : (
-            <>
-              <h3 className="text-[13px] font-bold text-gray-900 mb-1">Impact Stats</h3>
-              <p className="text-[11px] text-gray-400 mb-3 leading-tight">Your contributions are helping the planet.</p>
-              <div className="h-1 bg-gray-100 rounded-full overflow-hidden mb-3">
-                <div className="w-3/4 h-full bg-water-600"></div>
-              </div>
-              <Link to="/report" className="block text-center py-2 bg-gray-900 !text-white text-[12px] font-bold rounded-full hover:bg-black transition-all">
-                New Submission
-              </Link>
-            </>
-          )}
+      {/* M3 Account/Impact Card */}
+      <div className="mt-auto px-1 pt-6">
+        <div className="bg-md-surface-variant/40 rounded-[28px] p-5 border border-md-outline/5 overflow-hidden relative">
+          <div className="relative z-10">
+            <h3 className="text-[13px] font-black text-md-on-surface-variant uppercase tracking-widest mb-1">
+              {role === 'authority' ? 'System Load' : 'Citizen Impact'}
+            </h3>
+            <p className="text-[12px] text-md-on-surface-variant/70 mb-4 leading-snug">
+              {role === 'authority' ? 'Operational efficiency at 92%' : 'Helping save 850L daily'}
+            </p>
+            <div className="h-1.5 bg-md-surface-variant rounded-full overflow-hidden mb-4">
+              <div className={`h-full ${role === 'authority' ? 'bg-md-error' : 'bg-md-primary'} transition-all`} style={{ width: role === 'authority' ? '25%' : '75%' }}></div>
+            </div>
+            <Link
+              to={role === 'authority' ? "/authority/issues" : "/report"}
+              className="flex items-center justify-center w-full py-3 bg-md-primary-container text-md-on-primary-container text-[12px] font-bold rounded-xl hover:bg-md-primary hover:text-white transition-all active:scale-95 shadow-sm"
+            >
+              {role === 'authority' ? 'View Queue' : 'Quick Report'}
+            </Link>
+          </div>
+          <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-md-primary/5 rounded-full blur-2xl"></div>
         </div>
       </div>
     </div>

@@ -3,130 +3,119 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="w-full bg-[#fbfbfd] min-h-screen">
-      {/* Hero Section - Apple Lifestyle Aesthetic */}
-      <section className="max-w-[1200px] mx-auto px-6 pt-20 pb-16 text-center lg:text-left flex flex-col lg:flex-row items-center gap-16">
-        <div className="flex-1 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <h1 className="text-[56px] lg:text-[80px] font-black tracking-tight text-gray-900 leading-[1.05] mb-8">
-            Superior water care. <br />
-            <span className="text-water-600">Purely digital.</span>
+    <div className="w-full bg-md-surface min-h-screen">
+      {/* Hero Section - M3 Centered Display */}
+      <section className="max-w-[1200px] mx-auto px-6 pt-24 pb-20 flex flex-col items-center text-center">
+        <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <h1 className="text-[52px] md:text-[88px] font-black tracking-tight text-md-on-surface leading-[1.05] mb-8">
+            Water governance. <br />
+            <span className="text-md-primary italic">Perfected.</span>
           </h1>
-          <p className="text-[21px] lg:text-[24px] text-gray-500 font-medium mb-10 max-w-xl leading-relaxed">
-            Leading the way in community water management. Fast, transparent, and built for everyone.
+          <p className="text-[18px] md:text-[22px] text-md-on-surface-variant font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
+            The next generation of community water management. Structured, powerful, and built for modern infrastructure.
           </p>
-          <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/report"
-              className="px-10 py-4 bg-water-600 hover:bg-[#0077ed] !text-white rounded-full font-bold text-[17px] transition-all shadow-lg active:scale-95"
+              className="h-14 px-10 bg-md-primary text-md-on-primary rounded-full font-black text-[15px] flex items-center justify-center shadow-md hover:shadow-lg hover:bg-md-primary/90 transition-all active:scale-95"
             >
-              Report an Issue
+              Report Infrastructure Issue
             </Link>
             <Link
               to="/dashboard"
-              className="px-10 py-4 text-water-600 hover:underline font-bold text-[17px] inline-flex items-center gap-1"
+              className="h-14 px-10 bg-md-secondary-container text-md-on-secondary-container rounded-full font-black text-[15px] flex items-center justify-center hover:bg-md-secondary-container/80 transition-all active:scale-95"
             >
-              Explore Dashboard
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-              </svg>
+              View System Analytics
             </Link>
           </div>
         </div>
-        <div className="flex-1 animate-in fade-in zoom-in-95 duration-1000 delay-300">
-          <img
-            src="/water_reporting_hero_1766035001067.png"
-            alt="WRS Intelligence"
-            className="w-full max-w-lg mx-auto drop-shadow-[0_20px_50px_rgba(0,113,227,0.15)] animate-float"
-          />
-        </div>
       </section>
 
-      {/* Grid Bento Layout - Standard Apple Feature Breakdown */}
-      <section className="max-w-[1240px] mx-auto px-6 pb-24">
+      {/* M3 Feature Cards - Grid Layout */}
+      <section className="max-w-[1240px] mx-auto px-6 pb-32">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Big Feature Cardio */}
-          <div className="md:col-span-8 bg-white rounded-[32px] p-10 shadow-apple hover:shadow-apple-hover transition-all group overflow-hidden relative">
-            <div className="relative z-10 lg:w-3/5">
-              <span className="text-water-600 font-bold uppercase tracking-widest text-[13px] mb-3 block">Real-time Analytics</span>
-              <h2 className="text-3xl lg:text-4xl font-black text-gray-900 mb-4 leading-tight">Live transparency for every citizen.</h2>
-              <p className="text-gray-500 text-[17px] font-medium leading-relaxed mb-8">
-                View resolved issues, tracking progress, and area health metrics on a beautiful interactive map.
+          {/* M3 Elevated Card */}
+          <div className="md:col-span-12 lg:col-span-8 bg-white rounded-[28px] p-10 shadow-md-1 hover:shadow-md-2 transition-all flex flex-col md:flex-row items-center gap-10 overflow-hidden group">
+            <div className="flex-1 z-10">
+              <span className="text-md-primary font-black uppercase tracking-[0.2em] text-[11px] mb-4 block">System Core</span>
+              <h2 className="text-4xl font-black text-md-on-surface mb-6 leading-tight">Live transparency for every citizen.</h2>
+              <p className="text-md-on-surface-variant text-[16px] font-medium leading-relaxed mb-8">
+                View resolved issues, tracking progress, and area health metrics on a high-precision interactive map.
               </p>
-              <Link to="/dashboard" className="px-8 py-3 bg-gray-100 font-bold rounded-full hover:bg-gray-200 transition-colors inline-block">Learn more</Link>
+              <Link to="/dashboard" className="text-md-primary font-black text-[14px] uppercase tracking-widest hover:underline flex items-center gap-2">
+                Explore The Data
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7-7 7" />
+                </svg>
+              </Link>
             </div>
-            <div className="absolute right-[-5%] bottom-[-10%] w-3/5 opacity-40 group-hover:opacity-60 transition-opacity">
-              <img src="/logo.png" className="w-full grayscale brightness-50" style={{ transform: 'rotate(-10deg)' }} />
+            <div className="flex-1 relative h-64 w-full">
+              <div className="absolute inset-0 bg-md-primary/5 rounded-[24px] border-2 border-dashed border-md-primary/10 flex items-center justify-center text-6xl">📊</div>
             </div>
           </div>
 
-          {/* Small Feature 1 */}
-          <div className="md:col-span-4 bg-gray-900 rounded-[32px] p-10 shadow-apple text-white flex flex-col justify-between">
+          {/* M3 Tonal Card */}
+          <div className="md:col-span-6 lg:col-span-4 bg-md-secondary-container rounded-[28px] p-10 text-md-on-secondary-container flex flex-col justify-between shadow-sm">
             <div>
-              <span className="text-water-400 font-bold uppercase tracking-widest text-[11px] mb-3 block">Reporting</span>
-              <h2 className="text-2xl font-black mb-4 leading-tight">Fastest intake <br /> ever.</h2>
+              <span className="text-md-on-secondary-container/60 font-black uppercase tracking-widest text-[11px] mb-4 block">Engineered for Speed</span>
+              <h2 className="text-3xl font-black mb-6 leading-tight">Fastest intake ever.</h2>
             </div>
-            <p className="text-gray-400 text-[15px] font-medium leading-relaxed mb-6">
-              Optimized for speed. Report a problem in under 30 seconds with intelligent location tagging.
+            <p className="text-md-on-secondary-container/80 text-[15px] font-medium leading-relaxed mb-8">
+              Optimized for rapid response. Report a structural problem in under 30 seconds with automated location indexing.
             </p>
-            <div className="text-5xl">⚡️</div>
+            <div className="w-12 h-12 bg-white/50 rounded-xl flex items-center justify-center text-2xl">⚡️</div>
           </div>
 
-          {/* Small Feature 2 */}
-          <div className="md:col-span-4 bg-white rounded-[32px] p-10 shadow-apple hover:shadow-apple-hover transition-all text-center flex flex-col items-center">
-            <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center text-3xl mb-6">📍</div>
-            <h3 className="text-xl font-bold mb-3">Precise Location</h3>
-            <p className="text-gray-500 text-[15px] px-2 text-center leading-relaxed">Automatic GPS coordination ensures authorities find the exact spot instantly.</p>
-          </div>
-
-          {/* Small Feature 3 */}
-          <div className="md:col-span-4 bg-[#f2f2f7] rounded-[32px] p-10 shadow-apple hover:shadow-apple-hover transition-all text-center flex flex-col items-center">
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-3xl mb-6 shadow-sm font-bold text-water-600">AI</div>
-            <h3 className="text-xl font-bold mb-3">Smart Prioritization</h3>
-            <p className="text-gray-500 text-[15px] px-2 text-center leading-relaxed">Our AI analyzes urgency to ensure critical supply issues are addressed first.</p>
-          </div>
-
-          {/* Small Feature 4 */}
-          <div className="md:col-span-4 bg-[#eef6ff] rounded-[32px] p-10 shadow-apple hover:shadow-apple-hover transition-all text-center flex flex-col items-center">
-            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-3xl mb-6 shadow-sm">✉️</div>
-            <h3 className="text-xl font-bold mb-3">Instant Updates</h3>
-            <p className="text-gray-500 text-[15px] px-2 text-center leading-relaxed">Get notified the moment a technician is assigned and when your issue is resolved.</p>
-          </div>
+          {/* M3 Outlined Cards */}
+          {[
+            { tag: "Precision", title: "Automated GPS", desc: "Coordinates are gathered directly from hardware for absolute accuracy.", icon: "📍" },
+            { tag: "Intelligence", title: "ML Priority", desc: "Our engine analyzes urgency to ensure critical supply issues are first.", icon: "🧠" },
+            { tag: "Communication", title: "Direct Sync", desc: "Nofications trigger at every stage of the repair lifecycle.", icon: "✉️" }
+          ].map((feat, i) => (
+            <div key={i} className="md:col-span-4 border border-md-outline/20 rounded-[28px] p-8 hover:bg-md-primary-container/20 transition-all group">
+              <div className="w-12 h-12 bg-md-surface-variant rounded-full flex items-center justify-center text-2xl mb-8 group-hover:scale-110 transition-transform">{feat.icon}</div>
+              <span className="text-md-primary font-black uppercase tracking-[0.1em] text-[10px] mb-2 block">{feat.tag}</span>
+              <h3 className="text-xl font-black mb-3 text-md-on-surface">{feat.title}</h3>
+              <p className="text-md-on-surface-variant text-[14px] font-medium leading-relaxed">{feat.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Quote Section - Apple Style */}
-      <section className="bg-white py-24 text-center px-6">
+      {/* Quote Section - M3 Surface Layout */}
+      <section className="bg-md-surface-variant/20 py-32 text-center px-6 border-y border-md-outline/5">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-[32px] lg:text-[48px] font-black text-gray-900 leading-tight mb-8">
-            "This platform has transformed how our community interacts with water services."
+          <h2 className="text-[32px] md:text-[44px] font-black text-md-on-surface leading-tight mb-8">
+            "The infrastructure has never been this accessible. WaterSys is the definitive standard."
           </h2>
-          <div className="space-y-4">
-            <p className="text-gray-500 font-bold uppercase tracking-widest text-sm">— Dr. Sarah Jenkins, Municipality Lead</p>
-          </div>
+          <p className="text-md-primary font-black uppercase tracking-[0.2em] text-[12px]">— Sarah Jenkins, Executive Director</p>
         </div>
       </section>
 
-      {/* Final Call to Action - Mac Studio/iPhone Launch Style */}
-      <section className="bg-white pb-32 pt-16 px-6 text-center">
-        <div className="max-w-5xl mx-auto bg-gray-50/50 rounded-[48px] p-16 lg:p-24 border border-gray-100">
-          <h2 className="text-[40px] lg:text-[64px] font-black text-gray-900 mb-6 tracking-tight">Community impact. <br /> Together.</h2>
-          <p className="text-[19px] lg:text-[21px] text-gray-400 font-medium mb-12 max-w-2xl mx-auto">
-            Join thousands of neighbors making their community better, one report at a time.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link
-              to="/register"
-              className="px-12 py-5 bg-gray-900 hover:bg-black !text-white rounded-full font-bold text-lg transition-transform active:scale-95"
-            >
-              Sign Up Now
-            </Link>
-            <Link
-              to="/report"
-              className="px-12 py-5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-900 rounded-full font-bold text-lg transition-transform active:scale-95"
-            >
-              Start Reporting
-            </Link>
+      {/* Final CTA - M3 Large Surface */}
+      <section className="bg-md-surface pb-40 pt-20 px-6 text-center">
+        <div className="max-w-5xl mx-auto bg-md-primary-container rounded-[32px] p-16 md:p-24 border border-md-outline/10 overflow-hidden relative">
+          <div className="relative z-10">
+            <h2 className="text-[44px] md:text-[72px] font-black text-md-on-primary-container mb-8 tracking-tight">Standardize impact.</h2>
+            <p className="text-[18px] md:text-[21px] text-md-on-primary-container/70 font-bold mb-14 max-w-2xl mx-auto">
+              Join thousands of neighbors securing our community infrastructure, one report at a time.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link
+                to="/register"
+                className="h-14 px-12 bg-md-on-primary-container text-md-primary-container rounded-full font-black text-lg flex items-center justify-center shadow-md hover:shadow-lg transition-all active:scale-95"
+              >
+                Onboard System
+              </Link>
+              <Link
+                to="/report"
+                className="h-14 px-12 bg-white text-md-on-primary-container rounded-full font-black text-lg flex items-center justify-center border border-md-outline/10 hover:bg-gray-50 transition-all active:scale-95 shadow-sm"
+              >
+                File Report
+              </Link>
+            </div>
           </div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
         </div>
       </section>
     </div>

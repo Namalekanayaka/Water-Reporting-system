@@ -8,119 +8,99 @@ const PublicDashboard = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchReports = async () => {
+        const fetchAll = async () => {
             try {
-                const response = await getAllReports();
-                if (response.success) setReports(response.reports);
-            } catch (err) { console.error(err); }
-            finally { setLoading(false); }
+                const data = await getAllReports();
+                setReports(data.reports);
+            } catch (error) {
+                console.error("Error fetching dashboard map data:", error);
+            } finally {
+                setLoading(false);
+            }
         };
-        fetchReports();
+        fetchAll();
     }, []);
 
+    const stats = [
+        { label: "Active Incidents", value: "14", trend: "+2", color: "text-md-error" },
+        { label: "Resolution Rate", value: "98.2%", trend: "High", color: "text-md-primary" },
+        { label: "Avg. Response", value: "4.2h", trend: "-12m", color: "text-md-secondary" },
+        { label: "Community Rep", value: "4,201", trend: "+124", color: "text-md-primary" },
+    ];
+
     return (
-        <div className="w-full bg-[#fbfbfd] min-h-screen p-6 md:p-12">
+        <div className="w-full bg-md-surface min-h-screen">
             <div className="max-w-[1400px] mx-auto">
-                {/* Minimalist Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                {/* M3 Header Section */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
                     <div className="animate-in fade-in slide-in-from-left-4 duration-700">
-                        <span className="text-water-600 font-bold uppercase tracking-widest text-[13px] mb-3 block">Live Insights</span>
-                        <h1 className="text-[40px] md:text-[56px] font-black tracking-tight text-gray-900 leading-none">
-                            Community Dashboard.
+                        <span className="text-md-primary font-black uppercase tracking-[0.2em] text-[11px] mb-3 block">Real-time Insights</span>
+                        <h1 className="text-[40px] md:text-[64px] font-black tracking-tight text-md-on-surface leading-none">
+                            System Pulse.
                         </h1>
-                        <p className="text-[19px] text-gray-400 font-medium mt-4">Real-time monitoring of our collective water health.</p>
                     </div>
                 </div>
 
-                {/* Map Preview Section - NEW */}
-                <div className="mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                    <div className="bg-white rounded-[40px] p-10 shadow-apple border border-gray-50/50">
-                        <div className="flex items-center justify-between mb-10">
-                            <div>
-                                <h2 className="text-2xl font-black text-gray-900 tracking-tight">Geospatial Overview</h2>
-                                <p className="text-[15px] text-gray-400 font-medium mt-1">Explore current incidents across the region.</p>
-                            </div>
-                            <Link to="/map" className="px-6 py-2.5 bg-gray-900 !text-white rounded-full font-bold text-[13px] hover:bg-black transition-all">
-                                Open High-Precision Map
-                            </Link>
-                        </div>
-                        {loading ? (
-                            <div className="h-[400px] bg-gray-50 rounded-[32px] animate-pulse"></div>
-                        ) : (
-                            <ReportsMap reports={reports} height="400px" />
-                        )}
-                    </div>
-                </div>
-
-                {/* Stat Grid - Ultra Clean */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                    {[
-                        { label: "Submitted Reports", value: "1,234", trend: "+12%", color: "text-water-600", bg: "bg-white" },
-                        { label: "Resolved Issues", value: "892", trend: "72%", color: "text-emerald-500", bg: "bg-white" },
-                        { label: "Critical Priority", value: "342", trend: "28%", color: "text-orange-500", bg: "bg-white" }
-                    ].map((stat, i) => (
-                        <div key={i} className={`${stat.bg} rounded-[32px] p-10 border border-transparent hover:border-gray-100 transition-all shadow-apple hover:shadow-apple-hover animate-in fade-in zoom-in-95 duration-500`} style={{ animationDelay: `${i * 100}ms` }}>
-                            <h3 className="text-[15px] font-bold text-gray-400 uppercase tracking-widest mb-2">{stat.label}</h3>
-                            <div className="flex items-baseline gap-4">
-                                <span className="text-[48px] font-black text-gray-900 leading-tight">{stat.value}</span>
-                                <span className={`text-[17px] font-bold ${stat.color}`}>{stat.trend}</span>
+                {/* M3 Stats Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    {stats.map((stat, i) => (
+                        <div key={i} className="bg-white rounded-[28px] p-8 shadow-md-1 hover:shadow-md-2 transition-all border border-md-outline/5 group">
+                            <p className="text-[12px] font-black text-md-on-surface-variant uppercase tracking-widest mb-4 group-hover:text-md-primary transition-colors">{stat.label}</p>
+                            <div className="flex items-end justify-between">
+                                <h3 className={`text-4xl font-black tracking-tighter ${stat.color}`}>{stat.value}</h3>
+                                <span className={`text-[12px] font-bold px-2 py-1 rounded-lg bg-md-surface-variant/50 text-md-on-surface-variant`}>
+                                    {stat.trend}
+                                </span>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Main Content Sections */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    {/* Activity Feed - Left */}
-                    <div className="lg:col-span-8 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300 transition-all">
-                        <div className="bg-white rounded-[40px] p-10 shadow-apple border border-gray-50/50">
-                            <div className="flex items-center justify-between mb-10">
-                                <h2 className="text-2xl font-black text-gray-900 tracking-tight">Recent Activity</h2>
-                                <Link to="/report" className="text-water-600 font-bold hover:underline text-sm uppercase tracking-widest">Submit Issue</Link>
+                {/* M3 Main Content Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20">
+                    {/* Live Map Preview - M3 Elevated Card */}
+                    <div className="lg:col-span-8 bg-white rounded-[32px] p-8 shadow-md-1 border border-md-outline/5 overflow-hidden flex flex-col min-h-[600px]">
+                        <div className="flex items-center justify-between mb-8">
+                            <div>
+                                <h2 className="text-2xl font-black text-md-on-surface tracking-tight mb-1">Geospatial Awareness</h2>
+                                <p className="text-[14px] text-md-on-surface-variant font-medium">Monitoring {reports.length} regional markers</p>
                             </div>
-
-                            <div className="space-y-4">
-                                {[
-                                    { type: "Pipeline Leakage", loc: "Colombo District", time: "2h ago", priority: "Critical", pColor: "text-red-500 bg-red-50" },
-                                    { type: "Low Pressure", loc: "Gampaha District", time: "5h ago", priority: "High", pColor: "text-orange-500 bg-orange-50" },
-                                    { type: "Water Quality", loc: "Kandy District", time: "1d ago", priority: "Resolved", pColor: "text-emerald-500 bg-emerald-50" },
-                                    { type: "No Supply", loc: "Matara Fort", time: "2d ago", priority: "Medium", pColor: "text-blue-500 bg-blue-50" }
-                                ].map((issue, i) => (
-                                    <div key={i} className="flex items-center justify-between p-6 rounded-[24px] hover:bg-gray-50/50 transition-all border border-transparent hover:border-gray-100 group">
-                                        <div className="flex items-center gap-6">
-                                            <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl group-hover:bg-white transition-colors shadow-sm">💧</div>
-                                            <div>
-                                                <h4 className="text-[17px] font-bold text-gray-900">{issue.type}</h4>
-                                                <p className="text-[14px] text-gray-400 font-medium">{issue.loc} • {issue.time}</p>
-                                            </div>
-                                        </div>
-                                        <span className={`px-4 py-1.5 rounded-full text-[12px] font-black uppercase tracking-wider ${issue.pColor}`}>
-                                            {issue.priority}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
+                            <Link
+                                to="/map"
+                                className="h-10 px-6 bg-md-primary text-md-on-primary rounded-full text-[12px] font-bold flex items-center gap-2 hover:shadow-md active:scale-95 transition-all"
+                            >
+                                Open Full Map
+                            </Link>
+                        </div>
+                        <div className="flex-1 rounded-[24px] overflow-hidden border border-md-outline/10 bg-md-surface-variant/10 shadow-inner min-h-[450px]">
+                            {loading ? (
+                                <div className="w-full h-full flex items-center justify-center">
+                                    <div className="animate-spin h-10 w-10 border-4 border-md-primary border-t-transparent rounded-full"></div>
+                                </div>
+                            ) : (
+                                <ReportsMap reports={reports} />
+                            )}
                         </div>
                     </div>
 
-                    {/* Breakdown & Actions - Right */}
-                    <div className="lg:col-span-4 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500 transition-all">
-                        {/* Issue breakdown */}
-                        <div className="bg-white rounded-[40px] p-10 shadow-apple border border-gray-50/50">
-                            <h2 className="text-xl font-black text-gray-900 tracking-tight mb-10">Categories</h2>
+                    {/* Regional & Categories - M3 Side Column */}
+                    <div className="lg:col-span-4 space-y-8">
+                        {/* Categories Tonal Card */}
+                        <div className="bg-md-secondary-container rounded-[32px] p-10 text-md-on-secondary-container shadow-sm border border-md-outline/5">
+                            <h3 className="text-[15px] font-black uppercase tracking-widest text-md-on-secondary-container/60 mb-8">Incident Types</h3>
                             <div className="space-y-6">
                                 {[
-                                    { label: "Pipeline Leakage", val: "45%", color: "bg-red-500" },
-                                    { label: "Low Pressure", val: "28%", color: "bg-orange-500" },
-                                    { label: "Water Quality", val: "18%", color: "bg-blue-500" },
-                                    { label: "No Supply", val: "9%", color: "bg-purple-500" }
+                                    { label: "Infrastructure", val: "45%", color: "bg-md-primary" },
+                                    { label: "Quality", val: "28%", color: "bg-md-primary/70" },
+                                    { label: "Supply", val: "18%", color: "bg-md-primary/40" },
+                                    { label: "Other", val: "9%", color: "bg-md-primary/20" }
                                 ].map((item, i) => (
                                     <div key={i}>
                                         <div className="flex justify-between items-center mb-2">
-                                            <span className="text-[14px] font-bold text-gray-600">{item.label}</span>
-                                            <span className="text-[14px] font-black text-gray-900">{item.val}</span>
+                                            <span className="text-[14px] font-bold">{item.label}</span>
+                                            <span className="text-[14px] font-black">{item.val}</span>
                                         </div>
-                                        <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                                        <div className="h-1.5 w-full bg-white/30 rounded-full overflow-hidden">
                                             <div className={`h-full ${item.color}`} style={{ width: item.val }}></div>
                                         </div>
                                     </div>
@@ -128,18 +108,20 @@ const PublicDashboard = () => {
                             </div>
                         </div>
 
-                        {/* Quick Action Box - Dark Apple Style */}
-                        <div className="bg-gray-900 rounded-[40px] p-10 shadow-2xl text-white relative overflow-hidden group">
+                        {/* Quick Report CTA */}
+                        <div className="bg-md-surface-variant rounded-[32px] p-10 border border-md-outline/10 relative overflow-hidden group">
                             <div className="relative z-10">
-                                <h2 className="text-2xl font-black mb-4">Ready to help?</h2>
-                                <p className="text-gray-400 text-[15px] font-medium mb-8 leading-relaxed">
-                                    Your report could save thousands of liters of clean water today.
+                                <h3 className="text-2xl font-black text-md-on-surface-variant mb-4">Ready to help?</h3>
+                                <p className="text-[15px] text-md-on-surface-variant/80 font-medium mb-8 leading-relaxed">
+                                    Your report can save thousands of liters of clean water today.
                                 </p>
-                                <Link to="/report" className="block w-full py-4 bg-white !text-black text-center rounded-full font-black text-[15px] hover:bg-gray-100 transition-all transform active:scale-95">
-                                    File a Report
+                                <Link
+                                    to="/report"
+                                    className="w-full py-4 bg-md-primary text-md-on-primary rounded-2xl font-black text-[14px] flex items-center justify-center shadow-sm hover:shadow-md active:scale-95 transition-all"
+                                >
+                                    File New Report
                                 </Link>
                             </div>
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-water-500/10 rounded-full translate-x-1/2 -translate-y-1/2 blur-2xl group-hover:bg-water-500/20 transition-all"></div>
                         </div>
                     </div>
                 </div>

@@ -16,8 +16,8 @@ const ProtectedRoute = ({ children, allowedRole = null }) => {
     // While checking authentication status (if checking a persistent token)
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-[#fbfbfd]">
-                <div className="animate-spin h-8 w-8 border-4 border-water-600 border-t-transparent rounded-full"></div>
+            <div className="flex items-center justify-center min-h-screen bg-md-surface">
+                <div className="animate-spin h-10 w-10 border-4 border-md-primary border-t-transparent rounded-full"></div>
             </div>
         );
     }
