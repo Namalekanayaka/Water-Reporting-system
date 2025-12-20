@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { loginUser } from '../../services/api/auth';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        login({ name: 'Test User', email, role: 'citizen' });
-        navigate('/');
+        setIsLoggingIn(true);
+        try {
+            const response = await loginUser(email, password);
+            if (response.success) {
+                login(response.user, response.token);
+                // Role-based redirection
+                if (response.user.role === 'authority') {
+                    navigate('/authority/dashboard');
+                } else {
+                    navigate('/');
+                }
+            }
+        } catch (error) {
+            console.error('Login failed:', error);
+        } finally {
+            setIsLoggingIn(false);
+        }
     };
 
     return (
@@ -23,6 +40,11 @@ const Login = () => {
                         Sign In.
                     </h1>
                     <p className="text-[17px] text-gray-400 font-medium">Continue your mission to save water.</p>
+                    <div className="mt-4 p-3 bg-blue-50/50 rounded-2xl border border-blue-100/50 inline-block">
+                        <p className="text-[12px] text-blue-600 font-bold uppercase tracking-wider">
+                            Tester Tip: Use "admin@wrs.com" for Authority Access
+                        </p>
+                    </div>
                 </div>
 
                 <div className="bg-white rounded-[40px] p-10 md:p-12 shadow-apple border border-gray-50/50">
@@ -56,9 +78,17 @@ const Login = () => {
 
                         <button
                             type="submit"
-                            className="w-full py-5 bg-gray-900 !text-white rounded-full font-black text-[17px] hover:bg-black transition-all shadow-xl active:scale-95"
+                            disabled={isLoggingIn}
+                            className="w-full py-5 bg-gray-900 !text-white rounded-full font-black text-[17px] hover:bg-black transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 disabled:bg-gray-400"
                         >
-                            Sign In
+                            {isLoggingIn ? (
+                                <>
+                                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                                    <span>Verifying...</span>
+                                </>
+                            ) : (
+                                "Sign In"
+                            )}
                         </button>
                     </form>
 

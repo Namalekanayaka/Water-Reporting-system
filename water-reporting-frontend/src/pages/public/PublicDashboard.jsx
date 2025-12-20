@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ReportsMap from '../../components/maps/ReportsMap';
+import { getAllReports } from '../../services/api/reports';
 
 const PublicDashboard = () => {
+    const [reports, setReports] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                const response = await getAllReports();
+                if (response.success) setReports(response.reports);
+            } catch (err) { console.error(err); }
+            finally { setLoading(false); }
+        };
+        fetchReports();
+    }, []);
+
     return (
         <div className="w-full bg-[#fbfbfd] min-h-screen p-6 md:p-12">
             <div className="max-w-[1400px] mx-auto">
@@ -14,9 +30,25 @@ const PublicDashboard = () => {
                         </h1>
                         <p className="text-[19px] text-gray-400 font-medium mt-4">Real-time monitoring of our collective water health.</p>
                     </div>
-                    <div className="flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-gray-100 shadow-sm animate-in fade-in slide-in-from-right-4 duration-700">
-                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-                        <span className="text-[13px] font-bold text-gray-600 uppercase tracking-wider">Systems Nominal</span>
+                </div>
+
+                {/* Map Preview Section - NEW */}
+                <div className="mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                    <div className="bg-white rounded-[40px] p-10 shadow-apple border border-gray-50/50">
+                        <div className="flex items-center justify-between mb-10">
+                            <div>
+                                <h2 className="text-2xl font-black text-gray-900 tracking-tight">Geospatial Overview</h2>
+                                <p className="text-[15px] text-gray-400 font-medium mt-1">Explore current incidents across the region.</p>
+                            </div>
+                            <Link to="/map" className="px-6 py-2.5 bg-gray-900 !text-white rounded-full font-bold text-[13px] hover:bg-black transition-all">
+                                Open High-Precision Map
+                            </Link>
+                        </div>
+                        {loading ? (
+                            <div className="h-[400px] bg-gray-50 rounded-[32px] animate-pulse"></div>
+                        ) : (
+                            <ReportsMap reports={reports} height="400px" />
+                        )}
                     </div>
                 </div>
 

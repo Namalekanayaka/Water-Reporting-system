@@ -29,6 +29,7 @@ import { NotificationProvider } from './context/NotificationContext';
 
 // Components
 import NotificationToast from './components/common/NotificationToast';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 import './App.css';
 
@@ -42,26 +43,52 @@ function App() {
             <Router>
               <MainLayout>
                 <Routes>
-                  {/* Citizen Routes */}
-                  <Route path="/" element={<Home />} />
-                  <Route path="/report" element={<ReportIssue />} />
-                  <Route path="/my-reports" element={<MyReports />} />
-                  <Route path="/area-health" element={<AreaHealth />} />
-
-                  {/* Authority Routes */}
-                  <Route path="/authority/dashboard" element={<AuthorityDashboard />} />
-                  <Route path="/authority/issues" element={<IssueManagement />} />
-                  <Route path="/authority/analytics" element={<Analytics />} />
-                  <Route path="/authority/teams" element={<TeamManagement />} />
-
                   {/* Public Routes */}
+                  <Route path="/" element={<Home />} />
                   <Route path="/dashboard" element={<PublicDashboard />} />
                   <Route path="/map" element={<MapView />} />
                   <Route path="/statistics" element={<Statistics />} />
-
-                  {/* Auth Routes */}
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+
+                  {/* Citizen Routes - Protected */}
+                  <Route path="/report" element={
+                    <ProtectedRoute>
+                      <ReportIssue />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/my-reports" element={
+                    <ProtectedRoute>
+                      <MyReports />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/area-health" element={
+                    <ProtectedRoute>
+                      <AreaHealth />
+                    </ProtectedRoute>
+                  } />
+
+                  {/* Authority Routes - Protected with Role */}
+                  <Route path="/authority/dashboard" element={
+                    <ProtectedRoute allowedRole="authority">
+                      <AuthorityDashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/authority/issues" element={
+                    <ProtectedRoute allowedRole="authority">
+                      <IssueManagement />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/authority/analytics" element={
+                    <ProtectedRoute allowedRole="authority">
+                      <Analytics />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/authority/teams" element={
+                    <ProtectedRoute allowedRole="authority">
+                      <TeamManagement />
+                    </ProtectedRoute>
+                  } />
                 </Routes>
               </MainLayout>
             </Router>

@@ -1,20 +1,35 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { registerUser } from '../../services/api/auth';
 
 const Register = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+    const [isRegistering, setIsRegistering] = useState(false);
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.password === formData.confirmPassword) {
-            login({ name: formData.name, email: formData.email, role: 'citizen' });
-            navigate('/');
-        } else alert('Passwords do not match');
+        if (formData.password !== formData.confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+
+        setIsRegistering(true);
+        try {
+            const response = await registerUser(formData);
+            if (response.success) {
+                login(response.user, response.token);
+                navigate('/');
+            }
+        } catch (error) {
+            console.error('Registration failed:', error);
+        } finally {
+            setIsRegistering(false);
+        }
     };
 
     return (
@@ -72,9 +87,17 @@ const Register = () => {
 
                         <button
                             type="submit"
-                            className="w-full py-5 bg-gray-900 !text-white rounded-full font-black text-[17px] hover:bg-black transition-all shadow-xl active:scale-95"
+                            disabled={isRegistering}
+                            className="w-full py-5 bg-gray-900 !text-white rounded-full font-black text-[17px] hover:bg-black transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 disabled:bg-gray-400"
                         >
-                            Create Account
+                            {isRegistering ? (
+                                <>
+                                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                                    <span>Processing...</span>
+                                </>
+                            ) : (
+                                "Create Account"
+                            )}
                         </button>
                     </form>
 
