@@ -33,54 +33,54 @@ const Register = () => {
     };
 
     return (
-        <div className="w-full bg-[#fbfbfd] min-h-screen p-6 flex flex-col items-center justify-center">
+        <div className="w-full bg-md-surface min-h-screen p-6 flex flex-col items-center justify-center">
             <div className="max-w-md w-full animate-in fade-in slide-in-from-bottom-8 duration-1000">
                 <div className="text-center mb-12">
-                    <span className="text-water-600 font-black text-3xl mb-6 block">🌍</span>
-                    <h1 className="text-[40px] md:text-[48px] font-black tracking-tight text-gray-900 leading-none mb-4">
+                    <span className="text-md-primary font-black text-3xl mb-6 block">🌍</span>
+                    <h1 className="text-[40px] md:text-[48px] font-black tracking-tight text-md-on-surface leading-none mb-4">
                         Join Us.
                     </h1>
-                    <p className="text-[17px] text-gray-400 font-medium">Start your journey toward a better community.</p>
+                    <p className="text-[17px] text-md-on-surface-variant font-medium">Start your journey toward a better community.</p>
                 </div>
 
-                <div className="bg-white rounded-[40px] p-10 md:p-12 shadow-apple border border-gray-50/50">
+                <div className="bg-white rounded-[40px] p-10 md:p-12 shadow-md-2 border border-md-outline/10">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="space-y-2">
-                            <label className="text-[13px] font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                        <div className="space-y-3">
+                            <label className="text-[12px] font-black text-md-on-surface-variant uppercase tracking-widest ml-1">Full Name</label>
                             <input
                                 type="text" name="name" value={formData.name} onChange={handleChange}
                                 placeholder="John Doe"
-                                className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gray-200 rounded-2xl font-medium outline-none transition-all placeholder:text-gray-300"
+                                className="w-full px-6 py-4 bg-md-surface-variant/20 border-b-2 border-md-outline/10 focus:border-md-primary rounded-t-2xl font-bold text-md-on-surface outline-none transition-all placeholder:text-gray-300"
                                 required
                             />
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-[13px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+                        <div className="space-y-3">
+                            <label className="text-[12px] font-black text-md-on-surface-variant uppercase tracking-widest ml-1">Email Address</label>
                             <input
                                 type="email" name="email" value={formData.email} onChange={handleChange}
                                 placeholder="name@company.com"
-                                className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gray-200 rounded-2xl font-medium outline-none transition-all placeholder:text-gray-300"
+                                className="w-full px-6 py-4 bg-md-surface-variant/20 border-b-2 border-md-outline/10 focus:border-md-primary rounded-t-2xl font-bold text-md-on-surface outline-none transition-all placeholder:text-gray-300"
                                 required
                             />
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-[13px] font-bold text-gray-400 uppercase tracking-widest ml-1">Password</label>
+                        <div className="space-y-3">
+                            <label className="text-[12px] font-black text-md-on-surface-variant uppercase tracking-widest ml-1">Password</label>
                             <input
                                 type="password" name="password" value={formData.password} onChange={handleChange}
                                 placeholder="Create a password"
-                                className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gray-200 rounded-2xl font-medium outline-none transition-all placeholder:text-gray-300"
+                                className="w-full px-6 py-4 bg-md-surface-variant/20 border-b-2 border-md-outline/10 focus:border-md-primary rounded-t-2xl font-bold text-md-on-surface outline-none transition-all placeholder:text-gray-300"
                                 required
                             />
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-[13px] font-bold text-gray-400 uppercase tracking-widest ml-1">Confirm Password</label>
+                        <div className="space-y-3">
+                            <label className="text-[12px] font-black text-md-on-surface-variant uppercase tracking-widest ml-1">Confirm Password</label>
                             <input
                                 type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange}
                                 placeholder="Repeat password"
-                                className="w-full px-6 py-4 bg-gray-50 border border-transparent focus:border-gray-200 rounded-2xl font-medium outline-none transition-all placeholder:text-gray-300"
+                                className="w-full px-6 py-4 bg-md-surface-variant/20 border-b-2 border-md-outline/10 focus:border-md-primary rounded-t-2xl font-bold text-md-on-surface outline-none transition-all placeholder:text-gray-300"
                                 required
                             />
                         </div>
@@ -88,12 +88,12 @@ const Register = () => {
                         <button
                             type="submit"
                             disabled={isRegistering}
-                            className="w-full py-5 bg-gray-900 !text-white rounded-full font-black text-[17px] hover:bg-black transition-all shadow-xl active:scale-95 flex items-center justify-center gap-3 disabled:bg-gray-400"
+                            className="w-full h-16 bg-md-primary text-white rounded-full font-black text-[17px] hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-3 disabled:bg-md-outline/20"
                         >
                             {isRegistering ? (
                                 <>
                                     <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
-                                    <span>Processing...</span>
+                                    <span>Processing Data...</span>
                                 </>
                             ) : (
                                 "Create Account"
@@ -101,9 +101,9 @@ const Register = () => {
                         </button>
                     </form>
 
-                    <div className="mt-12 text-center pt-8 border-t border-gray-50">
-                        <p className="text-[15px] font-bold text-gray-400">
-                            Already have an account? <Link to="/login" className="text-water-600 hover:underline ml-1">Sign In</Link>
+                    <div className="mt-12 text-center pt-8 border-t border-md-outline/10">
+                        <p className="text-[15px] font-bold text-md-on-surface-variant">
+                            Already have an account? <Link to="/login" className="text-md-primary hover:underline ml-1">Sign In</Link>
                         </p>
                     </div>
                 </div>

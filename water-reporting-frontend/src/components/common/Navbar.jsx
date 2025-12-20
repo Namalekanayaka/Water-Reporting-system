@@ -49,7 +49,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                             </Link>
                             <Link
                                 to="/register"
-                                className="h-10 px-8 flex items-center text-[13px] font-bold bg-md-primary text-md-on-primary hover:shadow-md hover:bg-md-primary/90 rounded-full transition-all active:scale-95 shadow-sm"
+                                className="h-10 px-8 flex items-center text-[13px] font-bold bg-md-primary text-white hover:shadow-md hover:bg-md-primary/90 rounded-full transition-all active:scale-95 shadow-sm"
                             >
                                 Register
                             </Link>

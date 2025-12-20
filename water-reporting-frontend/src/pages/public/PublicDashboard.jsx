@@ -67,7 +67,7 @@ const PublicDashboard = () => {
                             </div>
                             <Link
                                 to="/map"
-                                className="h-10 px-6 bg-md-primary text-md-on-primary rounded-full text-[12px] font-bold flex items-center gap-2 hover:shadow-md active:scale-95 transition-all"
+                                className="h-10 px-6 bg-md-primary text-white rounded-full text-[12px] font-bold flex items-center gap-2 hover:shadow-md active:scale-95 transition-all"
                             >
                                 Open Full Map
                             </Link>
@@ -117,7 +117,7 @@ const PublicDashboard = () => {
                                 </p>
                                 <Link
                                     to="/report"
-                                    className="w-full py-4 bg-md-primary text-md-on-primary rounded-2xl font-black text-[14px] flex items-center justify-center shadow-sm hover:shadow-md active:scale-95 transition-all"
+                                    className="w-full py-4 bg-md-primary text-white rounded-2xl font-black text-[14px] flex items-center justify-center shadow-sm hover:shadow-md active:scale-95 transition-all"
                                 >
                                     File New Report
                                 </Link>

@@ -180,7 +180,7 @@ const ReportIssue = () => {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className="w-full sm:w-auto h-16 px-14 bg-md-primary text-md-on-primary hover:shadow-lg disabled:bg-md-outline/20 !text-white font-black text-[17px] rounded-full transition-all active:scale-95 flex items-center justify-center gap-3 shadow-md"
+                                className="w-full sm:w-auto h-16 px-14 bg-md-primary text-white hover:shadow-lg disabled:bg-md-outline/20 font-black text-[17px] rounded-full transition-all active:scale-95 flex items-center justify-center gap-3 shadow-md"
                             >
                                 {isSubmitting ? 'Submitting Data...' : 'Submit Infrastructure Report'}
                             </button>

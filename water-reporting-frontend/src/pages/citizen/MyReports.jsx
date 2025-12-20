@@ -72,7 +72,7 @@ const MyReports = () => {
                     </div>
                     <Link
                         to="/report"
-                        className="h-16 px-10 bg-md-primary text-md-on-primary rounded-full font-black text-[15px] flex items-center gap-3 shadow-md hover:shadow-lg transition-all active:scale-95"
+                        className="h-16 px-10 bg-md-primary text-white rounded-full font-black text-[15px] flex items-center gap-3 shadow-md hover:shadow-lg transition-all active:scale-95"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 4v16m8-8H4" /></svg>
                         New Report
@@ -124,7 +124,7 @@ const MyReports = () => {
                         </p>
                         <Link
                             to="/report"
-                            className="inline-flex px-14 py-5 bg-md-primary text-md-on-primary rounded-full font-black text-[15px] shadow-md hover:shadow-lg transition-all active:scale-95"
+                            className="inline-flex px-14 py-5 bg-md-primary text-white rounded-full font-black text-[15px] shadow-md hover:shadow-lg transition-all active:scale-95"
                         >
                             Log First Submission
                         </Link>

@@ -17,7 +17,7 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/report"
-              className="h-14 px-10 bg-md-primary text-md-on-primary rounded-full font-black text-[15px] flex items-center justify-center shadow-md hover:shadow-lg hover:bg-md-primary/90 transition-all active:scale-95"
+              className="h-14 px-10 bg-md-primary text-white rounded-full font-black text-[15px] flex items-center justify-center shadow-md hover:shadow-lg hover:bg-md-primary/90 transition-all active:scale-95"
             >
               Report Infrastructure Issue
             </Link>
@@ -103,7 +103,7 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 to="/register"
-                className="h-14 px-12 bg-md-on-primary-container text-md-primary-container rounded-full font-black text-lg flex items-center justify-center shadow-md hover:shadow-lg transition-all active:scale-95"
+                className="h-14 px-12 bg-md-on-primary-container text-white rounded-full font-black text-lg flex items-center justify-center shadow-md hover:shadow-lg transition-all active:scale-95"
               >
                 Onboard System
               </Link>
