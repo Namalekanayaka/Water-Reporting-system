@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { loginUser } from '../../services/api/auth';
 
@@ -7,8 +7,21 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoggingIn, setIsLoggingIn] = useState(false);
-    const { login } = useAuth();
+    const { isAuthenticated, user, login, loading: authLoading } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/';
+
+    // Redirect if already logged in
+    React.useEffect(() => {
+        if (!authLoading && isAuthenticated) {
+            if (user?.role === 'authority') {
+                navigate('/authority/dashboard', { replace: true });
+            } else {
+                navigate('/', { replace: true });
+            }
+        }
+    }, [isAuthenticated, authLoading, navigate, user]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,11 +30,17 @@ const Login = () => {
             const response = await loginUser(email, password);
             if (response.success) {
                 login(response.user, response.token);
-                // Role-based redirection
-                if (response.user.role === 'authority') {
-                    navigate('/authority/dashboard');
+
+                // If the user was trying to go somewhere specific, go there.
+                // Otherwise, go to their respective dashboard.
+                if (location.state?.from) {
+                    navigate(from, { replace: true });
                 } else {
-                    navigate('/');
+                    if (response.user.role === 'authority') {
+                        navigate('/authority/dashboard');
+                    } else {
+                        navigate('/');
+                    }
                 }
             }
         } catch (error) {

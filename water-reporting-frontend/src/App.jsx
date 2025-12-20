@@ -50,23 +50,11 @@ function App() {
                   <Route path="/statistics" element={<Statistics />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+                  <Route path="/area-health" element={<AreaHealth />} />
+                  <Route path="/report" element={<ReportIssue />} />
+                  <Route path="/my-reports" element={<MyReports />} />
 
-                  {/* Citizen Routes - Protected */}
-                  <Route path="/report" element={
-                    <ProtectedRoute>
-                      <ReportIssue />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/my-reports" element={
-                    <ProtectedRoute>
-                      <MyReports />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/area-health" element={
-                    <ProtectedRoute>
-                      <AreaHealth />
-                    </ProtectedRoute>
-                  } />
+                  {/* Protected Routes (Empty for now until more personalization is added) */}
 
                   {/* Authority Routes - Protected with Role */}
                   <Route path="/authority/dashboard" element={

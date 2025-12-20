@@ -4,8 +4,17 @@ import { useAuth } from "../../context/AuthContext";
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const role = user?.role || 'citizen';
+
+  // Don't render role-specific items until auth status is clear
+  if (loading) {
+    return (
+      <div className="w-full h-full bg-[#f5f5f7] flex items-center justify-center p-8">
+        <div className="animate-spin h-5 w-5 border-2 border-gray-300 border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
 
   const citizenItems = [
     { icon: "home", label: "Overview", path: "/" },
