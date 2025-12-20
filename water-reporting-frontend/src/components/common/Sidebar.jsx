@@ -1,16 +1,29 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
+  const { user } = useAuth();
+  const role = user?.role || 'citizen';
 
-  const menuItems = [
-    { icon: "home", label: "Home", path: "/" },
+  const citizenItems = [
+    { icon: "home", label: "Overview", path: "/" },
     { icon: "plus", label: "Report Issue", path: "/report" },
-    { icon: "grid", label: "Dashboard", path: "/dashboard" },
+    { icon: "grid", label: "Exploration", path: "/dashboard" },
     { icon: "check", label: "My Reports", path: "/my-reports" },
-    { icon: "users", label: "Area Health", path: "/area-health" },
+    { icon: "heart", label: "Area Health", path: "/area-health" },
   ];
+
+  const authorityItems = [
+    { icon: "home", label: "Admin Console", path: "/authority/dashboard" },
+    { icon: "layers", label: "Issue Pulse", path: "/authority/issues" },
+    { icon: "chart", label: "Analytics", path: "/authority/analytics" },
+    { icon: "users", label: "Team Flow", path: "/authority/teams" },
+    { icon: "grid", label: "Global Map", path: "/map" },
+  ];
+
+  const menuItems = role === 'authority' ? authorityItems : citizenItems;
 
   const Icon = ({ name }) => {
     const icons = {
@@ -39,6 +52,21 @@ const Sidebar = ({ onClose }) => {
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
         </svg>
       ),
+      layers: (
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 13.5h19.5m-19.5-9h19.5m-19.5 4.5h19.5m-19.5 4.5h19.5" />
+        </svg>
+      ),
+      chart: (
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+        </svg>
+      ),
+      heart: (
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+        </svg>
+      ),
     };
     return icons[name] || null;
   };
@@ -57,7 +85,9 @@ const Sidebar = ({ onClose }) => {
       </div>
 
       <nav className="flex-1">
-        <div className="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">Activity</div>
+        <div className="px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">
+          {role === 'authority' ? 'Management' : 'Activity'}
+        </div>
         <ul className="space-y-1">
           {menuItems.map((item) => {
             const isActive = location.pathname === item.path;
@@ -82,17 +112,32 @@ const Sidebar = ({ onClose }) => {
         </ul>
       </nav>
 
-      {/* Account Info - Rounded Minimalist Card */}
+      {/* Account Info - Role Based Card */}
       <div className="mt-auto px-2">
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
-          <h3 className="text-[13px] font-bold text-gray-900 mb-1">Impact Stats</h3>
-          <p className="text-[11px] text-gray-400 mb-3 leading-tight">Your contributions are helping the planet.</p>
-          <div className="h-1 bg-gray-100 rounded-full overflow-hidden mb-3">
-            <div className="w-3/4 h-full bg-water-600"></div>
-          </div>
-          <Link to="/report" className="block text-center py-2 bg-gray-900 !text-white text-[12px] font-bold rounded-full hover:bg-black transition-all">
-            New Submission
-          </Link>
+          {role === 'authority' ? (
+            <>
+              <h3 className="text-[13px] font-bold text-gray-900 mb-1">System Ops</h3>
+              <p className="text-[11px] text-gray-400 mb-3 leading-tight">Monitor regional throughput and active technician load.</p>
+              <div className="h-1 bg-gray-100 rounded-full overflow-hidden mb-3">
+                <div className="w-1/4 h-full bg-red-500"></div>
+              </div>
+              <Link to="/authority/issues" className="block text-center py-2 bg-gray-900 !text-white text-[12px] font-bold rounded-full hover:bg-black transition-all">
+                Urgent Queue
+              </Link>
+            </>
+          ) : (
+            <>
+              <h3 className="text-[13px] font-bold text-gray-900 mb-1">Impact Stats</h3>
+              <p className="text-[11px] text-gray-400 mb-3 leading-tight">Your contributions are helping the planet.</p>
+              <div className="h-1 bg-gray-100 rounded-full overflow-hidden mb-3">
+                <div className="w-3/4 h-full bg-water-600"></div>
+              </div>
+              <Link to="/report" className="block text-center py-2 bg-gray-900 !text-white text-[12px] font-bold rounded-full hover:bg-black transition-all">
+                New Submission
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>
