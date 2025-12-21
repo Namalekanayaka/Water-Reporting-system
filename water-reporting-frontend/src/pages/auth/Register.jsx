@@ -23,7 +23,11 @@ const Register = () => {
             const response = await registerUser(formData);
             if (response.success) {
                 login(response.user, response.token);
-                navigate('/');
+                if (response.user.role === 'authority') {
+                    navigate('/authority/dashboard');
+                } else {
+                    navigate('/');
+                }
             }
         } catch (error) {
             console.error('Registration failed:', error);

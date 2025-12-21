@@ -15,6 +15,15 @@ import TeamManagement from './pages/authority/TeamManagement';
 import GlobalMap from './pages/authority/GlobalMap';
 import SharedResponsibilities from './pages/authority/SharedResponsibilities';
 
+import { useAuth } from './context/AuthContext';
+import { Navigate } from 'react-router-dom';
+
+const HomeWrapper = () => {
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) return null; // Or a loading spinner
+  return isAuthenticated ? <Home /> : <Navigate to="/login" replace />;
+};
+
 // Public Pages
 import PublicDashboard from './pages/public/PublicDashboard';
 import MapView from './pages/public/MapView';
@@ -45,8 +54,8 @@ function App() {
             <Router>
               <MainLayout>
                 <Routes>
-                  {/* Public Routes */}
-                  <Route path="/" element={<Home />} />
+                  {/* Public Routes - Root redirects based on Auth */}
+                  <Route path="/" element={<HomeWrapper />} />
                   <Route path="/dashboard" element={<PublicDashboard />} />
                   <Route path="/map" element={<MapView />} />
                   <Route path="/statistics" element={<Statistics />} />
