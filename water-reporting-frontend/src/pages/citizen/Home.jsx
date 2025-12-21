@@ -7,62 +7,76 @@ const Home = () => {
 
   if (isAuthenticated) {
     return (
-      <div className="w-full bg-md-surface min-h-screen p-4 md:p-6 lg:p-8 animate-in fade-in zoom-in duration-500">
-        <div className="max-w-[1600px] mx-auto">
-          <div className="mb-8 md:mb-12">
-            <div className="flex items-center gap-3 mb-2">
+      <div className="w-full bg-md-surface p-4 md:p-6 lg:p-8 h-screen overflow-hidden flex flex-col">
+        {/* Header - Compact */}
+        <div className="shrink-0 mb-6 flex items-end justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-1">
               <span className="w-2 h-2 rounded-full bg-md-primary"></span>
-              <span className="text-md-primary font-black uppercase tracking-[0.2em] text-[11px]">Citizen Workspace</span>
+              <span className="text-md-primary font-black uppercase tracking-[0.2em] text-[10px]">Citizen Workspace</span>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-md-on-surface tracking-tighter">Overview.</h1>
-            <p className="text-[18px] text-md-on-surface-variant font-medium mt-4">
-              Welcome back, <span className="text-md-primary">{user?.name || 'Neighbor'}</span>. Here is your impact summary.
-            </p>
+            <h1 className="text-4xl font-black text-md-on-surface tracking-tighter leading-none">Overview.</h1>
+          </div>
+          <p className="text-[14px] text-md-on-surface-variant font-medium">
+            Welcome back, <span className="text-md-primary">{user?.name || 'Neighbor'}</span>.
+          </p>
+        </div>
+
+        {/* Dashboard Grid - Full Height */}
+        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          {/* Left Column: Stats (4 Cols) */}
+          <div className="lg:col-span-4 flex flex-col gap-4 h-full overflow-y-auto pr-2 custom-scrollbar">
+            <div className="bg-md-secondary-container/20 p-6 rounded-[28px] border border-md-secondary-container/10 flex-1 flex flex-col justify-center">
+              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-[10px] mb-2">My Contribution</h3>
+              <p className="text-5xl font-black text-md-on-surface mb-2">12</p>
+              <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit">Helping 450 families</p>
+            </div>
+            <div className="bg-md-primary-container/20 p-6 rounded-[28px] border border-md-primary-container/10 flex-1 flex flex-col justify-center">
+              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-[10px] mb-2">Area Health</h3>
+              <p className="text-5xl font-black text-md-on-surface mb-2">94%</p>
+              <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit">Top 10% in City</p>
+            </div>
+            <div className="bg-orange-50 p-6 rounded-[28px] border border-orange-100 flex-1 flex flex-col justify-center">
+              <h3 className="text-orange-800/70 font-bold uppercase tracking-wider text-[10px] mb-2">Active Issues</h3>
+              <p className="text-5xl font-black text-orange-900 mb-2">2</p>
+              <p className="text-xs font-bold text-orange-700 bg-orange-100 px-2 py-1 rounded w-fit">1 Critical Repair</p>
+            </div>
           </div>
 
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-md-secondary-container/20 p-8 rounded-[32px] border border-md-secondary-container/10">
-              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-xs mb-2">My Contribution</h3>
-              <p className="text-4xl font-black text-md-on-surface mb-1">12 Reports</p>
-              <p className="text-sm font-medium text-emerald-600">Helping 450 families</p>
-            </div>
-            <div className="bg-md-primary-container/20 p-8 rounded-[32px] border border-md-primary-container/10">
-              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-xs mb-2">Area Health</h3>
-              <p className="text-4xl font-black text-md-on-surface mb-1">94% Score</p>
-              <p className="text-sm font-medium text-emerald-600">Top 10% in City</p>
-            </div>
-            <div className="bg-orange-50 p-8 rounded-[32px] border border-orange-100">
-              <h3 className="text-orange-800/70 font-bold uppercase tracking-wider text-xs mb-2">Active Issues</h3>
-              <p className="text-4xl font-black text-orange-900 mb-1">2 Ongoing</p>
-              <p className="text-sm font-medium text-orange-800">1 Critical Repair</p>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Link to="/report" className="group bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all">
-              <div className="w-12 h-12 bg-md-primary rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-md group-hover:scale-110 transition-transform">
-                +
+          {/* Right Column: Quick Actions (8 Cols) */}
+          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+            {/* Primary Action - Large */}
+            <Link to="/report" className="md:col-span-2 bg-md-primary text-white p-8 rounded-[32px] shadow-lg hover:shadow-xl transition-all group relative overflow-hidden flex flex-col justify-between">
+              <div className="relative z-10">
+                <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+                  +
+                </div>
+                <h3 className="text-3xl font-black mb-2">Report Issue</h3>
+                <p className="text-white/80 font-medium max-w-md">Spot a leak or quality issue? File it in under 30 seconds with our new streamlined tool.</p>
               </div>
-              <h3 className="text-xl font-black text-md-on-surface mb-2">Report New Issue</h3>
-              <p className="text-sm text-md-on-surface-variant">Spot a leak or quality issue? File it in under 30 seconds.</p>
+              <div className="absolute right-0 bottom-0 w-64 h-64 bg-white/10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
             </Link>
 
-            <Link to="/my-reports" className="group bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all">
-              <div className="w-12 h-12 bg-md-secondary-container rounded-2xl flex items-center justify-center text-md-on-secondary-container text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+            {/* Secondary Actions */}
+            <Link to="/my-reports" className="bg-white p-6 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between">
+              <div className="w-12 h-12 bg-md-secondary-container rounded-2xl flex items-center justify-center text-md-on-secondary-container text-2xl mb-4 group-hover:scale-110 transition-transform">
                 📋
               </div>
-              <h3 className="text-xl font-black text-md-on-surface mb-2">Track Progress</h3>
-              <p className="text-sm text-md-on-surface-variant">View real-time status updates on your filed reports.</p>
+              <div>
+                <h3 className="text-xl font-black text-md-on-surface mb-1">Track Progress</h3>
+                <p className="text-xs text-md-on-surface-variant font-medium">View status of your 12 reports.</p>
+              </div>
             </Link>
 
-            <Link to="/area-health" className="group bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all">
-              <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-700 text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+            <Link to="/area-health" className="bg-white p-6 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between">
+              <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-700 text-2xl mb-4 group-hover:scale-110 transition-transform">
                 🌍
               </div>
-              <h3 className="text-xl font-black text-md-on-surface mb-2">Explore Map</h3>
-              <p className="text-sm text-md-on-surface-variant">See what's happening in your neighborhood.</p>
+              <div>
+                <h3 className="text-xl font-black text-md-on-surface mb-1">Explore Map</h3>
+                <p className="text-xs text-md-on-surface-variant font-medium">See live stats in your neighborhood.</p>
+              </div>
             </Link>
           </div>
         </div>
