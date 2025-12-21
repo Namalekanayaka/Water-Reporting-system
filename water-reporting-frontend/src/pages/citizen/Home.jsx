@@ -103,7 +103,7 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 to="/register"
-                className="h-14 px-12 bg-md-on-primary-container text-white rounded-full font-black text-lg flex items-center justify-center shadow-md hover:shadow-lg transition-all active:scale-95"
+                className="h-14 px-12 bg-md-on-primary-container !text-white rounded-full font-black text-lg flex items-center justify-center shadow-md hover:shadow-lg transition-all active:scale-95"
               >
                 Onboard System
               </Link>
