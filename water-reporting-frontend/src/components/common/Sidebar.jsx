@@ -30,6 +30,7 @@ const Sidebar = ({ onClose }) => {
     { icon: "chart", label: "Analytics", path: "/authority/analytics" },
     { icon: "users", label: "Team Flow", path: "/authority/teams" },
     { icon: "grid", label: "Global Map", path: "/authority/map" },
+    { icon: "users", label: "Shared Access", path: "/authority/security" },
   ];
 
   const menuItems = role === 'authority' ? authorityItems : citizenItems;

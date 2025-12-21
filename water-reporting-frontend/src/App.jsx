@@ -13,6 +13,7 @@ import IssueManagement from './pages/authority/IssueManagement';
 import Analytics from './pages/authority/Analytics';
 import TeamManagement from './pages/authority/TeamManagement';
 import GlobalMap from './pages/authority/GlobalMap';
+import SharedResponsibilities from './pages/authority/SharedResponsibilities';
 
 // Public Pages
 import PublicDashboard from './pages/public/PublicDashboard';
@@ -81,6 +82,11 @@ function App() {
                   <Route path="/authority/map" element={
                     <ProtectedRoute allowedRole="authority">
                       <GlobalMap />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/authority/security" element={
+                    <ProtectedRoute allowedRole="authority">
+                      <SharedResponsibilities />
                     </ProtectedRoute>
                   } />
                 </Routes>
