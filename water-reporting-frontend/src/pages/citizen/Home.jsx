@@ -1,7 +1,75 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Home = () => {
+  const { user, isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return (
+      <div className="w-full bg-md-surface min-h-screen p-4 md:p-6 lg:p-8 animate-in fade-in zoom-in duration-500">
+        <div className="max-w-[1600px] mx-auto">
+          <div className="mb-8 md:mb-12">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="w-2 h-2 rounded-full bg-md-primary"></span>
+              <span className="text-md-primary font-black uppercase tracking-[0.2em] text-[11px]">Citizen Workspace</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-md-on-surface tracking-tighter">Overview.</h1>
+            <p className="text-[18px] text-md-on-surface-variant font-medium mt-4">
+              Welcome back, <span className="text-md-primary">{user?.name || 'Neighbor'}</span>. Here is your impact summary.
+            </p>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div className="bg-md-secondary-container/20 p-8 rounded-[32px] border border-md-secondary-container/10">
+              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-xs mb-2">My Contribution</h3>
+              <p className="text-4xl font-black text-md-on-surface mb-1">12 Reports</p>
+              <p className="text-sm font-medium text-emerald-600">Helping 450 families</p>
+            </div>
+            <div className="bg-md-primary-container/20 p-8 rounded-[32px] border border-md-primary-container/10">
+              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-xs mb-2">Area Health</h3>
+              <p className="text-4xl font-black text-md-on-surface mb-1">94% Score</p>
+              <p className="text-sm font-medium text-emerald-600">Top 10% in City</p>
+            </div>
+            <div className="bg-orange-50 p-8 rounded-[32px] border border-orange-100">
+              <h3 className="text-orange-800/70 font-bold uppercase tracking-wider text-xs mb-2">Active Issues</h3>
+              <p className="text-4xl font-black text-orange-900 mb-1">2 Ongoing</p>
+              <p className="text-sm font-medium text-orange-800">1 Critical Repair</p>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link to="/report" className="group bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all">
+              <div className="w-12 h-12 bg-md-primary rounded-2xl flex items-center justify-center text-white text-2xl mb-6 shadow-md group-hover:scale-110 transition-transform">
+                +
+              </div>
+              <h3 className="text-xl font-black text-md-on-surface mb-2">Report New Issue</h3>
+              <p className="text-sm text-md-on-surface-variant">Spot a leak or quality issue? File it in under 30 seconds.</p>
+            </Link>
+
+            <Link to="/my-reports" className="group bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all">
+              <div className="w-12 h-12 bg-md-secondary-container rounded-2xl flex items-center justify-center text-md-on-secondary-container text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                📋
+              </div>
+              <h3 className="text-xl font-black text-md-on-surface mb-2">Track Progress</h3>
+              <p className="text-sm text-md-on-surface-variant">View real-time status updates on your filed reports.</p>
+            </Link>
+
+            <Link to="/area-health" className="group bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all">
+              <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-700 text-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                🌍
+              </div>
+              <h3 className="text-xl font-black text-md-on-surface mb-2">Explore Map</h3>
+              <p className="text-sm text-md-on-surface-variant">See what's happening in your neighborhood.</p>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full bg-md-surface min-h-screen">
       {/* Hero Section - M3 Centered Display */}
