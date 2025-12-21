@@ -34,28 +34,31 @@ const AuthorityDashboard = () => {
 
     return (
         <div className="w-full bg-md-surface min-h-screen p-4 md:p-6 lg:p-8 animate-in fade-in zoom-in duration-500">
-            <div className="max-w-[1440px] mx-auto">
-                <div className="mb-10">
-                    <span className="text-md-primary font-black uppercase tracking-[0.2em] text-[11px] mb-2 block">Authority Console</span>
-                    <h1 className="text-4xl md:text-5xl font-black text-md-on-surface tracking-tight">Overview.</h1>
+            <div className="max-w-[1600px] mx-auto">
+                <div className="mb-8 md:mb-12">
+                    <div className="flex items-center gap-3 mb-2">
+                        <span className="w-2 h-2 rounded-full bg-md-primary"></span>
+                        <span className="text-md-primary font-black uppercase tracking-[0.2em] text-[11px]">Authority Console</span>
+                    </div>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-md-on-surface tracking-tighter">Overview.</h1>
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
                     {stats.map((stat, i) => (
                         <StatCard key={i} {...stat} />
                     ))}
                 </div>
 
                 {/* Main Content Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
                     {/* Left Column - Priority Queue */}
-                    <div className="lg:col-span-2 h-[600px]">
+                    <div className="xl:col-span-2 min-h-[500px] lg:h-[650px]">
                         <PriorityQueue reports={criticalReports} />
                     </div>
 
                     {/* Right Column - Alerts & Resources */}
-                    <div className="space-y-6 flex flex-col h-[600px]">
+                    <div className="space-y-6 flex flex-col min-h-[500px] lg:h-[650px]">
                         <AlertPanel alerts={alerts} />
                         <div className="flex-1 min-h-0">
                             <ResourceAllocation teams={teams} />
