@@ -67,134 +67,135 @@ const ReportIssue = () => {
     };
 
     return (
-        <div className="w-full bg-md-surface min-h-screen">
-            <div className="max-w-[840px] mx-auto py-12 md:py-24 px-6 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {/* M3 Centered Header */}
-                <div className="text-center mb-16">
-                    <span className="text-md-primary font-black uppercase tracking-[0.2em] text-[11px] mb-3 block">Reporting Portal</span>
-                    <h1 className="text-[40px] md:text-[64px] font-black tracking-tight text-md-on-surface leading-none mb-6">
+        <div className="w-full bg-md-surface h-screen flex flex-col overflow-hidden">
+            {/* Header - Compact */}
+            <div className="shrink-0 pt-6 pb-2 px-8 flex justify-between items-end">
+                <div>
+                    <span className="text-md-primary font-black uppercase tracking-[0.2em] text-[10px] block">Reporting Portal</span>
+                    <h1 className="text-3xl font-black tracking-tight text-md-on-surface leading-none">
                         File a Report.
                     </h1>
-                    <p className="text-[19px] text-md-on-surface-variant font-medium max-w-lg mx-auto leading-relaxed">
-                        Precision reporting helps us protect our shared community infrastructure.
+                </div>
+                <div className="hidden md:block text-right">
+                    <p className="text-[13px] text-md-on-surface-variant font-medium">
+                        Fill details & pin location to submit.
                     </p>
                 </div>
+            </div>
 
-                <div className="bg-white rounded-[32px] p-8 md:p-14 shadow-md-2 border border-md-outline/5 relative overflow-hidden">
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-16">
-                        {/* Section 1: Classification */}
-                        <div className="space-y-8">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-xl bg-md-primary-container text-md-on-primary-container flex items-center justify-center text-[15px] font-black shadow-sm">1</div>
-                                <h2 className="text-[22px] font-black text-md-on-surface tracking-tight">Classification</h2>
-                            </div>
+            {/* Main Content - Full Height Grid */}
+            <div className="flex-1 p-4 md:p-6 min-h-0">
+                <form onSubmit={handleSubmit(onSubmit)} className="h-full max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-3">
-                                    <label className="text-[13px] font-black text-md-on-surface-variant uppercase tracking-widest ml-1">Issue Type</label>
-                                    <div className="relative">
-                                        <select
-                                            {...register('issueType', { required: 'Required' })}
-                                            className="w-full h-14 px-6 bg-md-surface-variant/40 border-b-2 border-md-outline/20 focus:border-md-primary rounded-t-xl font-bold text-md-on-surface outline-none transition-all appearance-none cursor-pointer"
-                                        >
-                                            <option value="">Select type</option>
-                                            <option value="pipeline_leakage">Pipeline Leakage</option>
-                                            <option value="low_pressure">Low Pressure</option>
-                                            <option value="water_quality">Water Quality</option>
-                                            <option value="no_supply">No Water Supply</option>
-                                        </select>
-                                        <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-md-on-surface-variant">
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                                        </div>
-                                    </div>
-                                    {errors.issueType && <p className="text-[11px] font-black text-md-error ml-1">*{errors.issueType.message}</p>}
+                    {/* Left Column: Form Controls (4 cols) */}
+                    <div className="lg:col-span-4 flex flex-col gap-4 h-full overflow-y-auto pr-2 custom-scrollbar">
+                        {/* Classification Card */}
+                        <div className="bg-white rounded-[24px] p-6 shadow-sm border border-md-outline/10">
+                            <h2 className="text-sm font-black text-md-on-surface uppercase tracking-wide mb-4 flex items-center gap-2">
+                                <span className="w-6 h-6 rounded-full bg-md-primary-container text-md-on-primary-container flex items-center justify-center text-xs">1</span>
+                                Details
+                            </h2>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] font-bold text-md-on-surface-variant uppercase tracking-wider">Type</label>
+                                    <select
+                                        {...register('issueType', { required: 'Required' })}
+                                        className="w-full h-10 px-3 bg-md-surface-variant/30 border-b border-md-outline/20 focus:border-md-primary rounded-t-lg text-sm font-bold text-md-on-surface outline-none appearance-none cursor-pointer"
+                                    >
+                                        <option value="">Select Type</option>
+                                        <option value="pipeline_leakage">Leakage</option>
+                                        <option value="low_pressure">Low Pressure</option>
+                                        <option value="water_quality">Water Quality</option>
+                                        <option value="no_supply">No Supply</option>
+                                    </select>
+                                    {errors.issueType && <p className="text-[10px] text-red-500 font-bold">{errors.issueType.message}</p>}
                                 </div>
-
-                                <div className="space-y-3">
-                                    <label className="text-[13px] font-black text-md-on-surface-variant uppercase tracking-widest ml-1">Urgency</label>
-                                    <div className="relative">
-                                        <select
-                                            {...register('priority', { required: 'Required' })}
-                                            className="w-full h-14 px-6 bg-md-surface-variant/40 border-b-2 border-md-outline/20 focus:border-md-primary rounded-t-xl font-bold text-md-on-surface outline-none transition-all appearance-none cursor-pointer"
-                                        >
-                                            <option value="">Select level</option>
-                                            <option value="low">Standard</option>
-                                            <option value="medium">Medium</option>
-                                            <option value="high">High priority</option>
-                                            <option value="critical">Critical</option>
-                                        </select>
-                                        <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-md-on-surface-variant">
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                                        </div>
-                                    </div>
-                                    {errors.priority && <p className="text-[11px] font-black text-md-error ml-1">*{errors.priority.message}</p>}
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] font-bold text-md-on-surface-variant uppercase tracking-wider">Urgency</label>
+                                    <select
+                                        {...register('priority', { required: 'Required' })}
+                                        className="w-full h-10 px-3 bg-md-surface-variant/30 border-b border-md-outline/20 focus:border-md-primary rounded-t-lg text-sm font-bold text-md-on-surface outline-none appearance-none cursor-pointer"
+                                    >
+                                        <option value="">Priority</option>
+                                        <option value="low">Standard</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                        <option value="critical">Critical</option>
+                                    </select>
+                                    {errors.priority && <p className="text-[10px] text-red-500 font-bold">{errors.priority.message}</p>}
                                 </div>
                             </div>
                         </div>
 
-                        {/* Section 2: Precise Location */}
-                        <div className="space-y-8">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-xl bg-md-primary-container text-md-on-primary-container flex items-center justify-center text-[15px] font-black shadow-sm">2</div>
-                                <h2 className="text-[22px] font-black text-md-on-surface tracking-tight">Location Details</h2>
+                        {/* Description Card */}
+                        <div className="bg-white rounded-[24px] p-6 shadow-sm border border-md-outline/10 flex-1 flex flex-col">
+                            <h2 className="text-sm font-black text-md-on-surface uppercase tracking-wide mb-4 flex items-center gap-2">
+                                <span className="w-6 h-6 rounded-full bg-md-primary-container text-md-on-primary-container flex items-center justify-center text-xs">2</span>
+                                Evidence
+                            </h2>
+
+                            <div className="mb-4 flex-1">
+                                <textarea
+                                    {...register('description', { required: 'Required', minLength: 10 })}
+                                    className="w-full h-full min-h-[100px] p-4 bg-md-surface-variant/30 border-b border-md-outline/20 focus:border-md-primary rounded-t-xl text-sm font-medium text-md-on-surface outline-none resize-none leading-relaxed"
+                                    placeholder="Describe the structural failure..."
+                                ></textarea>
+                                {errors.description && <p className="text-[10px] text-red-500 font-bold mt-1">Min 10 chars required.</p>}
                             </div>
-                            <div className="rounded-[24px] overflow-hidden border border-md-outline/10 shadow-sm">
-                                <LocationPicker
-                                    onLocationSelect={handleLocationSelect}
-                                    initialLocation={selectedLocation}
-                                    className="m3-style"
+
+                            <div>
+                                <ImageUpload
+                                    onImagesChange={handleImagesChange}
+                                    maxImages={3}
+                                    compact={true}
                                 />
                             </div>
                         </div>
 
-                        {/* Section 3: Evidence & Details */}
-                        <div className="space-y-8">
-                            <div className="flex items-center gap-4">
-                                <div className="w-10 h-10 rounded-xl bg-md-primary-container text-md-on-primary-container flex items-center justify-center text-[15px] font-black shadow-sm">3</div>
-                                <h2 className="text-[22px] font-black text-md-on-surface tracking-tight">Documentation</h2>
-                            </div>
-
-                            <div className="space-y-10">
-                                <div className="space-y-3">
-                                    <label className="text-[13px] font-black text-md-on-surface-variant uppercase tracking-widest ml-1">Incident Description</label>
-                                    <textarea
-                                        {...register('description', { required: 'Required', minLength: 10 })}
-                                        rows="4"
-                                        placeholder="Explain the specific structural failure or quality issue..."
-                                        className="w-full px-6 py-5 bg-md-surface-variant/40 border-b-2 border-md-outline/20 focus:border-md-primary rounded-t-[24px] font-medium text-md-on-surface outline-none transition-all resize-none leading-relaxed"
-                                    ></textarea>
-                                    {errors.description && <p className="text-[11px] font-black text-md-error ml-1">Minimum 10 characters required for system indexing.</p>}
-                                </div>
-
-                                <div className="bg-md-surface-variant/20 p-8 rounded-[28px] border border-dashed border-md-outline/20">
-                                    <ImageUpload
-                                        onImagesChange={handleImagesChange}
-                                        maxImages={5}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Submission Row */}
-                        <div className="pt-12 flex flex-col sm:flex-row items-center gap-6">
-                            <button
-                                type="submit"
-                                disabled={isSubmitting}
-                                className="w-full sm:w-auto h-16 px-14 bg-md-primary text-white hover:shadow-lg disabled:bg-md-outline/20 font-black text-[17px] rounded-full transition-all active:scale-95 flex items-center justify-center gap-3 shadow-md"
-                            >
-                                {isSubmitting ? 'Submitting Data...' : 'Submit Infrastructure Report'}
-                            </button>
+                        {/* Action Bar */}
+                        <div className="bg-white rounded-[24px] p-4 shadow-sm border border-md-outline/10 grid grid-cols-3 gap-3">
                             <button
                                 type="button"
                                 onClick={() => { reset(); setSelectedLocation(null); setUploadedImages([]); }}
-                                className="h-16 px-10 text-[14px] font-black text-md-on-surface-variant/60 hover:text-md-error transition-colors uppercase tracking-widest"
+                                className="col-span-1 h-12 rounded-xl text-xs font-black text-md-on-surface-variant/70 hover:bg-red-50 hover:text-red-600 transition-colors uppercase tracking-wider"
                             >
-                                Reset Form
+                                Reset
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="col-span-2 h-12 bg-md-primary text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-md hover:shadow-lg hover:bg-md-primary/90 transition-all active:scale-95 disabled:bg-gray-300"
+                            >
+                                {isSubmitting ? 'Sending...' : 'Submit Report'}
                             </button>
                         </div>
-                    </form>
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-md-primary/5 rounded-full translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
-                </div>
+                    </div>
+
+                    {/* Right Column: Map (8 cols) */}
+                    <div className="hidden lg:block lg:col-span-8 h-full bg-white rounded-[32px] overflow-hidden border border-md-outline/10 shadow-md relative group">
+                        <div className="absolute top-6 left-6 z-[1000] bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-md-outline/10 shadow-sm pointer-events-none">
+                            <h2 className="text-xs font-black text-md-on-surface uppercase tracking-wide flex items-center gap-2">
+                                <span className="w-5 h-5 rounded-full bg-md-primary-container text-md-on-primary-container flex items-center justify-center text-[10px]">3</span>
+                                Pin Location
+                            </h2>
+                        </div>
+                        <LocationPicker
+                            onLocationSelect={handleLocationSelect}
+                            initialLocation={selectedLocation}
+                            className="h-full w-full"
+                        />
+                        {/* Overlay Hint if no location selected */}
+                        {!selectedLocation && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/5 pointer-events-none z-[400]">
+                                <div className="bg-white/90 backdrop-blur px-6 py-3 rounded-2xl shadow-lg border border-white/50">
+                                    <p className="text-sm font-bold text-md-on-surface flex items-center gap-2">
+                                        <span className="text-xl">📍</span> Click on map to set location
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </form>
             </div>
         </div>
     );
