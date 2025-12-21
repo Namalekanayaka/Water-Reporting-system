@@ -29,7 +29,7 @@ const Sidebar = ({ onClose }) => {
     { icon: "layers", label: "Issue Pulse", path: "/authority/issues" },
     { icon: "chart", label: "Analytics", path: "/authority/analytics" },
     { icon: "users", label: "Team Flow", path: "/authority/teams" },
-    { icon: "grid", label: "Global Map", path: "/map" },
+    { icon: "grid", label: "Global Map", path: "/authority/map" },
   ];
 
   const menuItems = role === 'authority' ? authorityItems : citizenItems;

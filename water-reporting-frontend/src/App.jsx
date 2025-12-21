@@ -12,6 +12,7 @@ import AuthorityDashboard from './pages/authority/Dashboard';
 import IssueManagement from './pages/authority/IssueManagement';
 import Analytics from './pages/authority/Analytics';
 import TeamManagement from './pages/authority/TeamManagement';
+import GlobalMap from './pages/authority/GlobalMap';
 
 // Public Pages
 import PublicDashboard from './pages/public/PublicDashboard';
@@ -75,6 +76,11 @@ function App() {
                   <Route path="/authority/teams" element={
                     <ProtectedRoute allowedRole="authority">
                       <TeamManagement />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/authority/map" element={
+                    <ProtectedRoute allowedRole="authority">
+                      <GlobalMap />
                     </ProtectedRoute>
                   } />
                 </Routes>
