@@ -2,7 +2,7 @@
 // WARNING: In a production app, never store API keys in frontend code.
 // Ideally, call a backend endpoint (Firebase Cloud Function) which then calls Gemini.
 
-const GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"; // TODO: Replace with your actual Gemini API Key
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 /**

@@ -5,12 +5,12 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDB_0FtauEsObqPJ_1ZsETlB1DpR9Z7Pc8",
-    authDomain: "waterreportingsystem.firebaseapp.com",
-    projectId: "waterreportingsystem",
-    storageBucket: "waterreportingsystem.firebasestorage.app",
-    messagingSenderId: "432284984120",
-    appId: "1:432284984120:web:ce0a49548784bc76b257cd"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
