@@ -89,6 +89,35 @@ export const loginUser = async (email, password) => {
             token: await user.getIdToken()
         };
     } catch (error) {
+        // Auto-Recovery for Admin Account: If it doesn't exist, Create it on the fly.
+        if (email === 'admin@wrs.com') {
+            try {
+                console.log("Admin account missing. Auto-creating...");
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Create Admin Profile
+                const adminProfile = {
+                    uid: user.uid,
+                    name: 'System Admin',
+                    email: email,
+                    role: 'authority',
+                    createdAt: new Date().toISOString()
+                };
+                await setDoc(doc(db, 'users', user.uid), adminProfile);
+
+                return {
+                    success: true,
+                    user: adminProfile,
+                    token: await user.getIdToken()
+                };
+            } catch (createError) {
+                // If creation failed (probably password mismatch or other issue), throw nice error
+                console.error("Admin Auto-Creation failed:", createError);
+                throw { message: "Invalid Password for Admin Account." };
+            }
+        }
+
         console.error("Login Error:", error);
         throw { message: error.message };
     }

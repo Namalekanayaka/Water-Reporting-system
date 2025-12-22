@@ -1,9 +1,17 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const Home = () => {
   const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect Authority Users to their Dashboard immediately
+  useEffect(() => {
+    if (isAuthenticated && user?.role === 'authority') {
+      navigate('/authority/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, user, navigate]);
 
   if (isAuthenticated) {
     return (
