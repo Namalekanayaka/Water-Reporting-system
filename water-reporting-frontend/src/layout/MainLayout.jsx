@@ -1,9 +1,20 @@
 import React, { useState } from "react";
 import Sidebar from "../components/common/Sidebar";
 import Navbar from "../components/common/Navbar";
+import { useAuth } from "../context/AuthContext";
 
 const MainLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { isAuthenticated } = useAuth(); // Get auth state
+
+  // If not authenticated, render children directly (full screen) without layout chrome
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-md-surface text-md-on-surface">
+        {children}
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen bg-md-surface text-md-on-surface">

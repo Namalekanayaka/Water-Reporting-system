@@ -63,33 +63,33 @@ const Home = () => {
 
         {/* Main Content: Actions Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
-          {/* Primary Action - Large Area (8 Cols) */}
-          <Link to="/report" className="lg:col-span-8 bg-md-primary text-white p-10 rounded-[32px] shadow-lg hover:shadow-xl transition-all group relative overflow-hidden flex flex-col justify-between min-h-[300px]">
+          {/* Primary Action - Medium Area (6 Cols) */}
+          <Link to="/report" className="lg:col-span-6 bg-sky-100 text-white p-8 rounded-[32px] shadow-lg hover:shadow-xl transition-all group relative overflow-hidden flex flex-col justify-between min-h-[260px]">
             <div className="relative z-10 max-w-lg">
-              <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-4xl mb-6 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
                 +
               </div>
-              <h3 className="text-4xl font-black mb-4">Report Issue</h3>
-              <p className="text-white/80 font-medium text-lg leading-relaxed">
+              <h3 className="text-3xl font-black mb-3">Report Issue</h3>
+              <p className="textblack/80 font-medium text-base leading-relaxed">
                 Spot a leak, quality concern, or supply disruption? <br />
-                File it in under 30 seconds with our precision tool.
+                File it in seconds with our precision tool.
               </p>
             </div>
 
-            <div className="relative z-10 mt-8 flex items-center gap-2 text-sm font-bold uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
+            <div className="relative z-10 mt-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
               <span>Start Report</span>
               <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7-7 7" /></svg>
             </div>
 
-            <div className="absolute right-0 bottom-0 w-96 h-96 bg-white/10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
-            <div className="absolute top-0 right-0 p-12 opacity-10 text-9xl font-black rotate-12 pointer-events-none">
+            <div className="absolute right-0 bottom-0 w-80 h-80 bg-white/10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
+            <div className="absolute top-0 right-0 p-8 opacity-10 text-8xl font-black rotate-12 pointer-events-none">
               !
             </div>
           </Link>
 
-          {/* Secondary Stack (4 Cols) */}
-          <div className="lg:col-span-4 flex flex-col gap-6">
-            <Link to="/my-reports" className="flex-1 bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between min-h-[180px]">
+          {/* Secondary Stack (6 Cols) */}
+          <div className="lg:col-span-6 flex flex-col gap-6">
+            <Link to="/my-reports" className="flex-1 bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between min-h-[160px]">
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-2xl font-black text-md-on-surface mb-2">Track Progress</h3>
@@ -106,7 +106,7 @@ const Home = () => {
               </div>
             </Link>
 
-            <Link to="/area-health" className="flex-1 bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between min-h-[180px]">
+            <Link to="/area-health" className="flex-1 bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between min-h-[160px]">
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-2xl font-black text-md-on-surface mb-2">Explore Map</h3>

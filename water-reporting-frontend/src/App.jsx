@@ -46,15 +46,35 @@ function App() {
               <MainLayout>
                 <Routes>
                   {/* Public Routes */}
-                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+
+                  {/* Public Data Pages (Sidebar hidden if not logged in via MainLayout) */}
                   <Route path="/dashboard" element={<PublicDashboard />} />
                   <Route path="/map" element={<MapView />} />
                   <Route path="/statistics" element={<Statistics />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/area-health" element={<AreaHealth />} />
-                  <Route path="/report" element={<ReportIssue />} />
-                  <Route path="/my-reports" element={<MyReports />} />
+
+                  {/* Citizen Protected Routes - Redirects to Login if not auth */}
+                  <Route path="/" element={
+                    <ProtectedRoute>
+                      <Home />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/report" element={
+                    <ProtectedRoute>
+                      <ReportIssue />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/my-reports" element={
+                    <ProtectedRoute>
+                      <MyReports />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/area-health" element={
+                    <ProtectedRoute>
+                      <AreaHealth />
+                    </ProtectedRoute>
+                  } />
 
                   {/* Protected Routes (Empty for now until more personalization is added) */}
 
