@@ -23,27 +23,47 @@ export const createReport = async (reportData) => {
         const user = auth.currentUser;
         if (!user) throw new Error("User must be logged in to report.");
 
+        console.log("Initiating report creation...");
+
         // Generate a new document reference to get an ID beforehand
         const newReportRef = doc(collection(db, 'reports'));
         const reportId = newReportRef.id;
 
         let imageUrls = [];
+        let uploadWarnings = [];
 
-        // Upload images if they exist
+        // Upload images with Fail-Safe (Skip if fails)
         if (reportData.images && reportData.images.length > 0) {
+            console.log(`Attempting to upload ${reportData.images.length} images...`);
+
             const uploadPromises = reportData.images.map(async (file) => {
-                // Determine file extension or use name
-                const storageRef = ref(storage, `reports/${reportId}/${Date.now()}_${file.name}`);
-                await uploadBytes(storageRef, file);
-                return await getDownloadURL(storageRef);
+                try {
+                    const storageRef = ref(storage, `reports/${reportId}/${Date.now()}_${file.name}`);
+
+                    // Race: Upload vs 15s Timeout
+                    const url = await Promise.race([
+                        (async () => {
+                            await uploadBytes(storageRef, file);
+                            return await getDownloadURL(storageRef);
+                        })(),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error("Upload timed out (15s)")), 15000))
+                    ]);
+
+                    return url;
+                } catch (err) {
+                    console.error(`Failed to upload image ${file.name}:`, err);
+                    uploadWarnings.push(`${file.name}: ${err.message}`);
+                    return null; // Skip this image
+                }
             });
 
-            imageUrls = await Promise.all(uploadPromises);
+            const results = await Promise.all(uploadPromises);
+            imageUrls = results.filter(url => url !== null);
         }
 
         const newReport = {
             ...reportData,
-            images: imageUrls, // Store URLs, not File objects
+            images: imageUrls,
             userId: user.uid,
             userEmail: user.email,
             status: 'pending',
@@ -55,11 +75,14 @@ export const createReport = async (reportData) => {
 
         // Save to Firestore using setDoc with the generated ID
         await setDoc(newReportRef, newReport);
+        console.log("Report document saved successfully.");
 
         return {
             success: true,
             reportId: reportId,
-            message: 'Report submitted successfully!',
+            message: uploadWarnings.length > 0
+                ? 'Report submitted! (Note: Some images could not be uploaded due to network issues)'
+                : 'Report submitted successfully!',
             data: { id: reportId, ...newReport }
         };
     } catch (error) {
