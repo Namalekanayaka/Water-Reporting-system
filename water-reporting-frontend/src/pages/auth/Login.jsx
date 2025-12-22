@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { loginUser } from '../../services/api/auth';
+import { loginUser, loginWithGoogle } from '../../services/api/auth';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [error, setError] = useState(null);
     const { isAuthenticated, user, login, loading: authLoading } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -23,16 +24,40 @@ const Login = () => {
         }
     }, [isAuthenticated, authLoading, navigate, user]);
 
+    const handleGoogleLogin = async () => {
+        setIsLoggingIn(true);
+        setError(null);
+        try {
+            const response = await loginWithGoogle();
+            if (response.success) {
+                // login function in AuthContext might not be strictly needed if onAuthStateChanged is used, 
+                // but we call it to be safe/consistent with previous logic.
+                // Actually AuthContext detects it automatically. 
+                // We just need to handle navigation.
+
+                if (location.state?.from) {
+                    navigate(from, { replace: true });
+                } else {
+                    navigate(response.user.role === 'authority' ? '/authority/dashboard' : '/');
+                }
+            }
+        } catch (error) {
+            console.error('Google Login failed:', error);
+            setError(error.message || 'Google Sign-In failed.');
+        } finally {
+            setIsLoggingIn(false);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoggingIn(true);
+        setError(null);
         try {
             const response = await loginUser(email, password);
             if (response.success) {
-                login(response.user, response.token);
+                // login(response.user, response.token); // Again, listener handles this mostly
 
-                // If the user was trying to go somewhere specific, go there.
-                // Otherwise, go to their respective dashboard.
                 if (location.state?.from) {
                     navigate(from, { replace: true });
                 } else {
@@ -45,6 +70,7 @@ const Login = () => {
             }
         } catch (error) {
             console.error('Login failed:', error);
+            setError(error.message || 'Failed to sign in. Please checking your credentials.');
         } finally {
             setIsLoggingIn(false);
         }
@@ -59,22 +85,41 @@ const Login = () => {
                         Sign In.
                     </h1>
                     <p className="text-[17px] text-md-on-surface-variant font-medium">Continue your mission to save water.</p>
-                    <div className="mt-4 p-3 bg-md-primary-container/30 rounded-2xl border border-md-primary/10 inline-block">
-                        <p className="text-[11px] text-md-primary font-black uppercase tracking-wider">
-                            System Access: Use "admin@wrs.com" for Authority
-                        </p>
-                    </div>
                 </div>
 
                 <div className="bg-white rounded-[40px] p-10 md:p-12 shadow-md-2 border border-md-outline/10">
+                    {error && (
+                        <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl text-sm font-bold border border-red-100 flex items-center gap-3">
+                            <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            {error}
+                        </div>
+                    )}
+
+                    {/* Google Sign In */}
+                    <button
+                        type="button"
+                        onClick={handleGoogleLogin}
+                        disabled={isLoggingIn}
+                        className="w-full h-14 bg-white border-2 border-md-outline/10 rounded-full font-bold text-md-on-surface hover:bg-gray-50 transition-all flex items-center justify-center gap-3 mb-6"
+                    >
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-6 h-6" alt="Google" />
+                        Continue with Google
+                    </button>
+
+                    <div className="flex items-center gap-4 mb-6 opacity-60">
+                        <div className="h-px bg-md-outline/20 flex-1"></div>
+                        <span className="text-xs font-bold uppercase tracking-widest">Or with email</span>
+                        <div className="h-px bg-md-outline/20 flex-1"></div>
+                    </div>
+
                     <form onSubmit={handleSubmit} className="space-y-8">
                         <div className="space-y-3">
                             <label className="text-[12px] font-black text-md-on-surface-variant uppercase tracking-widest ml-1">Email Address</label>
                             <input
                                 type="email"
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="name@company.com"
+                                onChange={(e) => { setEmail(e.target.value); setError(null); }}
+                                placeholder="e.g. admin@wrs.com"
                                 className="w-full px-6 py-4 bg-md-surface-variant/20 border-b-2 border-md-outline/10 focus:border-md-primary rounded-t-2xl font-bold text-md-on-surface outline-none transition-all placeholder:text-gray-300"
                                 required
                             />

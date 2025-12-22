@@ -64,13 +64,13 @@ const Home = () => {
         {/* Main Content: Actions Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
           {/* Primary Action - Medium Area (6 Cols) */}
-          <Link to="/report" className="lg:col-span-6 bg-sky-100 text-white p-8 rounded-[32px] shadow-lg hover:shadow-xl transition-all group relative overflow-hidden flex flex-col justify-between min-h-[260px]">
+          <Link to="/report" className="lg:col-span-6 bg-sky-100 text-sky-900 p-8 rounded-[32px] shadow-lg hover:shadow-xl transition-all group relative overflow-hidden flex flex-col justify-between min-h-[260px]">
             <div className="relative z-10 max-w-lg">
               <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
                 +
               </div>
               <h3 className="text-3xl font-black mb-3">Report Issue</h3>
-              <p className="textblack/80 font-medium text-base leading-relaxed">
+              <p className="text-sky-900/80 font-medium text-base leading-relaxed">
                 Spot a leak, quality concern, or supply disruption? <br />
                 File it in seconds with our precision tool.
               </p>

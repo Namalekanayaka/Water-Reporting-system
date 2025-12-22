@@ -1,146 +1,152 @@
-// API service for reports endpoints
-import axios from 'axios';
-
-// Mock API base URL (will be replaced with real backend later)
-const API_BASE_URL = '/api';
+import { db, auth, storage } from '../../services/firebase';
+import {
+    collection,
+    addDoc,
+    setDoc,
+    getDocs,
+    doc,
+    getDoc,
+    query,
+    where,
+    orderBy,
+    updateDoc,
+    arrayUnion
+} from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 /**
  * Create a new water issue report
- * @param {Object} reportData - Report data including type, priority, location, description, images
- * @returns {Promise} Response with report ID and success message
+ * @param {Object} reportData 
  */
 export const createReport = async (reportData) => {
-    // Mock implementation - simulates API call
-    // TODO: Replace with actual API call when backend is ready
+    try {
+        const user = auth.currentUser;
+        if (!user) throw new Error("User must be logged in to report.");
 
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            // Simulate successful response
-            const reportId = 'R' + Date.now();
+        // Generate a new document reference to get an ID beforehand
+        const newReportRef = doc(collection(db, 'reports'));
+        const reportId = newReportRef.id;
 
-            console.log('Report submitted:', {
-                ...reportData,
-                reportId,
-                timestamp: new Date().toISOString()
+        let imageUrls = [];
+
+        // Upload images if they exist
+        if (reportData.images && reportData.images.length > 0) {
+            const uploadPromises = reportData.images.map(async (file) => {
+                // Determine file extension or use name
+                const storageRef = ref(storage, `reports/${reportId}/${Date.now()}_${file.name}`);
+                await uploadBytes(storageRef, file);
+                return await getDownloadURL(storageRef);
             });
 
-            resolve({
-                success: true,
-                reportId: reportId,
-                message: 'Report submitted successfully! We will review it shortly.',
-                data: {
-                    reportId,
-                    status: 'pending',
-                    createdAt: new Date().toISOString()
-                }
-            });
+            imageUrls = await Promise.all(uploadPromises);
+        }
 
-            // Uncomment to simulate error
-            // reject({
-            //   success: false,
-            //   message: 'Failed to submit report. Please try again.'
-            // });
-        }, 1500); // Simulate network delay
-    });
+        const newReport = {
+            ...reportData,
+            images: imageUrls, // Store URLs, not File objects
+            userId: user.uid,
+            userEmail: user.email,
+            status: 'pending',
+            createdAt: new Date().toISOString(),
+            timeline: [
+                { status: 'pending', timestamp: new Date().toISOString() }
+            ]
+        };
+
+        // Save to Firestore using setDoc with the generated ID
+        await setDoc(newReportRef, newReport);
+
+        return {
+            success: true,
+            reportId: reportId,
+            message: 'Report submitted successfully!',
+            data: { id: reportId, ...newReport }
+        };
+    } catch (error) {
+        console.error("Error creating report:", error);
+        throw error;
+    }
 };
 
 /**
  * Get all reports (for public dashboard/map)
- * @returns {Promise} Array of all reports
  */
 export const getAllReports = async () => {
-    // Mock implementation returning various states and locations
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                success: true,
-                reports: [
-                    {
-                        id: 'R123456',
-                        type: 'pipeline_leakage',
-                        priority: 'high',
-                        status: 'in_progress',
-                        location: { address: 'Slave Island, Colombo', lat: 6.920, lng: 79.850 },
-                        description: 'Main line burst.',
-                        createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-                    },
-                    {
-                        id: 'R789012',
-                        type: 'water_quality',
-                        priority: 'medium',
-                        status: 'pending',
-                        location: { address: 'Bambalapitiya, Colombo', lat: 6.895, lng: 79.855 },
-                        description: 'Discolored water.',
-                        createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
-                    },
-                    {
-                        id: 'R345678',
-                        type: 'no_supply',
-                        priority: 'critical',
-                        status: 'resolved',
-                        location: { address: 'Dehiwala, Mount Lavinia', lat: 6.848, lng: 79.870 },
-                        description: 'Entire block dry.',
-                        createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
-                        resolvedAt: new Date(Date.now() - 86400000 * 4).toISOString(),
-                    },
-                    {
-                        id: 'R999888',
-                        type: 'pipeline_leakage',
-                        priority: 'low',
-                        status: 'pending',
-                        location: { address: 'Nugegoda, Colombo', lat: 6.868, lng: 79.897 },
-                        description: 'Small drip from valve.',
-                        createdAt: new Date(Date.now() - 3600000 * 24).toISOString(),
-                    }
-                ]
-            });
-        }, 800);
-    });
+    try {
+        const querySnapshot = await getDocs(collection(db, 'reports'));
+        const reports = [];
+        querySnapshot.forEach((doc) => {
+            reports.push({ id: doc.id, ...doc.data() });
+        });
+        return { success: true, reports };
+    } catch (error) {
+        console.error("Error getting reports:", error);
+        return { success: false, error: error.message, reports: [] };
+    }
 };
 
 /**
  * Get all reports for the current user
- * @returns {Promise} Array of user's reports
  */
 export const getUserReports = async () => {
-    // Mock implementation
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                success: true,
-                reports: [
-                    {
-                        id: 'R123456',
-                        type: 'pipeline_leakage',
-                        priority: 'high',
-                        status: 'in_progress',
-                        location: {
-                            address: '123 Main St, Colombo 03',
-                            lat: 6.915,
-                            lng: 79.855
-                        },
-                        description: 'Major leak near the junction. Water is wasting rapidly.',
-                        createdAt: new Date(Date.now() - 86400000 * 2).toISOString(), // 2 days ago
-                    }
-                ]
-            });
-        }, 500);
-    });
+    try {
+        const user = auth.currentUser;
+        if (!user) return { success: false, message: "Not logged in" };
+
+        const q = query(
+            collection(db, 'reports'),
+            where("userId", "==", user.uid)
+        );
+
+        const querySnapshot = await getDocs(q);
+        const reports = [];
+        querySnapshot.forEach((doc) => {
+            reports.push({ id: doc.id, ...doc.data() });
+        });
+
+        return { success: true, reports };
+    } catch (error) {
+        console.error("Error getting user reports:", error);
+        return { success: false, error: error.message };
+    }
 };
 
 /**
  * Get a single report by ID
- * @param {string} reportId - Report ID
- * @returns {Promise} Report details
  */
 export const getReportById = async (reportId) => {
-    // Mock implementation
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                success: true,
-                report: null
-            });
-        }, 500);
-    });
+    try {
+        const docRef = doc(db, 'reports', reportId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            return { success: true, report: { id: docSnap.id, ...docSnap.data() } };
+        } else {
+            return { success: false, message: "Report not found" };
+        }
+    } catch (error) {
+        console.error("Error getting report:", error);
+        return { success: false, error: error.message };
+    }
+};
+
+/**
+ * Update report status
+ */
+export const updateReportStatus = async (reportId, status, notes = '') => {
+    try {
+        const reportRef = doc(db, 'reports', reportId);
+        await updateDoc(reportRef, {
+            status: status,
+            timeline: arrayUnion({
+                status: status,
+                timestamp: new Date().toISOString(),
+                notes: notes
+            })
+        });
+        return { success: true };
+    } catch (error) {
+        console.error("Error updating status:", error);
+        return { success: false, error: error.message };
+    }
 };

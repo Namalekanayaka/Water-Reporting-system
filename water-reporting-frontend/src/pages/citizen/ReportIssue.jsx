@@ -4,6 +4,7 @@ import LocationPicker from '../../components/maps/LocationPicker';
 import ImageUpload from '../../components/common/ImageUpload';
 import { useNotification } from '../../context/NotificationContext';
 import { createReport } from '../../services/api/reports';
+import { analyzeReportSeverity } from '../../services/api/predictions';
 
 const ReportIssue = () => {
     const [selectedLocation, setSelectedLocation] = useState(null);
@@ -17,8 +18,39 @@ const ReportIssue = () => {
         handleSubmit,
         formState: { errors },
         reset,
-        setValue
+        setValue,
+        getValues
     } = useForm();
+
+    // AI Integration
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const handleAIAnalysis = async () => {
+        const description = getValues('description');
+        if (!description || description.length < 5) {
+            addNotification('Please enter a description first.', 'info');
+            return;
+        }
+
+        setIsAnalyzing(true);
+        try {
+            const result = await analyzeReportSeverity(description);
+            if (result && result.severity) {
+                const urgencyMap = {
+                    'low': 'low',
+                    'medium': 'medium',
+                    'high': 'high',
+                    'critical': 'critical'
+                };
+                setValue('priority', urgencyMap[result.severity.toLowerCase()] || 'medium', { shouldValidate: true });
+                addNotification(`AI Assessment: ${result.explanation}`, 'success');
+            }
+        } catch (error) {
+            addNotification('AI Analysis failed.', 'error');
+        } finally {
+            setIsAnalyzing(false);
+        }
+    };
+
 
     const handleLocationSelect = (location) => {
         setSelectedLocation(location);
@@ -135,6 +167,17 @@ const ReportIssue = () => {
                             </h2>
 
                             <div className="mb-4 flex-1">
+                                <div className="flex justify-between items-center mb-2">
+                                    <label className="text-[10px] font-bold text-md-on-surface-variant uppercase tracking-wider">Description</label>
+                                    <button
+                                        type="button"
+                                        onClick={handleAIAnalysis}
+                                        disabled={isAnalyzing}
+                                        className="text-[10px] font-black text-md-primary bg-md-primary-container/30 px-2 py-1 rounded-lg hover:bg-md-primary-container/50 transition-colors flex items-center gap-1 disabled:opacity-50"
+                                    >
+                                        {isAnalyzing ? 'Analyzing...' : '✨ AI Assess'}
+                                    </button>
+                                </div>
                                 <textarea
                                     {...register('description', { required: 'Required', minLength: 10 })}
                                     className="w-full h-full min-h-[100px] p-4 bg-md-surface-variant/30 border-b border-md-outline/20 focus:border-md-primary rounded-t-xl text-sm font-medium text-md-on-surface outline-none resize-none leading-relaxed"

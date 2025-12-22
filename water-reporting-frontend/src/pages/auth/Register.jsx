@@ -6,15 +6,24 @@ import { registerUser } from '../../services/api/auth';
 const Register = () => {
     const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
     const [isRegistering, setIsRegistering] = useState(false);
-    const { login } = useAuth();
+    const [error, setError] = useState(null);
+    const { login, isAuthenticated, loading } = useAuth();
     const navigate = useNavigate();
+
+    // Redirect if already logged in
+    React.useEffect(() => {
+        if (!loading && isAuthenticated) {
+            navigate('/', { replace: true });
+        }
+    }, [isAuthenticated, loading, navigate]);
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(null);
         if (formData.password !== formData.confirmPassword) {
-            alert('Passwords do not match');
+            setError('Passwords do not match');
             return;
         }
 
@@ -27,6 +36,7 @@ const Register = () => {
             }
         } catch (error) {
             console.error('Registration failed:', error);
+            setError(error.message || 'Failed to create account.');
         } finally {
             setIsRegistering(false);
         }
@@ -44,6 +54,12 @@ const Register = () => {
                 </div>
 
                 <div className="bg-white rounded-[40px] p-10 md:p-12 shadow-md-2 border border-md-outline/10">
+                    {error && (
+                        <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl text-sm font-bold border border-red-100 flex items-center gap-3">
+                            <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            {error}
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div className="space-y-3">
                             <label className="text-[12px] font-black text-md-on-surface-variant uppercase tracking-widest ml-1">Full Name</label>

@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AccessMatrix from '../../components/security/AccessMatrix';
 import AuditLogPanel from '../../components/security/AuditLogPanel';
+import { getSystemAlerts } from '../../services/api/authority';
 
 const SharedResponsibilities = () => {
+    const [auditLogs, setAuditLogs] = useState([]);
+
+    useEffect(() => {
+        const fetchLogs = async () => {
+            const { success, alerts } = await getSystemAlerts();
+            if (success && alerts) {
+                // Map alerts to audit format
+                const logs = alerts.map(a => ({
+                    id: a.id,
+                    action: a.message,
+                    user: 'System',
+                    timestamp: a.createdAt || new Date().toISOString(),
+                    status: a.severity || 'info'
+                }));
+                setAuditLogs(logs);
+            }
+        };
+        fetchLogs();
+    }, []);
     return (
         <div className="w-full bg-md-surface min-h-screen p-4 md:p-6 lg:p-8 animate-in fade-in zoom-in duration-500">
             <div className="max-w-[1600px] mx-auto h-[calc(100vh-4rem)] flex flex-col">
@@ -41,7 +61,7 @@ const SharedResponsibilities = () => {
 
                     {/* Right: Audit Log (1 col) */}
                     <div className="lg:col-span-1 h-full">
-                        <AuditLogPanel />
+                        <AuditLogPanel logs={auditLogs} />
                     </div>
                 </div>
             </div>

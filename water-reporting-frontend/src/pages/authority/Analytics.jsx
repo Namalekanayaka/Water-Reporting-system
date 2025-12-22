@@ -1,34 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TimeSeriesChart from '../../components/charts/TimeSeriesChart';
 import BarChart from '../../components/charts/BarChart';
 import PieChart from '../../components/charts/PieChart';
 import ForecastPanel from '../../components/ai/ForecastPanel';
+import { getAllReports } from '../../services/api/reports';
 
 const Analytics = () => {
-    // Mock Data
-    const trendData = [
-        { name: 'Mon', reports: 12 },
-        { name: 'Tue', reports: 19 },
-        { name: 'Wed', reports: 15 },
-        { name: 'Thu', reports: 25 },
-        { name: 'Fri', reports: 32 },
-        { name: 'Sat', reports: 20 },
-        { name: 'Sun', reports: 18 },
-    ];
+    const [trendData, setTrendData] = useState([
+        { name: 'Mon', reports: 12 }, { name: 'Tue', reports: 8 },
+        { name: 'Wed', reports: 15 }, { name: 'Thu', reports: 22 },
+        { name: 'Fri', reports: 30 }, { name: 'Sat', reports: 25 }, { name: 'Sun', reports: 18 }
+    ]);
+    const [severityData, setSeverityData] = useState([]);
+    const [typeData, setTypeData] = useState([]);
 
-    const severityData = [
-        { name: 'Low', value: 45, color: '#10b981' },
-        { name: 'Medium', value: 32, color: '#f59e0b' },
-        { name: 'High', value: 18, color: '#f97316' },
-        { name: 'Critical', value: 5, color: '#ef4444' },
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            const { success, reports } = await getAllReports();
+            if (success && reports) {
 
-    const typeData = [
-        { name: 'Leakage', value: 40, color: '#0ea5e9' },
-        { name: 'Contamination', value: 15, color: '#8b5cf6' },
-        { name: 'No Supply', value: 25, color: '#f43f5e' },
-        { name: 'Low Pressure', value: 20, color: '#10b981' },
-    ];
+                // Severity Calculation
+                const counts = { low: 0, medium: 0, high: 0, critical: 0 };
+                reports.forEach(r => {
+                    const p = r.priority ? r.priority.toLowerCase() : 'low';
+                    if (counts[p] !== undefined) counts[p]++;
+                    else counts.low++; // fallback
+                });
+                setSeverityData([
+                    { name: 'Low', value: counts.low, color: '#10b981' },
+                    { name: 'Medium', value: counts.medium, color: '#f59e0b' },
+                    { name: 'High', value: counts.high, color: '#f97316' },
+                    { name: 'Critical', value: counts.critical, color: '#ef4444' },
+                ]);
+
+                // Type Calculation
+                const typeCounts = {};
+                reports.forEach(r => {
+                    const t = r.type || 'Other';
+                    typeCounts[t] = (typeCounts[t] || 0) + 1;
+                });
+
+                const typeMapping = Object.keys(typeCounts).map((key, index) => ({
+                    name: key.replace(/_/g, ' ').toUpperCase(),
+                    value: typeCounts[key],
+                    color: ['#0ea5e9', '#8b5cf6', '#f43f5e', '#10b981', '#fbbf24'][index % 5]
+                }));
+                setTypeData(typeMapping);
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <div className="w-full bg-md-surface min-h-screen p-4 md:p-6 lg:p-8 animate-in fade-in zoom-in duration-500">

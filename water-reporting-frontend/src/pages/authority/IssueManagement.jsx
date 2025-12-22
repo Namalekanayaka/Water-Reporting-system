@@ -1,77 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReportTable from '../../components/reports/ReportTable';
 import ReportDetailsModal from '../../components/reports/ReportDetailsModal';
+import { getAllReports } from '../../services/api/reports';
 
 const IssueManagement = () => {
     const [selectedReport, setSelectedReport] = useState(null);
-    const [reports, setReports] = useState([
-        {
-            id: '1024',
-            title: 'Major Pipe Burst - Main St',
-            type: 'Pipeline Leakage',
-            description: 'Massive water leak observed near the central junction. Water is flooding the street and causing traffic jams. Residents report low pressure in surrounding areas.',
-            location: { address: '123 Main St, Bangalore' },
-            priority: 'critical',
-            aiSeverityScore: 0.95,
-            status: 'pending',
-            timestamp: 'Today, 10:30 AM'
-        },
-        {
-            id: '1023',
-            title: 'Contaminated Water Supply',
-            type: 'Water Quality',
-            description: 'Water appearing turbid and smelling of sewage in Sector 4. Multiple households affected.',
-            location: { address: 'Sector 4, Indiranagar' },
-            priority: 'high',
-            aiSeverityScore: 0.88,
-            status: 'in_progress',
-            timestamp: 'Today, 09:15 AM'
-        },
-        {
-            id: '1022',
-            title: 'Low Pressure Alert',
-            type: 'Supply Issue',
-            description: 'Consistent low water pressure observed for the past 3 days during morning hours.',
-            location: { address: 'Palm Grove Apts' },
-            priority: 'medium',
-            aiSeverityScore: 0.65,
-            status: 'pending',
-            timestamp: 'Yesterday, 06:45 PM'
-        },
-        {
-            id: '1021',
-            title: 'Sewage Leakage',
-            type: 'Sanitation',
-            description: 'Sewage overflowing from manhole cover near the market entrance.',
-            location: { address: 'Market Road' },
-            priority: 'high',
-            aiSeverityScore: 0.92,
-            status: 'resolved',
-            timestamp: 'Yesterday, 04:20 PM'
-        },
-        {
-            id: '1020',
-            title: 'No Water Supply',
-            type: 'Supply Issue',
-            description: 'Total lack of water supply in Layout 5 for the last 24 hours without prior notice.',
-            location: { address: 'Layout 5' },
-            priority: 'medium',
-            aiSeverityScore: 0.78,
-            status: 'pending',
-            timestamp: '20 Dec, 08:00 AM'
-        },
-        {
-            id: '1019',
-            title: 'Leaking Public Tap',
-            type: 'Wastage',
-            description: 'Public tap at the park entrance has been leaking continuously.',
-            location: { address: 'Central Park' },
-            priority: 'low',
-            aiSeverityScore: 0.35,
-            status: 'closed',
-            timestamp: '19 Dec, 11:30 AM'
-        },
-    ]);
+    const [reports, setReports] = useState([]);
+
+    useEffect(() => {
+        const fetchReports = async () => {
+            const { success, reports: data } = await getAllReports();
+            if (success) {
+                const formattedReports = data.map(r => ({
+                    ...r,
+                    title: r.type ? r.type.replace(/_/g, ' ').toUpperCase() : 'Report #' + r.id.substring(0, 4),
+                    location: r.location || { address: 'Unknown' },
+                    timestamp: r.createdAt ? new Date(r.createdAt).toLocaleString() : 'N/A',
+                    aiSeverityScore: r.aiSeverityScore || (r.priority === 'critical' ? 0.9 : 0.5)
+                }));
+                setReports(formattedReports);
+            }
+        };
+        fetchReports();
+    }, []);
 
     const handleUpdateStatus = (id, newStatus) => {
         setReports(reports.map(r => r.id === id ? { ...r, status: newStatus } : r));

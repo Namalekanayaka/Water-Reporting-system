@@ -32,6 +32,7 @@ import { NotificationProvider } from './context/NotificationContext';
 // Components
 import NotificationToast from './components/common/NotificationToast';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import PublicRoute from './components/auth/PublicRoute';
 
 import './App.css';
 
@@ -46,8 +47,16 @@ function App() {
               <MainLayout>
                 <Routes>
                   {/* Public Routes */}
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={
+                    <PublicRoute>
+                      <Login />
+                    </PublicRoute>
+                  } />
+                  <Route path="/register" element={
+                    <PublicRoute>
+                      <Register />
+                    </PublicRoute>
+                  } />
 
                   {/* Public Data Pages (Sidebar hidden if not logged in via MainLayout) */}
                   <Route path="/dashboard" element={<PublicDashboard />} />
