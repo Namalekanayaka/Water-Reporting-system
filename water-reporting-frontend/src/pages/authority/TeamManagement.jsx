@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import TeamCard from '../../components/teams/TeamCard';
 import TeamStats from '../../components/teams/TeamStats';
 import TeamDetailsPanel from '../../components/teams/TeamDetailsPanel';
-import { getTeams, addTeam } from '../../services/api/authority';
+import { getTeams, addTeam, updateTeamStatus } from '../../services/api/authority';
+import { getAllReports, updateReportStatus } from '../../services/api/reports';
 
 const TeamManagement = () => {
     const [teams, setTeams] = useState([]);
@@ -33,6 +34,50 @@ const TeamManagement = () => {
             loadTeams();
         } else {
             alert('Failed to create team');
+        }
+    };
+
+    const handleAssignTask = async (team, reportId, reportTitle) => {
+        if (!team || !reportId) return;
+        try {
+            // 1. Update Report -> Assigned Team (Set to In Progress)
+            await updateReportStatus(reportId, 'in_progress', 'Manual Dispatch from Console', team.id);
+
+            // 2. Update Team -> Busy
+            const taskDesc = `Responding to: ${reportTitle || 'Emergency'}`;
+            await updateTeamStatus(team.id, 'busy', taskDesc);
+
+            // 3. Refresh Data
+            loadTeams();
+
+            // Optional: Close modal or visual feedback
+        } catch (err) {
+            console.error("Dispatch Failed", err);
+            alert("Failed to dispatch team.");
+        }
+    };
+
+    const handleCompleteTask = async (team) => {
+        if (!confirm(`Mark mission as complete for ${team.name}?`)) return;
+
+        try {
+            // 1. Find the active report for this team
+            const { success, reports } = await getAllReports();
+            if (success) {
+                const activeReport = reports.find(r => r.assignedTeamId === team.id && r.status === 'in_progress');
+                if (activeReport) {
+                    await updateReportStatus(activeReport.id, 'resolved', 'Mission Completed by Team');
+                }
+            }
+
+            // 2. Free the Team
+            await updateTeamStatus(team.id, 'available', '');
+
+            // 3. Refresh
+            loadTeams();
+        } catch (err) {
+            console.error(err);
+            alert("Failed to complete task.");
         }
     };
 
@@ -109,7 +154,7 @@ const TeamManagement = () => {
 
                 {/* Stats */}
                 <div className="mb-8 shrink-0">
-                    <TeamStats />
+                    <TeamStats teams={teams} />
                 </div>
 
                 {/* Main Content */}
@@ -131,7 +176,7 @@ const TeamManagement = () => {
 
                     {/* Right: Details Panel */}
                     <div className="lg:col-span-1 min-h-[500px]">
-                        <TeamDetailsPanel team={selectedTeam} />
+                        <TeamDetailsPanel team={selectedTeam} onAssign={handleAssignTask} onComplete={handleCompleteTask} />
                     </div>
                 </div>
             </div>

@@ -1,8 +1,24 @@
-import React from 'react';
-import StatusBadge from './StatusBadge';
-import SeverityBadge from './SeverityBadge';
+import React, { useState, useEffect } from 'react';
+import { getTeams } from '../../services/api/authority';
 
 const ReportDetailsModal = ({ report, onClose, onUpdateStatus }) => {
+    const [teams, setTeams] = useState([]);
+    const [assignedTeam, setAssignedTeam] = useState(report.assignedTeamId || '');
+
+    useEffect(() => {
+        const fetchTeams = async () => {
+            const { success, teams: data } = await getTeams();
+            if (success) setTeams(data);
+        };
+        fetchTeams();
+    }, []);
+
+    const handleAssignTeam = (e) => {
+        const teamId = e.target.value;
+        setAssignedTeam(teamId);
+        onUpdateStatus(report.id, report.status, 'Team Assigned', teamId);
+    };
+
     if (!report) return null;
 
     return (
@@ -17,7 +33,7 @@ const ReportDetailsModal = ({ report, onClose, onUpdateStatus }) => {
                 <div className="sticky top-0 z-10 bg-md-surface/80 backdrop-blur-md p-6 border-b border-md-outline/10 flex justify-between items-start">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
-                            <span className="text-xs font-black text-md-on-surface-variant uppercase tracking-widest">ID: #{report.id}</span>
+                            <span className="text-xs font-black text-md-on-surface-variant uppercase tracking-widest">ID: #{report.id.substring(0, 8)}</span>
                             <span className="text-md-on-surface-variant">•</span>
                             <span className="text-xs font-medium text-md-on-surface-variant">{report.timestamp}</span>
                         </div>
@@ -37,35 +53,52 @@ const ReportDetailsModal = ({ report, onClose, onUpdateStatus }) => {
                 <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Left Column: Details */}
                     <div className="lg:col-span-2 space-y-8">
-                        {/* Map Placeholder */}
+                        {/* Map View */}
                         <div className="aspect-video bg-md-surface-variant/20 rounded-2xl border border-md-outline/10 flex items-center justify-center relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-[url('https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png')] opacity-50 bg-cover bg-center"></div>
-                            <div className="relative z-10 bg-white/80 p-4 rounded-xl backdrop-blur-md shadow-sm text-center">
-                                <p className="font-bold text-md-on-surface">Map View</p>
-                                <p className="text-xs text-md-on-surface-variant">{report.location.address}</p>
+                            {/* Dynamic Map using OpenStreetMap static image or generic fall back if lat/lng missing */}
+                            {report.location && report.location.lat ? (
+                                <img
+                                    src={`https://static-maps.yandex.ru/1.x/?lang=en-US&ll=${report.location.lng},${report.location.lat}&z=15&l=map&pt=${report.location.lng},${report.location.lat},pm2rdm`}
+                                    alt="Location Map"
+                                    className="absolute inset-0 w-full h-full object-cover opacity-80"
+                                />
+                            ) : (
+                                <div className="absolute inset-0 bg-slate-200"></div>
+                            )}
+                            <div className="relative z-10 bg-white/90 p-4 rounded-xl backdrop-blur-md shadow-sm text-center">
+                                <p className="font-bold text-md-on-surface">Location Pin</p>
+                                <p className="text-xs text-md-on-surface-variant">{report.location?.address || 'Coordinates Only'}</p>
                             </div>
                         </div>
 
                         {/* Images */}
                         <div>
                             <h3 className="font-bold text-md-on-surface mb-3">Attached Evidence</h3>
-                            <div className="flex gap-4 overflow-x-auto pb-2">
-                                {[1, 2, 3].map((i) => (
-                                    <div key={i} className="w-32 h-32 shrink-0 bg-md-surface-variant/20 rounded-xl border border-md-outline/10 flex items-center justify-center">
-                                        <svg className="w-8 h-8 text-md-on-surface-variant/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
+                            <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar">
+                                {report.images && report.images.length > 0 ? (
+                                    report.images.map((imgUrl, i) => (
+                                        <a key={i} href={imgUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 group relative">
+                                            <div className="w-32 h-32 bg-md-surface-variant/20 rounded-xl border border-md-outline/10 overflow-hidden">
+                                                <img src={imgUrl} alt="Evidence" className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                                            </div>
+                                        </a>
+                                    ))
+                                ) : (
+                                    <div className="w-full p-4 text-sm text-md-on-surface-variant/70 italic border border-dashed border-md-outline/20 rounded-xl bg-md-surface-variant/10 text-center">
+                                        No images attached to this report.
                                     </div>
-                                ))}
+                                )}
                             </div>
                         </div>
 
                         {/* Description */}
                         <div>
                             <h3 className="font-bold text-md-on-surface mb-2">Description</h3>
-                            <p className="text-md-on-surface-variant leading-relaxed">
-                                {report.description}
-                            </p>
+                            <div className="bg-md-surface-variant/10 p-4 rounded-2xl border border-md-outline/5">
+                                <p className="text-md-on-surface-variant leading-relaxed text-sm">
+                                    {report.description || "No description provided."}
+                                </p>
+                            </div>
                         </div>
                     </div>
 
@@ -87,7 +120,7 @@ const ReportDetailsModal = ({ report, onClose, onUpdateStatus }) => {
                                 </div>
                             </div>
                             <p className="text-xs text-md-on-surface-variant/80 italic">
-                                "High probability of major pipe burst based on image analysis and citizen report density."
+                                "Analysis based on provided description and imagery."
                             </p>
                         </div>
 
@@ -102,10 +135,10 @@ const ReportDetailsModal = ({ report, onClose, onUpdateStatus }) => {
                                         {['pending', 'in_progress', 'resolved', 'closed'].map((status) => (
                                             <button
                                                 key={status}
-                                                onClick={() => onUpdateStatus(report.id, status)}
+                                                onClick={() => onUpdateStatus(report.id, status, 'Status updated via Console')}
                                                 className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all border ${report.status === status
-                                                        ? 'bg-md-primary text-white border-md-primary shadow-md'
-                                                        : 'bg-white text-md-on-surface-variant border-md-outline/20 hover:border-md-primary/50'
+                                                    ? 'bg-md-primary text-white border-md-primary shadow-md'
+                                                    : 'bg-white text-md-on-surface-variant border-md-outline/20 hover:border-md-primary/50'
                                                     }`}
                                             >
                                                 {status.replace('_', ' ')}
@@ -116,23 +149,33 @@ const ReportDetailsModal = ({ report, onClose, onUpdateStatus }) => {
 
                                 <div>
                                     <label className="block text-xs font-bold text-md-on-surface-variant uppercase tracking-wider mb-2">Assign Team</label>
-                                    <select className="w-full bg-white p-2.5 rounded-xl border border-md-outline/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-md-primary/20">
-                                        <option>Unassigned</option>
-                                        <option>Team Alpha (Busy)</option>
-                                        <option>Team Beta (Available)</option>
+                                    <select
+                                        value={assignedTeam}
+                                        onChange={handleAssignTeam}
+                                        className="w-full bg-white p-2.5 rounded-xl border border-md-outline/20 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-md-primary/20 appearance-none cursor-pointer"
+                                    >
+                                        <option value="">-- Select Response Unit --</option>
+                                        {teams.map(team => (
+                                            <option key={team.id} value={team.id}>
+                                                {team.name} ({team.status.toUpperCase()})
+                                            </option>
+                                        ))}
                                     </select>
+                                    <p className="text-[10px] text-md-on-surface-variant/60 mt-1 pl-1">
+                                        Assigning a team will notify unit leaders.
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
                         <div className="pt-4 border-t border-md-outline/10">
-                            <div className="flex justify-between items-center text-sm text-md-on-surface-variant">
+                            <div className="flex justify-between items-center text-sm text-md-on-surface-variant mb-2">
                                 <span>Reported by</span>
-                                <span className="font-bold">Rajesh Kumar</span>
+                                <span className="font-bold truncate max-w-[150px]" title={report.userEmail}>{report.userEmail || "Anonymous"}</span>
                             </div>
-                            <div className="flex justify-between items-center text-sm text-md-on-surface-variant mt-2">
-                                <span>Phone</span>
-                                <span className="font-bold">+91 98765 43210</span>
+                            <div className="flex justify-between items-center text-sm text-md-on-surface-variant">
+                                <span>User ID</span>
+                                <span className="font-mono text-xs opacity-70">{report.userId ? report.userId.substring(0, 8) + '...' : 'N/A'}</span>
                             </div>
                         </div>
                     </div>

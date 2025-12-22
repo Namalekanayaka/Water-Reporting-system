@@ -156,17 +156,24 @@ export const getReportById = async (reportId) => {
 /**
  * Update report status
  */
-export const updateReportStatus = async (reportId, status, notes = '') => {
+export const updateReportStatus = async (reportId, status, notes = '', teamId = null) => {
     try {
         const reportRef = doc(db, 'reports', reportId);
-        await updateDoc(reportRef, {
+
+        let updateData = {
             status: status,
             timeline: arrayUnion({
                 status: status,
                 timestamp: new Date().toISOString(),
                 notes: notes
             })
-        });
+        };
+
+        if (teamId) {
+            updateData.assignedTeamId = teamId;
+        }
+
+        await updateDoc(reportRef, updateData);
         return { success: true };
     } catch (error) {
         console.error("Error updating status:", error);

@@ -13,13 +13,21 @@ const StatBox = ({ label, value, trend, isPositive }) => (
     </div>
 );
 
-const TeamStats = () => {
+const TeamStats = ({ teams = [] }) => {
+    const total = teams.length;
+    const active = teams.filter(t => t.status === 'busy').length;
+
+    // Calculate Average Efficiency
+    const avgEfficiency = total > 0
+        ? Math.round(teams.reduce((acc, t) => acc + (t.efficiency || 100), 0) / total)
+        : 100;
+
     return (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full">
-            <StatBox label="Total Teams" value="12" />
-            <StatBox label="Active Now" value="8" trend="+2h" isPositive={true} />
+            <StatBox label="Total Teams" value={total} />
+            <StatBox label="Active Now" value={active} trend={active > 0 ? "Deployed" : "Standby"} isPositive={active > 0} />
             <StatBox label="Avg Response" value="14m" trend="-2m" isPositive={true} />
-            <StatBox label="Efficiency" value="94%" trend="+1.2%" isPositive={true} />
+            <StatBox label="Efficiency" value={`${avgEfficiency}%`} trend="Optimal" isPositive={avgEfficiency > 90} />
         </div>
     );
 };

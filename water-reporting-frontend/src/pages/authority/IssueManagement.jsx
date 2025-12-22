@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ReportTable from '../../components/reports/ReportTable';
 import ReportDetailsModal from '../../components/reports/ReportDetailsModal';
-import { getAllReports } from '../../services/api/reports';
+import { getAllReports, updateReportStatus } from '../../services/api/reports';
+import { updateTeamStatus } from '../../services/api/authority';
 
 const IssueManagement = () => {
     const [selectedReport, setSelectedReport] = useState(null);
@@ -24,10 +25,37 @@ const IssueManagement = () => {
         fetchReports();
     }, []);
 
-    const handleUpdateStatus = (id, newStatus) => {
-        setReports(reports.map(r => r.id === id ? { ...r, status: newStatus } : r));
+    const handleUpdateStatus = async (id, newStatus, notes = '', teamId = null) => {
+        // 1. Optimistic UI Update
+        const updatedReports = reports.map(r =>
+            r.id === id
+                ? { ...r, status: newStatus, assignedTeamId: teamId || r.assignedTeamId }
+                : r
+        );
+        setReports(updatedReports);
+
         if (selectedReport && selectedReport.id === id) {
-            setSelectedReport({ ...selectedReport, status: newStatus });
+            setSelectedReport({
+                ...selectedReport,
+                status: newStatus,
+                assignedTeamId: teamId || selectedReport.assignedTeamId
+            });
+        }
+
+        try {
+            // 2. Persist Report Update
+            await updateReportStatus(id, newStatus, notes, teamId);
+
+            // 3. If Team Assigned -> Dispatch Team (Update Team Status)
+            if (teamId) {
+                const report = reports.find(r => r.id === id);
+                const taskLocation = report?.location?.address || 'Site';
+                const taskDesc = `Responding to ${report?.title || 'Issue'} at ${taskLocation}`;
+
+                await updateTeamStatus(teamId, 'busy', taskDesc);
+            }
+        } catch (error) {
+            console.error("Failed to update status/dispatch team:", error);
         }
     };
 
