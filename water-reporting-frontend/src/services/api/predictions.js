@@ -62,3 +62,59 @@ export const analyzeReportSeverity = async (description) => {
         };
     }
 };
+
+/**
+ * Generate a system-wide forecast based on current report statistics.
+ * @param {Object} stats - { severityCounts: {low, medium, high, critical}, totalReports }
+ * @returns {Promise<Object>}
+ */
+export const generateSystemForecast = async (stats) => {
+    if (GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") { // Fallback if key not set
+        return {
+            stress: 'Medium',
+            peak: '18:00',
+            zone: 'Zone B',
+            recommendation: 'Mock: Balance pressure valves in Sector 7.'
+        };
+    }
+
+    try {
+        const prompt = `
+        You are an AI Water System Analyst.
+        Current System Status:
+        - Total Active Reports: ${stats.totalReports}
+        - Severity Breakdown: ${JSON.stringify(stats.severityCounts)}
+        
+        Predict the following for the next 24 hours:
+        1. Overall Water Stress Level (Low, Medium, High, Critical)
+        2. Expected Peak Demand Time (e.g. "18:00")
+        3. Most Vulnerable Zone (Invent a zone name e.g. "Zone 4-A")
+        4. One short strategic recommendation (max 25 words).
+
+        Return ONLY valid JSON: { "stress": "...", "peak": "...", "zone": "...", "recommendation": "..." }
+        `;
+
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+        });
+
+        const data = await response.json();
+        if (data.candidates && data.candidates[0].content) {
+            const text = data.candidates[0].content.parts[0].text;
+            const jsonText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+            return JSON.parse(jsonText);
+        }
+        throw new Error("No candidate or invalid response");
+
+    } catch (error) {
+        console.error("Forecast Failed:", error);
+        return {
+            stress: 'High',
+            peak: 'Unknown',
+            zone: 'Check Logs',
+            recommendation: 'AI connection failed. Monitor manually.'
+        };
+    }
+};
