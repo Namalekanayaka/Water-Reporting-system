@@ -7,9 +7,9 @@ const Home = () => {
 
   if (isAuthenticated) {
     return (
-      <div className="w-full bg-md-surface p-4 md:p-6 lg:p-8 h-screen overflow-hidden flex flex-col">
+      <div className="w-full bg-md-surface p-4 md:p-6 lg:p-8 min-h-screen flex flex-col">
         {/* Header - Compact */}
-        <div className="shrink-0 mb-6 flex items-end justify-between">
+        <div className="shrink-0 mb-8 flex items-end justify-between">
           <div>
             <div className="flex items-center gap-3 mb-1">
               <span className="w-2 h-2 rounded-full bg-md-primary"></span>
@@ -22,60 +22,102 @@ const Home = () => {
           </p>
         </div>
 
-        {/* Dashboard Grid - Full Height */}
-        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-          {/* Left Column: Stats (4 Cols) */}
-          <div className="lg:col-span-4 flex flex-col gap-4 h-full overflow-y-auto pr-2 custom-scrollbar">
-            <div className="bg-md-secondary-container/20 p-6 rounded-[28px] border border-md-secondary-container/10 flex-1 flex flex-col justify-center">
-              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-[10px] mb-2">My Contribution</h3>
-              <p className="text-5xl font-black text-md-on-surface mb-2">12</p>
-              <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit">Helping 450 families</p>
+        {/* Top Row: Statistics */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-md-secondary-container/20 p-6 rounded-[24px] border border-md-secondary-container/10 flex flex-col justify-center transition-all hover:bg-md-secondary-container/30">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-[10px]">My Contribution</h3>
+              <span className="text-xl">🤝</span>
             </div>
-            <div className="bg-md-primary-container/20 p-6 rounded-[28px] border border-md-primary-container/10 flex-1 flex flex-col justify-center">
-              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-[10px] mb-2">Area Health</h3>
-              <p className="text-5xl font-black text-md-on-surface mb-2">94%</p>
-              <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit">Top 10% in City</p>
+            <div className="flex items-baseline gap-2">
+              <p className="text-4xl font-black text-md-on-surface">12</p>
+              <span className="text-sm font-medium text-md-on-surface-variant">reports</span>
             </div>
-            <div className="bg-orange-50 p-6 rounded-[28px] border border-orange-100 flex-1 flex flex-col justify-center">
-              <h3 className="text-orange-800/70 font-bold uppercase tracking-wider text-[10px] mb-2">Active Issues</h3>
-              <p className="text-5xl font-black text-orange-900 mb-2">2</p>
-              <p className="text-xs font-bold text-orange-700 bg-orange-100 px-2 py-1 rounded w-fit">1 Critical Repair</p>
-            </div>
+            <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit mt-3">Helping 450 families</p>
           </div>
 
-          {/* Right Column: Quick Actions (8 Cols) */}
-          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
-            {/* Primary Action - Large */}
-            <Link to="/report" className="md:col-span-2 bg-md-primary text-white p-8 rounded-[32px] shadow-lg hover:shadow-xl transition-all group relative overflow-hidden flex flex-col justify-between">
-              <div className="relative z-10">
-                <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
-                  +
+          <div className="bg-md-primary-container/20 p-6 rounded-[24px] border border-md-primary-container/10 flex flex-col justify-center transition-all hover:bg-md-primary-container/30">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-md-on-surface-variant font-bold uppercase tracking-wider text-[10px]">Area Health</h3>
+              <span className="text-xl">❤️</span>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <p className="text-4xl font-black text-md-on-surface">94%</p>
+              <span className="text-sm font-medium text-md-on-surface-variant">score</span>
+            </div>
+            <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit mt-3">Top 10% in City</p>
+          </div>
+
+          <div className="bg-orange-50 p-6 rounded-[24px] border border-orange-100 flex flex-col justify-center transition-all hover:bg-orange-100/50">
+            <div className="flex justify-between items-start mb-4">
+              <h3 className="text-orange-800/70 font-bold uppercase tracking-wider text-[10px]">Active Issues</h3>
+              <span className="text-xl">⚠️</span>
+            </div>
+            <div className="flex items-baseline gap-2">
+              <p className="text-4xl font-black text-orange-900">2</p>
+              <span className="text-sm font-medium text-orange-800/60">open</span>
+            </div>
+            <p className="text-xs font-bold text-orange-700 bg-orange-100 px-2 py-1 rounded w-fit mt-3">1 Critical Repair</p>
+          </div>
+        </div>
+
+        {/* Main Content: Actions Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+          {/* Primary Action - Large Area (8 Cols) */}
+          <Link to="/report" className="lg:col-span-8 bg-md-primary text-white p-10 rounded-[32px] shadow-lg hover:shadow-xl transition-all group relative overflow-hidden flex flex-col justify-between min-h-[300px]">
+            <div className="relative z-10 max-w-lg">
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-4xl mb-6 group-hover:scale-110 transition-transform">
+                +
+              </div>
+              <h3 className="text-4xl font-black mb-4">Report Issue</h3>
+              <p className="text-white/80 font-medium text-lg leading-relaxed">
+                Spot a leak, quality concern, or supply disruption? <br />
+                File it in under 30 seconds with our precision tool.
+              </p>
+            </div>
+
+            <div className="relative z-10 mt-8 flex items-center gap-2 text-sm font-bold uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
+              <span>Start Report</span>
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7-7 7" /></svg>
+            </div>
+
+            <div className="absolute right-0 bottom-0 w-96 h-96 bg-white/10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
+            <div className="absolute top-0 right-0 p-12 opacity-10 text-9xl font-black rotate-12 pointer-events-none">
+              !
+            </div>
+          </Link>
+
+          {/* Secondary Stack (4 Cols) */}
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            <Link to="/my-reports" className="flex-1 bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between min-h-[180px]">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-2xl font-black text-md-on-surface mb-2">Track Progress</h3>
+                  <p className="text-sm text-md-on-surface-variant font-medium">View updates on your 12 reports.</p>
                 </div>
-                <h3 className="text-3xl font-black mb-2">Report Issue</h3>
-                <p className="text-white/80 font-medium max-w-md">Spot a leak or quality issue? File it in under 30 seconds with our new streamlined tool.</p>
+                <div className="w-12 h-12 bg-md-secondary-container rounded-2xl flex items-center justify-center text-md-on-secondary-container text-2xl group-hover:rotate-12 transition-transform">
+                  📋
+                </div>
               </div>
-              <div className="absolute right-0 bottom-0 w-64 h-64 bg-white/10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
-            </Link>
-
-            {/* Secondary Actions */}
-            <Link to="/my-reports" className="bg-white p-6 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between">
-              <div className="w-12 h-12 bg-md-secondary-container rounded-2xl flex items-center justify-center text-md-on-secondary-container text-2xl mb-4 group-hover:scale-110 transition-transform">
-                📋
-              </div>
-              <div>
-                <h3 className="text-xl font-black text-md-on-surface mb-1">Track Progress</h3>
-                <p className="text-xs text-md-on-surface-variant font-medium">View status of your 12 reports.</p>
+              <div className="mt-4 flex gap-1">
+                <span className="h-1.5 w-full bg-emerald-500 rounded-full"></span>
+                <span className="h-1.5 w-full bg-emerald-500 rounded-full"></span>
+                <span className="h-1.5 w-full bg-gray-200 rounded-full"></span>
               </div>
             </Link>
 
-            <Link to="/area-health" className="bg-white p-6 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between">
-              <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-emerald-700 text-2xl mb-4 group-hover:scale-110 transition-transform">
-                🌍
+            <Link to="/area-health" className="flex-1 bg-white p-8 rounded-[32px] border border-md-outline/10 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between min-h-[180px]">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-2xl font-black text-md-on-surface mb-2">Explore Map</h3>
+                  <p className="text-sm text-md-on-surface-variant font-medium">See live stats in your area.</p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-700 text-2xl group-hover:scale-110 transition-transform">
+                  🌍
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-black text-md-on-surface mb-1">Explore Map</h3>
-                <p className="text-xs text-md-on-surface-variant font-medium">See live stats in your neighborhood.</p>
+              <div className="mt-4 relative h-12 w-full bg-blue-50 rounded-xl overflow-hidden">
+                <div className="absolute inset-0 opacity-30 bg-[url('https://boofcv.org/images/thumb/3/35/Example_rendered_map.png/400px-Example_rendered_map.png')] bg-cover"></div>
               </div>
             </Link>
           </div>
@@ -87,29 +129,89 @@ const Home = () => {
   return (
     <div className="w-full bg-md-surface min-h-screen">
       {/* Hero Section - M3 Centered Display */}
-      <section className="max-w-[1200px] mx-auto px-6 pt-24 pb-20 flex flex-col items-center text-center">
-        <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <h1 className="text-[52px] md:text-[88px] font-black tracking-tight text-md-on-surface leading-[1.05] mb-8">
-            Water governance. <br />
-            <span className="text-md-primary italic">Perfected.</span>
-          </h1>
-          <p className="text-[18px] md:text-[22px] text-md-on-surface-variant font-medium mb-12 max-w-2xl mx-auto leading-relaxed">
-            The next generation of community water management. Structured, powerful, and built for modern infrastructure.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/report"
-              className="h-14 px-10 bg-md-primary text-white rounded-full font-black text-[15px] flex items-center justify-center shadow-md hover:shadow-lg hover:bg-md-primary/90 transition-all active:scale-95"
-            >
-              Report Infrastructure Issue
-            </Link>
-            <Link
-              to="/dashboard"
-              className="h-14 px-10 bg-md-secondary-container text-md-on-secondary-container rounded-full font-black text-[15px] flex items-center justify-center hover:bg-md-secondary-container/80 transition-all active:scale-95"
-            >
-              View System Analytics
-            </Link>
+      {/* Hero Section - M3 Split Layout with Visual */}
+      <section className="max-w-[1400px] mx-auto px-6 pt-12 pb-20 lg:pt-24 lg:pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+
+          {/* Left Content (7 Cols) */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-md-primary-container/30 text-md-primary text-sm font-bold uppercase tracking-wider mb-8 border border-md-primary-container/20">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-md-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-md-primary"></span>
+              </span>
+              System Live in Colombo
+            </div>
+
+            <h1 className="text-[56px] md:text-[80px] lg:text-[92px] font-black tracking-tighter text-md-on-surface leading-[0.95] mb-8">
+              Water governance. <br />
+              <span className="text-md-primary">Perfected.</span>
+            </h1>
+
+            <p className="text-[18px] md:text-[20px] text-md-on-surface-variant font-medium mb-12 max-w-xl leading-relaxed">
+              The definitive platform for community infrastructure tracking.
+              Report leaks, monitor quality, and see real-time resolution data.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+              <Link
+                to="/report"
+                className="h-16 px-10 bg-md-primary text-white rounded-full font-black text-[16px] flex items-center justify-center shadow-lg hover:shadow-xl hover:translate-y-[-2px] hover:bg-md-primary/95 transition-all text-nowrap"
+              >
+                Start Report
+                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7-7 7" /></svg>
+              </Link>
+              <Link
+                to="/dashboard"
+                className="h-16 px-10 bg-white text-md-on-surface rounded-full font-black text-[16px] flex items-center justify-center border border-md-outline/10 hover:bg-gray-50 hover:border-md-outline/30 transition-all text-nowrap"
+              >
+                View Live Map
+              </Link>
+            </div>
           </div>
+
+          {/* Right Visual (5 Cols) - Abstract App Preview */}
+          <div className="lg:col-span-5 relative hidden lg:block h-[600px]">
+            {/* Decorative Background Blob */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-gradient-to-tr from-md-primary-container/40 to-white/0 rounded-full blur-3xl opacity-60"></div>
+
+            {/* Floating Cards Mockup */}
+            <div className="relative h-full w-full perspective-1000">
+              {/* Card 1: Map Preview */}
+              <div className="absolute top-10 right-0 w-[90%] bg-white p-4 rounded-[32px] shadow-2xl border border-md-outline/5 rotate-[-6deg] hover:rotate-0 transition-transform duration-700 z-10">
+                <div className="h-48 bg-slate-100 rounded-[24px] overflow-hidden relative">
+                  <div className="absolute inset-0 opacity-40 bg-[url('https://boofcv.org/images/thumb/3/35/Example_rendered_map.png/400px-Example_rendered_map.png')] bg-cover"></div>
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-md-primary rounded-full shadow-lg border-4 border-white"></div>
+                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm">
+                    📍 12 Active Reports
+                  </div>
+                </div>
+                <div className="mt-4 flex gap-3 items-center px-2 pb-2">
+                  <div className="w-10 h-10 rounded-full bg-md-primary/10 flex items-center justify-center text-md-primary font-bold">A</div>
+                  <div>
+                    <div className="h-2 w-24 bg-slate-200 rounded mb-1.5"></div>
+                    <div className="h-2 w-16 bg-slate-100 rounded"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 2: Status Alert */}
+              <div className="absolute bottom-20 left-0 w-[80%] bg-md-surface-variant p-6 rounded-[32px] shadow-xl border border-white/50 rotate-[3deg] hover:rotate-0 transition-transform duration-700 z-20 backdrop-blur-md">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-[10px] font-black uppercase tracking-widest opacity-60">System Update</span>
+                  <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                </div>
+                <h3 className="text-xl font-black mb-2">Leak Resolved</h3>
+                <div className="flex items-center gap-2 text-sm opacity-80 mb-4">
+                  <span>✅ Main St. Pipe fixed</span>
+                </div>
+                <div className="h-1.5 w-full bg-black/5 rounded-full overflow-hidden">
+                  <div className="h-full w-full bg-green-500"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
