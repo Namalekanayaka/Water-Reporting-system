@@ -25,7 +25,7 @@ const SharedResponsibilities = () => {
     }, []);
     return (
         <div className="w-full bg-md-surface min-h-screen p-4 md:p-6 lg:p-8 animate-in fade-in zoom-in duration-500">
-            <div className="max-w-[1600px] mx-auto h-[calc(100vh-4rem)] flex flex-col">
+            <div className="max-w-[1600px] mx-auto min-h-screen lg:min-h-0 lg:h-[calc(100vh-4rem)] flex flex-col">
                 {/* Header */}
                 <div className="mb-8 shrink-0">
                     <div className="flex items-center gap-3 mb-2">
@@ -43,7 +43,7 @@ const SharedResponsibilities = () => {
                 </div>
 
                 {/* Content Grid */}
-                <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                <div className="flex-1 lg:min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
                     {/* Left: Access Matrix (2 cols) */}
                     <div className="lg:col-span-2">
                         <AccessMatrix />
