@@ -102,14 +102,14 @@ const AuthorityDashboard = () => {
                 {/* Main Content Grid */}
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
                     {/* Left Column - Priority Queue */}
-                    <div className="xl:col-span-2 min-h-[500px] lg:h-[650px]">
+                    <div className="xl:col-span-2 lg:h-[650px]">
                         <PriorityQueue reports={criticalQueue.length > 0 ? criticalQueue : []} />
                         {loading && <p className="text-center text-gray-500 mt-4">Loading real-time data...</p>}
                         {!loading && criticalQueue.length === 0 && <p className="text-center text-gray-500 mt-4">No critical issues reported yet.</p>}
                     </div>
 
                     {/* Right Column - Alerts & Resources */}
-                    <div className="space-y-6 flex flex-col min-h-[500px] lg:h-[650px]">
+                    <div className="space-y-6 flex flex-col lg:h-[650px]">
                         <AlertPanel alerts={alerts} />
                         <div className="flex-1 min-h-0">
                             <ResourceAllocation teams={teams} />

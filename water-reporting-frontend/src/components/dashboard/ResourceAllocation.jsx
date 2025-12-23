@@ -13,7 +13,7 @@ const ResourceAllocation = ({ teams = [] }) => {
     };
 
     return (
-        <div className="bg-md-surface-variant/20 backdrop-blur-sm rounded-[28px] border border-md-outline/10 p-6 flex flex-col h-full">
+        <div className="bg-md-surface-variant/20 backdrop-blur-sm rounded-[28px] border border-md-outline/10 p-6 flex flex-col h-[500px] lg:h-full">
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <h3 className="text-xl font-black text-md-on-surface tracking-tight">Resource Allocation</h3>

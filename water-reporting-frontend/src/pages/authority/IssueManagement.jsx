@@ -67,7 +67,7 @@ const IssueManagement = () => {
 
     return (
         <div className="w-full bg-md-surface min-h-screen p-4 md:p-6 lg:p-8 animate-in fade-in zoom-in duration-500">
-            <div className="max-w-[1600px] mx-auto h-[calc(100vh-4rem)] flex flex-col">
+            <div className="max-w-[1600px] mx-auto min-h-screen lg:min-h-0 lg:h-[calc(100vh-6rem)] flex flex-col">
                 <div className="mb-8 shrink-0">
                     <div className="flex items-center gap-3 mb-2">
                         <span className="w-2 h-2 rounded-full bg-md-primary"></span>

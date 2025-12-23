@@ -11,7 +11,7 @@ const PriorityQueue = ({ reports = [] }) => {
     };
 
     return (
-        <div className="bg-md-surface-variant/20 backdrop-blur-sm rounded-[32px] border border-md-outline/10 flex flex-col h-full overflow-hidden">
+        <div className="bg-md-surface-variant/20 backdrop-blur-sm rounded-[32px] border border-md-outline/10 flex flex-col h-[500px] lg:h-full overflow-hidden">
             <div className="p-8 border-b border-md-outline/5 flex justify-between items-center bg-white/30">
                 <div>
                     <h3 className="text-xl font-black text-md-on-surface tracking-tight">Priority Queue</h3>

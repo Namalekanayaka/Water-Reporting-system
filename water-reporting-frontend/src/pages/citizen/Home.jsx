@@ -218,7 +218,7 @@ const Home = () => {
           </div>
 
           {/* Right Visual (5 Cols) - Abstract App Preview */}
-          <div className="lg:col-span-5 relative hidden lg:block h-[600px]">
+          <div className="lg:col-span-5 relative block h-[450px] lg:h-[600px] mt-8 lg:mt-0">
             {/* Decorative Background Blob */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-gradient-to-tr from-md-primary-container/40 to-white/0 rounded-full blur-3xl opacity-60"></div>
 
