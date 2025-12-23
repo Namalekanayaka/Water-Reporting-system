@@ -17,7 +17,13 @@ const IssueManagement = () => {
                     title: r.type ? r.type.replace(/_/g, ' ').toUpperCase() : 'Report #' + r.id.substring(0, 4),
                     location: r.location || { address: 'Unknown' },
                     timestamp: r.createdAt ? new Date(r.createdAt).toLocaleString() : 'N/A',
-                    aiSeverityScore: r.aiSeverityScore || (r.priority === 'critical' ? 0.9 : 0.5)
+                    aiSeverityScore: r.aiSeverityScore || (() => {
+                        const p = (r.priority || 'medium').toLowerCase();
+                        if (p === 'critical') return 0.95;
+                        if (p === 'high') return 0.8;
+                        if (p === 'medium') return 0.5;
+                        return 0.2;
+                    })()
                 }));
                 setReports(formattedReports);
             }

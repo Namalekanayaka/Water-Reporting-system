@@ -25,7 +25,7 @@ const teamIcon = createCustomIcon('#0061A4', '🚚');
 const sensorIcon = createCustomIcon('#10b981', '📡');
 
 const AuthorityMap = ({ reports = [], teams = [], sensors = [] }) => {
-    const center = [12.9716, 77.5946]; // Bangalore center for demo
+    const center = [6.9271, 79.8612]; // Colombo, Sri Lanka center
     const zoom = 12;
 
     const getSeverityColor = (severity) => {

@@ -72,7 +72,12 @@ const AuthorityDashboard = () => {
             id: r.id,
             title: r.type ? r.type.replace(/_/g, ' ').toUpperCase() : 'ISSUE REPORT',
             location: { address: r.location?.address || 'Unknown Location' },
-            aiSeverityScore: r.priority === 'critical' ? 0.95 : 0.8,
+            aiSeverityScore: (() => {
+                const p = (r.priority || 'medium').toLowerCase();
+                if (p === 'critical') return 0.95;
+                if (p === 'high') return 0.8;
+                return 0.5;
+            })(),
             timeAgo: r.createdAt ? new Date(r.createdAt).toLocaleDateString() : 'Recently'
         }));
 

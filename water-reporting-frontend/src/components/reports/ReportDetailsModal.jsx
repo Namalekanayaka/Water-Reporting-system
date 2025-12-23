@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getTeams } from '../../services/api/authority';
+import ReportsMap from '../maps/ReportsMap';
 
 const ReportDetailsModal = ({ report, onClose, onUpdateStatus }) => {
     const [teams, setTeams] = useState([]);
@@ -55,20 +56,20 @@ const ReportDetailsModal = ({ report, onClose, onUpdateStatus }) => {
                     <div className="lg:col-span-2 space-y-8">
                         {/* Map View */}
                         <div className="aspect-video bg-md-surface-variant/20 rounded-2xl border border-md-outline/10 flex items-center justify-center relative overflow-hidden group">
-                            {/* Dynamic Map using OpenStreetMap static image or generic fall back if lat/lng missing */}
                             {report.location && report.location.lat ? (
-                                <img
-                                    src={`https://static-maps.yandex.ru/1.x/?lang=en-US&ll=${report.location.lng},${report.location.lat}&z=15&l=map&pt=${report.location.lng},${report.location.lat},pm2rdm`}
-                                    alt="Location Map"
-                                    className="absolute inset-0 w-full h-full object-cover opacity-80"
-                                />
+                                <div className="w-full h-full">
+                                    <ReportsMap
+                                        reports={[report]}
+                                        center={[report.location.lat, report.location.lng]}
+                                        zoom={15}
+                                        height="100%"
+                                    />
+                                </div>
                             ) : (
-                                <div className="absolute inset-0 bg-slate-200"></div>
+                                <div className="absolute inset-0 bg-slate-200 flex items-center justify-center text-gray-500 font-bold">
+                                    No Location Data
+                                </div>
                             )}
-                            <div className="relative z-10 bg-white/90 p-4 rounded-xl backdrop-blur-md shadow-sm text-center">
-                                <p className="font-bold text-md-on-surface">Location Pin</p>
-                                <p className="text-xs text-md-on-surface-variant">{report.location?.address || 'Coordinates Only'}</p>
-                            </div>
                         </div>
 
                         {/* Images */}

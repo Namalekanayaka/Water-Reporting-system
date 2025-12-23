@@ -1,26 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AuthorityMap from '../../components/maps/AuthorityMap';
+import { getAllReports } from '../../services/api/reports';
+import { getTeams } from '../../services/api/authority';
 
 const GlobalMap = () => {
-    // Mock Data
-    const reports = [
-        { id: '1024', title: 'Pipe Burst', type: 'Leakage', priority: 'critical', status: 'pending', location: { lat: 12.9716, lng: 77.5946, address: 'MG Road' } },
-        { id: '1023', title: 'Contamination', type: 'Quality', priority: 'high', status: 'pending', location: { lat: 12.9352, lng: 77.6245, address: 'Koramangala' } },
-        { id: '1021', title: 'Sewage Leak', type: 'Sanitation', priority: 'medium', status: 'resolved', location: { lat: 12.9279, lng: 77.6271, address: 'Indiranagar' } },
-        { id: '1020', title: 'Low Pressure', type: 'Supply', priority: 'low', status: 'in_progress', location: { lat: 12.9915, lng: 77.5709, address: 'Malleshwaram' } },
-    ];
+    const [reports, setReports] = useState([]);
+    const [teams, setTeams] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
-    const teams = [
-        { id: 1, name: 'Alpha Squad', status: 'Busy', battery: 85, location: { lat: 12.9750, lng: 77.6000 } },
-        { id: 2, name: 'Beta Unit', status: 'Available', battery: 92, location: { lat: 12.9300, lng: 77.6200 } },
-        { id: 3, name: 'Gamma Crew', status: 'Offline', battery: 0, location: { lat: 12.9900, lng: 77.5600 } },
-    ];
+    // Mock Sensors (since we don't have a backend for this yet)
+    const [sensors] = useState([
+        { id: 'S-101', flowRate: 450, pressure: 65, location: { lat: 6.9300, lng: 79.8600 } }, // Colombo Central
+        { id: 'S-102', flowRate: 420, pressure: 62, location: { lat: 6.9100, lng: 79.8800 } }, // Borella Area
+        { id: 'S-103', flowRate: 150, pressure: 25, location: { lat: 6.9500, lng: 79.8500 } }, // Pettah Area
+    ]);
 
-    const sensors = [
-        { id: 'S-101', flowRate: 450, pressure: 65, location: { lat: 12.9600, lng: 77.5800 } },
-        { id: 'S-102', flowRate: 420, pressure: 62, location: { lat: 12.9400, lng: 77.6100 } },
-        { id: 'S-103', flowRate: 150, pressure: 25, location: { lat: 12.9800, lng: 77.5900 } }, // Low pressure anomaly
-    ];
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [reportsRes, teamsRes] = await Promise.all([
+                    getAllReports(),
+                    getTeams()
+                ]);
+
+                if (reportsRes.success) {
+                    setReports(reportsRes.reports.filter(r => r.location && r.location.lat && r.location.lng));
+                }
+
+                if (teamsRes.success) {
+                    // Filter teams that have valid location data (or mock it if missing for now)
+                    // For this demo, we can assign random locations if missing, or specific ones. 
+                    // But assume teams might not have location in DB yet.
+                    // We'll map them to a default if missing or just filter.
+                    // For better "Real/Demo" feel transparency:
+                    const validTeams = teamsRes.teams.map(t => ({
+                        ...t,
+                        // Generating random points around Colombo/Sri Lanka
+                        location: t.location || {
+                            lat: 6.9271 + (Math.random() - 0.5) * 0.1,
+                            lng: 79.8612 + (Math.random() - 0.5) * 0.1
+                        },
+                        battery: t.battery || 85 // Mock battery
+                    }));
+                    setTeams(validTeams);
+                }
+            } catch (error) {
+                console.error("Failed to load map data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <div className="w-full bg-md-surface min-h-screen p-4 md:p-6 lg:p-8 animate-in fade-in zoom-in duration-500">
@@ -38,22 +72,63 @@ const GlobalMap = () => {
                             </p>
                         </div>
                         <div className="hidden md:flex gap-2">
-                            <button className="px-4 py-2 bg-white border border-md-outline/10 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-md-primary/5 transition-colors">
+                            <button
+                                onClick={() => {
+                                    // 1. Convert Data to CSV
+                                    const csvRows = [];
+                                    // Header
+                                    csvRows.push(['ID', 'Title', 'Type', 'Priority', 'Status', 'Latitude', 'Longitude', 'Address'].join(','));
+
+                                    // Body
+                                    reports.forEach(r => {
+                                        const clean = (text) => `"${(text || '').replace(/"/g, '""')}"`;
+                                        csvRows.push([
+                                            clean(r.id),
+                                            clean(r.title),
+                                            clean(r.type),
+                                            clean(r.priority),
+                                            clean(r.status),
+                                            r.location?.lat || '',
+                                            r.location?.lng || '',
+                                            clean(r.location?.address)
+                                        ].join(','));
+                                    });
+
+                                    // 2. Trigger Download
+                                    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+                                    const url = window.URL.createObjectURL(blob);
+                                    const a = document.createElement('a');
+                                    a.href = url;
+                                    a.download = `water_reports_export_${new Date().toISOString().split('T')[0]}.csv`;
+                                    a.click();
+                                    window.URL.revokeObjectURL(url);
+                                }}
+                                className="px-4 py-2 bg-white border border-md-outline/10 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-md-primary/5 transition-colors"
+                            >
                                 Export Data
                             </button>
-                            <button className="px-4 py-2 bg-md-primary text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md hover:bg-water-700 transition-colors">
+                            <button
+                                onClick={() => navigate('/authority/teams')}
+                                className="px-4 py-2 bg-md-primary text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md hover:bg-water-700 transition-colors"
+                            >
                                 + Deploy Unit
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex-1 min-h-0">
-                    <AuthorityMap
-                        reports={reports}
-                        teams={teams}
-                        sensors={sensors}
-                    />
+                <div className="flex-1 min-h-0 bg-white rounded-[32px] overflow-hidden border border-md-outline/10 relative">
+                    {loading ? (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
+                            <p className="text-md-on-surface-variant font-bold animate-pulse">Syncing Geospatial Data...</p>
+                        </div>
+                    ) : (
+                        <AuthorityMap
+                            reports={reports}
+                            teams={teams}
+                            sensors={sensors}
+                        />
+                    )}
                 </div>
             </div>
         </div>

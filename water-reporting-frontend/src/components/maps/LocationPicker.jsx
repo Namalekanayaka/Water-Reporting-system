@@ -17,7 +17,7 @@ function LocationMarker({ position, setPosition }) {
 }
 
 const LocationPicker = ({ onLocationSelect, initialLocation = null, className = '' }) => {
-    const defaultCenter = { lat: 6.9271, lng: 79.8612 };
+    const defaultCenter = { lat: 6.9271, lng: 79.8612 }; // Colombo default
     const [position, setPosition] = useState(initialLocation ? { lat: initialLocation.lat, lng: initialLocation.lng } : null);
     const [address, setAddress] = useState(initialLocation?.address || '');
     const [mapCenter, setMapCenter] = useState(initialLocation ? { lat: initialLocation.lat, lng: initialLocation.lng } : defaultCenter);

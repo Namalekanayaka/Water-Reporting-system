@@ -73,6 +73,8 @@ const ReportIssue = () => {
             const reportData = {
                 type: data.issueType,
                 priority: data.priority,
+                // Debug log
+                _debug_priority_sent: console.log("Submitting Priority:", data.priority) || data.priority,
                 location: {
                     lat: selectedLocation.lat,
                     lng: selectedLocation.lng,
