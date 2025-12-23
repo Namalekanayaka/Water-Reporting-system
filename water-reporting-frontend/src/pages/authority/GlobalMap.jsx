@@ -58,7 +58,7 @@ const GlobalMap = () => {
 
     return (
         <div className="w-full bg-md-surface min-h-screen p-4 md:p-6 lg:p-8 animate-in fade-in zoom-in duration-500">
-            <div className="max-w-[1600px] mx-auto h-[calc(100vh-4rem)] flex flex-col">
+            <div className="max-w-[1600px] mx-auto min-h-screen lg:min-h-0 lg:h-[calc(100vh-4rem)] flex flex-col">
                 <div className="mb-8 shrink-0">
                     <div className="flex items-center gap-3 mb-2">
                         <span className="w-2 h-2 rounded-full bg-md-primary"></span>
@@ -71,7 +71,7 @@ const GlobalMap = () => {
                                 Real-time geospatial oversight of infrastructure, active units, and critical incidents.
                             </p>
                         </div>
-                        <div className="hidden md:flex gap-2">
+                        <div className="flex flex-col md:flex-row gap-2 mt-4 md:mt-0 w-full md:w-auto">
                             <button
                                 onClick={() => {
                                     // 1. Convert Data to CSV
@@ -103,13 +103,13 @@ const GlobalMap = () => {
                                     a.click();
                                     window.URL.revokeObjectURL(url);
                                 }}
-                                className="px-4 py-2 bg-white border border-md-outline/10 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-md-primary/5 transition-colors"
+                                className="px-4 py-3 md:py-2 bg-white border border-md-outline/10 rounded-xl text-xs font-bold uppercase tracking-wider shadow-sm hover:bg-md-primary/5 transition-colors w-full md:w-auto"
                             >
                                 Export Data
                             </button>
                             <button
                                 onClick={() => navigate('/authority/teams')}
-                                className="px-4 py-2 bg-md-primary text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md hover:bg-water-700 transition-colors"
+                                className="px-4 py-3 md:py-2 bg-md-primary text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md hover:bg-water-700 transition-colors w-full md:w-auto"
                             >
                                 + Deploy Unit
                             </button>
@@ -117,7 +117,7 @@ const GlobalMap = () => {
                     </div>
                 </div>
 
-                <div className="flex-1 min-h-0 bg-white rounded-[32px] overflow-hidden border border-md-outline/10 relative">
+                <div className="min-h-[500px] lg:min-h-0 lg:flex-1 bg-white rounded-[32px] overflow-hidden border border-md-outline/10 relative">
                     {loading ? (
                         <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
                             <p className="text-md-on-surface-variant font-bold animate-pulse">Syncing Geospatial Data...</p>
