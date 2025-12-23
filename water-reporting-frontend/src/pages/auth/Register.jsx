@@ -44,10 +44,20 @@ const Register = () => {
     };
 
     return (
-        <div className="w-full min-h-screen flex animate-in fade-in duration-700 bg-white">
+        <div className="w-full min-h-screen flex animate-in fade-in duration-700 bg-white relative">
 
-            {/* Left Side: Visual Brand Panel (Hidden on Mobile) */}
-            <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-md-primary-container">
+            {/* Mobile Background Image - Absolute & Full Screen */}
+            <div className="absolute inset-0 z-0 lg:hidden">
+                <img
+                    src="https://images.unsplash.com/photo-1546255152-4a005086d790?q=80&w=2070&auto=format&fit=crop"
+                    className="w-full h-full object-cover"
+                    alt="Mobile Background"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-md-surface via-white/80 to-white/40 backdrop-blur-[2px]"></div>
+            </div>
+
+            {/* Left Side: Visual Brand Panel (Desktop Only) */}
+            <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-md-primary-container z-10">
                 {/* Background Image / Abstract */}
                 <div className="absolute inset-0">
                     <img
@@ -86,8 +96,8 @@ const Register = () => {
             </div>
 
             {/* Right Side: Register Form */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-16 relative overflow-y-auto">
-                <div className="max-w-[420px] w-full my-auto">
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-16 relative z-10 overflow-y-auto">
+                <div className="max-w-[420px] w-full my-auto md:bg-transparent bg-white/60 md:backdrop-blur-none backdrop-blur-xl md:p-0 p-8 md:rounded-none rounded-[32px] md:shadow-none shadow-xl border md:border-none border-white/40">
 
                     {/* Header */}
                     <div className="mb-8">
@@ -114,7 +124,7 @@ const Register = () => {
                             <input
                                 type="text" name="name" value={formData.name} onChange={handleChange}
                                 placeholder="e.g. Jane Doe"
-                                className="w-full px-5 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl font-medium text-gray-900 outline-none transition-all focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10"
+                                className="w-full px-5 py-3.5 bg-white/80 border-2 border-gray-200 rounded-xl font-medium text-gray-900 outline-none transition-all focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10"
                                 required
                             />
                         </div>
@@ -124,7 +134,7 @@ const Register = () => {
                             <input
                                 type="email" name="email" value={formData.email} onChange={handleChange}
                                 placeholder="name@example.com"
-                                className="w-full px-5 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl font-medium text-gray-900 outline-none transition-all focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10"
+                                className="w-full px-5 py-3.5 bg-white/80 border-2 border-gray-200 rounded-xl font-medium text-gray-900 outline-none transition-all focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10"
                                 required
                             />
                         </div>
@@ -135,7 +145,7 @@ const Register = () => {
                                 <input
                                     type="password" name="password" value={formData.password} onChange={handleChange}
                                     placeholder="••••••••"
-                                    className="w-full px-5 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl font-medium text-gray-900 outline-none transition-all focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10"
+                                    className="w-full px-5 py-3.5 bg-white/80 border-2 border-gray-200 rounded-xl font-medium text-gray-900 outline-none transition-all focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10"
                                     required
                                 />
                             </div>
@@ -144,7 +154,7 @@ const Register = () => {
                                 <input
                                     type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange}
                                     placeholder="••••••••"
-                                    className="w-full px-5 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl font-medium text-gray-900 outline-none transition-all focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10"
+                                    className="w-full px-5 py-3.5 bg-white/80 border-2 border-gray-200 rounded-xl font-medium text-gray-900 outline-none transition-all focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10"
                                     required
                                 />
                             </div>
@@ -160,7 +170,7 @@ const Register = () => {
                     </form>
 
                     {/* Footer */}
-                    <div className="mt-8 pt-6 border-t border-gray-100 text-center">
+                    <div className="mt-8 pt-6 border-t border-gray-200/50 text-center">
                         <p className="text-sm font-medium text-gray-500">
                             Already part of the team? <Link to="/login" className="text-md-primary font-bold hover:underline">Sign In</Link>
                         </p>

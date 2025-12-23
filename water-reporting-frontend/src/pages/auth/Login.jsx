@@ -79,10 +79,23 @@ const Login = () => {
     };
 
     return (
-        <div className={`w-full min-h-screen flex animate-in fade-in duration-700 ${isAuthorityMode ? 'bg-slate-900' : 'bg-white'}`}>
+        <div className={`w-full min-h-screen flex animate-in fade-in duration-700 relative ${isAuthorityMode ? 'bg-slate-900' : 'bg-white'}`}>
 
-            {/* Left Side: Visual Brand Panel (Hidden on Mobile) */}
-            <div className={`hidden lg:flex lg:w-1/2 relative overflow-hidden transition-all duration-1000 ${isAuthorityMode ? 'bg-slate-800' : 'bg-md-primary-container'}`}>
+            {/* Mobile Background Image - Absolute & Full Screen */}
+            <div className="absolute inset-0 z-0 lg:hidden">
+                <img
+                    src={isAuthorityMode
+                        ? "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
+                        : "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2070&auto=format&fit=crop"
+                    }
+                    className="w-full h-full object-cover"
+                    alt="Mobile Background"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-t ${isAuthorityMode ? 'from-slate-950 via-slate-900/80 to-slate-900/60' : 'from-md-surface via-white/80 to-white/40'} backdrop-blur-[2px]`}></div>
+            </div>
+
+            {/* Left Side: Visual Brand Panel (Desktop Only) */}
+            <div className={`hidden lg:flex lg:w-1/2 relative overflow-hidden transition-all duration-1000 ${isAuthorityMode ? 'bg-slate-800' : 'bg-md-primary-container'} z-10`}>
                 {/* Background Image / Abstract */}
                 <div className="absolute inset-0">
                     <img
@@ -126,27 +139,9 @@ const Login = () => {
             </div>
 
             {/* Right Side: Login Form */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-16 relative">
-                <div className="max-w-[420px] w-full">
-
-                    {/* Mobile Report Banner - Visible only on small screens */}
-                    <div className="lg:hidden w-full h-40 mb-8 rounded-2xl overflow-hidden relative shadow-md">
-                        <img
-                            src={isAuthorityMode
-                                ? "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
-                                : "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2070&auto=format&fit=crop"
-                            }
-                            className="w-full h-full object-cover"
-                            alt="Mobile Header"
-                        />
-                        <div className={`absolute inset-0 bg-gradient-to-t ${isAuthorityMode ? 'from-slate-900' : 'from-white'} to-transparent opacity-80`}></div>
-                        <div className="absolute bottom-3 left-4 flex items-center gap-3">
-                            <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/30">
-                                <img src={logo} alt="Logo" className="w-5 h-5 object-contain" />
-                            </div>
-                            <span className={`text-sm font-black tracking-tighter ${isAuthorityMode ? 'text-white' : 'text-md-on-surface'}`}>AquaAlert</span>
-                        </div>
-                    </div>
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-16 relative z-10">
+                {/* Glass Card Container for Mobile */}
+                <div className={`max-w-[420px] w-full ${!isAuthorityMode ? 'md:bg-transparent bg-white/60 md:backdrop-blur-none backdrop-blur-xl md:p-0 p-8 md:rounded-none rounded-[32px] md:shadow-none shadow-xl border md:border-none border-white/40' : ''}`}>
 
                     {/* Header */}
                     <div className="mb-10">
@@ -189,7 +184,7 @@ const Login = () => {
                                 className={`w-full px-5 py-4 rounded-xl font-medium outline-none transition-all
                                     ${isAuthorityMode
                                         ? 'bg-slate-800 border-slate-700 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                                        : 'bg-gray-50 border-gray-200 text-gray-900 focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10 border-2'
+                                        : 'bg-white/80 border-gray-200 text-gray-900 focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10 border-2'
                                     }`}
                                 placeholder="name@example.com"
                                 required
@@ -208,7 +203,7 @@ const Login = () => {
                                 className={`w-full px-5 py-4 rounded-xl font-medium outline-none transition-all
                                     ${isAuthorityMode
                                         ? 'bg-slate-800 border-slate-700 text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                                        : 'bg-gray-50 border-gray-200 text-gray-900 focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10 border-2'
+                                        : 'bg-white/80 border-gray-200 text-gray-900 focus:bg-white focus:border-md-primary focus:ring-4 focus:ring-md-primary/10 border-2'
                                     }`}
                                 placeholder="••••••••"
                                 required
@@ -229,7 +224,7 @@ const Login = () => {
                     </form>
 
                     {/* Footer / Alt Actions */}
-                    <div className="mt-10 pt-6 border-t border-gray-100 dark:border-slate-800">
+                    <div className={`mt-10 pt-6 border-t ${isAuthorityMode ? 'border-slate-800' : 'border-gray-200/50'}`}>
                         {!isAuthorityMode ? (
                             <div className="space-y-6">
                                 <button
