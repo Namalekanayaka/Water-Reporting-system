@@ -5,6 +5,7 @@ import MainLayout from './layout/MainLayout';
 import Home from './pages/citizen/Home';
 import ReportIssue from './pages/citizen/ReportIssue';
 import MyReports from './pages/citizen/MyReports';
+import ReportDetails from './pages/citizen/ReportDetails';
 import AreaHealth from './pages/citizen/AreaHealth';
 
 // Authority Pages
@@ -77,6 +78,11 @@ function App() {
                   <Route path="/my-reports" element={
                     <ProtectedRoute>
                       <MyReports />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/report/:id" element={
+                    <ProtectedRoute>
+                      <ReportDetails />
                     </ProtectedRoute>
                   } />
                   <Route path="/area-health" element={
