@@ -81,15 +81,15 @@ const Login = () => {
     return (
         <div className={`w-full min-h-screen flex animate-in fade-in duration-700 relative ${isAuthorityMode ? 'bg-slate-900' : 'bg-white'}`}>
 
-            {/* Mobile Background Image - Absolute & Full Screen */}
-            <div className="absolute inset-0 z-0 lg:hidden">
+            {/* Mobile Background Image - Fixed & Full Screen */}
+            <div className="fixed inset-0 z-0 lg:hidden">
                 <img
                     src={isAuthorityMode
                         ? "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
                         : "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2070&auto=format&fit=crop"
                     }
                     className="w-full h-full object-cover"
-                    alt="Mobile Background"
+                    alt=""
                 />
                 <div className={`absolute inset-0 bg-gradient-to-t ${isAuthorityMode ? 'from-slate-950 via-slate-900/80 to-slate-900/60' : 'from-md-surface via-white/80 to-white/40'} backdrop-blur-[2px]`}></div>
             </div>
