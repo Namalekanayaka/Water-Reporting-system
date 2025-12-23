@@ -39,8 +39,9 @@ const ReportTable = ({ reports, onReportClick }) => {
                 </div>
             </div>
 
-            <div className="flex-1 overflow-auto">
-                <table className="w-full min-w-[1000px] text-left border-collapse">
+            <div className="flex-1 overflow-auto custom-scrollbar">
+                {/* Desktop View: Table */}
+                <table className="w-full text-left border-collapse hidden lg:table">
                     <thead className="bg-md-surface-variant/20 sticky top-0 z-10 backdrop-blur-md">
                         <tr>
                             <th className="p-5 text-xs font-black text-md-on-surface-variant uppercase tracking-wider w-20">ID</th>
@@ -58,7 +59,7 @@ const ReportTable = ({ reports, onReportClick }) => {
                                 onClick={() => onReportClick(report)}
                                 className="group hover:bg-md-surface-variant/10 cursor-pointer transition-colors"
                             >
-                                <td className="p-5 text-sm font-bold text-md-on-surface-variant group-hover:text-md-primary transition-colors">#{report.id}</td>
+                                <td className="p-5 text-sm font-bold text-md-on-surface-variant group-hover:text-md-primary transition-colors">#{report.id && report.id.substring(0, 6)}</td>
                                 <td className="p-5">
                                     <p className="font-bold text-md-on-surface text-sm mb-0.5 group-hover:text-md-primary transition-colors">{report.title}</p>
                                     <p className="text-xs text-md-on-surface-variant/70">{report.type}</p>
@@ -77,6 +78,46 @@ const ReportTable = ({ reports, onReportClick }) => {
                         ))}
                     </tbody>
                 </table>
+
+                {/* Mobile View: Vertical Cards */}
+                <div className="lg:hidden flex flex-col divide-y divide-md-outline/5">
+                    {reports.map((report) => (
+                        <div
+                            key={report.id}
+                            onClick={() => onReportClick(report)}
+                            className="p-5 active:bg-md-surface-variant/10 transition-colors cursor-pointer"
+                        >
+                            <div className="flex justify-between items-start mb-3">
+                                <div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-[10px] font-black uppercase tracking-wider text-md-primary bg-md-primary/10 px-2 py-0.5 rounded-full">#{report.id && report.id.substring(0, 6)}</span>
+                                        <span className="text-xs text-md-on-surface-variant/70">{report.timestamp}</span>
+                                    </div>
+                                    <h3 className="font-bold text-md-on-surface text-base">{report.title}</h3>
+                                </div>
+                                <StatusBadge status={report.status} />
+                            </div>
+
+                            <div className="flex items-center gap-2 mb-4 text-md-on-surface-variant text-sm">
+                                <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <span className="truncate">{report.location.address}</span>
+                            </div>
+
+                            <div className="flex items-center justify-between">
+                                <SeverityBadge severity={report.priority} />
+                                <button className="text-xs font-bold text-md-primary flex items-center gap-1">
+                                    View Details
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Pagination Footer */}
