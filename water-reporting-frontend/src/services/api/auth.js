@@ -45,7 +45,22 @@ export const loginWithGoogle = async () => {
         };
     } catch (error) {
         console.error("Google Login Error:", error);
-        throw { message: error.message };
+
+        // Handle specific Firebase Auth errors
+        if (error.code === 'auth/popup-closed-by-user') {
+            throw { message: 'Sign-in was cancelled.' };
+        }
+        if (error.code === 'auth/popup-blocked') {
+            throw { message: 'Pop-up blocked by browser. Please allow popups for this site.' };
+        }
+        if (error.code === 'auth/cancelled-popup-request') {
+            throw { message: 'Only one popup request allowed at a time.' };
+        }
+        if (error.code === 'auth/unauthorized-domain') {
+            throw { message: 'Domain not authorized in Firebase Console.' };
+        }
+
+        throw { message: error.message || 'Failed to sign in with Google.' };
     }
 };
 
