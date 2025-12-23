@@ -39,9 +39,8 @@ const ReportTable = ({ reports, onReportClick }) => {
                 </div>
             </div>
 
-            {/* Table */}
             <div className="flex-1 overflow-auto">
-                <table className="w-full text-left border-collapse">
+                <table className="w-full min-w-[1000px] text-left border-collapse">
                     <thead className="bg-md-surface-variant/20 sticky top-0 z-10 backdrop-blur-md">
                         <tr>
                             <th className="p-5 text-xs font-black text-md-on-surface-variant uppercase tracking-wider w-20">ID</th>
