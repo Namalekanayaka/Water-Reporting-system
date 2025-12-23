@@ -3,6 +3,11 @@
 // Ideally, call a backend endpoint (Firebase Cloud Function) which then calls Gemini.
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+// SECURITY NOTICE:
+// This implementation calls the Gemini API directly from the client browser.
+// In a strictly secure production environment, this request should be proxied through a backend (e.g., Firebase Cloud Functions)
+// to avoid exposing the API key in network requests.
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 /**
