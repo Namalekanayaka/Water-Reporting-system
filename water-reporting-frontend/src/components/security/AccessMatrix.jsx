@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getAllUsers } from '../../services/api/users';
 
 const AccessMatrix = () => {
-    const roles = ['Admin', 'Manager', 'Analyst', 'Field Unit'];
+    const roles = ['citizen', 'authority']; // Simplified for now based on DB
     const resources = [
         { name: 'Reports', key: 'reports' },
         { name: 'Analytics', key: 'analytics' },
         { name: 'User Data', key: 'users' },
-        { name: 'System Config', key: 'config' },
+        { name: 'Console', key: 'config' },
     ];
 
-    // Mock initial state: role -> resource -> permission level (0=None, 1=Read, 2=Write)
-    const [permissions, setPermissions] = useState({
-        'Admin': { reports: 2, analytics: 2, users: 2, config: 2 },
-        'Manager': { reports: 2, analytics: 2, users: 1, config: 0 },
-        'Analyst': { reports: 1, analytics: 2, users: 0, config: 0 },
-        'Field Unit': { reports: 1, analytics: 0, users: 0, config: 0 },
-    });
+    // Default Permissions
+    const defaultPerms = {
+        'authority': { reports: 2, analytics: 2, users: 2, config: 2 },
+        'citizen': { reports: 1, analytics: 0, users: 0, config: 0 }
+    };
+
+    const [permissions, setPermissions] = useState(defaultPerms);
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const { success, users: data } = await getAllUsers();
+            if (success) setUsers(data.splice(0, 5)); // Show top 5 for demo
+        };
+        fetchUsers();
+    }, []);
 
     const togglePermission = (role, resourceKey) => {
         setPermissions(prev => ({
