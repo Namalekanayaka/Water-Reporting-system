@@ -37,7 +37,7 @@ const ResourceAllocation = ({ teams = [] }) => {
                                 {team.avatar}
                             </div>
                             <div className={`absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-[3px] border-md-surface ${team.status === 'available' ? 'bg-emerald-500' :
-                                    team.status === 'busy' ? 'bg-amber-500' : 'bg-slate-400'
+                                team.status === 'busy' ? 'bg-amber-500' : 'bg-slate-400'
                                 }`}></div>
                         </div>
                         <div className="flex-1 min-w-0">
@@ -51,7 +51,9 @@ const ResourceAllocation = ({ teams = [] }) => {
                 ))}
             </div>
 
-            <button className="w-full mt-6 py-3.5 rounded-xl border border-md-outline/10 text-xs font-bold uppercase tracking-wider text-md-on-surface-variant hover:bg-md-surface hover:text-md-primary hover:border-md-primary/20 transition-all bg-white/50">
+            <button
+                onClick={() => navigate('/authority/teams')}
+                className="w-full mt-6 py-3.5 rounded-xl border border-md-outline/10 text-xs font-bold uppercase tracking-wider text-md-on-surface-variant hover:bg-md-surface hover:text-md-primary hover:border-md-primary/20 transition-all bg-white/50">
                 Manage Schedule
             </button>
         </div>

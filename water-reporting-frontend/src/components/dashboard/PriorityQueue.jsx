@@ -62,10 +62,14 @@ const PriorityQueue = ({ reports = [] }) => {
                             </div>
 
                             <div className="flex gap-3 relative z-10">
-                                <button className="flex-1 bg-md-surface-variant/30 hover:bg-md-surface-variant text-xs font-bold py-2.5 rounded-xl text-md-on-surface transition-colors">
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); navigate('/authority/issues'); }}
+                                    className="flex-1 bg-md-surface-variant/30 hover:bg-md-surface-variant text-xs font-bold py-2.5 rounded-xl text-md-on-surface transition-colors">
                                     Details
                                 </button>
-                                <button className="flex-1 bg-md-primary hover:bg-water-700 text-xs font-bold py-2.5 rounded-xl text-white transition-colors shadow-sm">
+                                <button
+                                    onClick={(e) => { e.stopPropagation(); navigate('/authority/issues'); }}
+                                    className="flex-1 bg-md-primary hover:bg-water-700 text-xs font-bold py-2.5 rounded-xl text-white transition-colors shadow-sm">
                                     Assign Team
                                 </button>
                             </div>

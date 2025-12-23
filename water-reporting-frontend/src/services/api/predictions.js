@@ -11,11 +11,32 @@ const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-
  * @returns {Promise<Object>} { severity: 'low'|'medium'|'high'|'critical', explanation: string }
  */
 export const analyzeReportSeverity = async (description) => {
-    if (GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") {
+    // Check if key is missing or is the placeholder
+    if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") {
         console.warn("Gemini API Key is missing. Returning mock analysis.");
+
+        // Simple keyword-based mock analysis
+        const descLower = description.toLowerCase();
+        let severity = 'low';
+        let explanation = 'Routine issue detected based on keywords.';
+
+        if (descLower.includes('burst') || descLower.includes('flood') || descLower.includes('dangerous') || descLower.includes('massive')) {
+            severity = 'critical';
+            explanation = 'Critical keywords detected (burst/flood/dangerous). Immediate attention required.';
+        } else if (descLower.includes('leak') || descLower.includes('broken') || descLower.includes('urgent') || descLower.includes('no supply')) {
+            severity = 'high';
+            explanation = 'High priority keywords detected (leak/broken/urgent).';
+        } else if (descLower.includes('pressure') || descLower.includes('quality') || descLower.includes('dirty')) {
+            severity = 'medium';
+            explanation = 'Medium priority issue detected relating to quality or pressure.';
+        }
+
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
         return {
-            severity: 'medium',
-            explanation: 'AI analysis unavailable (Missing API Key). Defaulting to medium severity.'
+            severity,
+            explanation: `[AI MOCK] ${explanation}`
         };
     }
 
@@ -43,6 +64,10 @@ export const analyzeReportSeverity = async (description) => {
             })
         });
 
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.statusText}`);
+        }
+
         const data = await response.json();
 
         if (data.candidates && data.candidates[0].content) {
@@ -69,12 +94,40 @@ export const analyzeReportSeverity = async (description) => {
  * @returns {Promise<Object>}
  */
 export const generateSystemForecast = async (stats) => {
-    if (GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") { // Fallback if key not set
+    if (!GEMINI_API_KEY || GEMINI_API_KEY === "YOUR_GEMINI_API_KEY") { // Fallback if key not set
+        console.warn("Gemini API Key is missing. Using statistical forecast.");
+
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // Logic to generate a "fake" but realistic forecast based on stats
+        const criticalCount = stats.severityCounts.critical || 0;
+        const highCount = stats.severityCounts.high || 0;
+        const total = stats.totalReports || 1;
+
+        let stress = 'Low';
+        let recommendation = 'Routine maintenance recommended.';
+        let peak = '18:00'; // Default peak time
+
+        if (criticalCount > 0 || (highCount / total) > 0.3) {
+            stress = 'Critical';
+            recommendation = 'Immediate deployment of emergency teams required.';
+        } else if ((highCount + criticalCount) > 5) {
+            stress = 'High';
+            recommendation = 'Monitor pressure levels in high-density zones.';
+        } else if (total > 20) {
+            stress = 'Medium';
+            recommendation = 'Schedule preventive checks for older infrastructure.';
+        }
+
+        // Randomize the zone slightly
+        const zones = ['Zone A', 'Zone B', 'Central District', 'North Sector'];
+        const randomZone = zones[Math.floor(Math.random() * zones.length)];
+
         return {
-            stress: 'Medium',
-            peak: '18:00',
-            zone: 'Zone B',
-            recommendation: 'Mock: Balance pressure valves in Sector 7.'
+            stress,
+            peak,
+            zone: randomZone,
+            recommendation: `[AI MOCK] ${recommendation}`
         };
     }
 
@@ -99,6 +152,10 @@ export const generateSystemForecast = async (stats) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
         });
+
+        if (!response.ok) {
+            throw new Error(`API Error: ${response.statusText}`);
+        }
 
         const data = await response.json();
         if (data.candidates && data.candidates[0].content) {

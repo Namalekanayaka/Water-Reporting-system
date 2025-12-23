@@ -24,6 +24,8 @@ const ReportIssue = () => {
 
     // AI Integration
     const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+    // Improved AI Analysis Handler
     const handleAIAnalysis = async () => {
         const description = getValues('description');
         if (!description || description.length < 5) {
@@ -33,7 +35,10 @@ const ReportIssue = () => {
 
         setIsAnalyzing(true);
         try {
+            console.log("Requesting AI analysis for:", description);
             const result = await analyzeReportSeverity(description);
+            console.log("AI Response:", result);
+
             if (result && result.severity) {
                 const urgencyMap = {
                     'low': 'low',
@@ -41,11 +46,20 @@ const ReportIssue = () => {
                     'high': 'high',
                     'critical': 'critical'
                 };
-                setValue('priority', urgencyMap[result.severity.toLowerCase()] || 'medium', { shouldValidate: true });
+
+                // Safer string handling
+                const severityKey = String(result.severity).toLowerCase();
+                const matchedPriority = urgencyMap[severityKey] || 'medium';
+
+                setValue('priority', matchedPriority, { shouldValidate: true });
                 addNotification(`AI Assessment: ${result.explanation}`, 'success');
+            } else {
+                console.warn("AI returned invalid result format:", result);
+                addNotification('AI could not determine severity. Please select manually.', 'warning');
             }
         } catch (error) {
-            addNotification('AI Analysis failed.', 'error');
+            console.error("AI Analysis Integration Error:", error);
+            addNotification('AI Analysis failed. Please confirm details manually.', 'error');
         } finally {
             setIsAnalyzing(false);
         }

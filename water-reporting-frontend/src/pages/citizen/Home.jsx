@@ -1,10 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { getUserReports, getAllReports } from "../../services/api/reports";
 
 const Home = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // State for real data
+  const [userReportCount, setUserReportCount] = useState(0);
+  const [activeIssueCount, setActiveIssueCount] = useState(0);
+  const [criticalCount, setCriticalCount] = useState(0);
+  const [areaHealth, setAreaHealth] = useState(94); // Default strong starting point
 
   // Redirect Authority Users to their Dashboard immediately
   useEffect(() => {
@@ -12,6 +19,38 @@ const Home = () => {
       navigate('/authority/dashboard', { replace: true });
     }
   }, [isAuthenticated, user, navigate]);
+
+  // Fetch Real Data
+  useEffect(() => {
+    const fetchHomeData = async () => {
+      if (!isAuthenticated) return;
+
+      try {
+        // 1. Get User Reports
+        const userRes = await getUserReports();
+        if (userRes.success) {
+          setUserReportCount(userRes.reports.length);
+        }
+
+        // 2. Get Global Active Reports (for Area Health & Active Issues context)
+        const globalRes = await getAllReports();
+        if (globalRes.success) {
+          const active = globalRes.reports.filter(r => r.status !== 'resolved' && r.status !== 'closed');
+          setActiveIssueCount(active.length);
+
+          const critical = active.filter(r => r.priority === 'critical');
+          setCriticalCount(critical.length);
+
+          // Simple algorithm for area health: 100 - (active_issues * 2), min 50
+          const calculatedHealth = Math.max(50, 100 - (active.length * 2));
+          setAreaHealth(calculatedHealth);
+        }
+      } catch (error) {
+        console.error("Home Data Fetch Error:", error);
+      }
+    };
+    fetchHomeData();
+  }, [isAuthenticated]);
 
   if (isAuthenticated) {
     return (
@@ -38,10 +77,10 @@ const Home = () => {
               <span className="text-xl">🤝</span>
             </div>
             <div className="flex items-baseline gap-2">
-              <p className="text-4xl font-black text-md-on-surface">12</p>
+              <p className="text-4xl font-black text-md-on-surface">{userReportCount}</p>
               <span className="text-sm font-medium text-md-on-surface-variant">reports</span>
             </div>
-            <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit mt-3">Helping 450 families</p>
+            <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit mt-3">Helping community</p>
           </div>
 
           <div className="bg-md-primary-container/20 p-6 rounded-[24px] border border-md-primary-container/10 flex flex-col justify-center transition-all hover:bg-md-primary-container/30">
@@ -50,10 +89,10 @@ const Home = () => {
               <span className="text-xl">❤️</span>
             </div>
             <div className="flex items-baseline gap-2">
-              <p className="text-4xl font-black text-md-on-surface">94%</p>
+              <p className="text-4xl font-black text-md-on-surface">{areaHealth}%</p>
               <span className="text-sm font-medium text-md-on-surface-variant">score</span>
             </div>
-            <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit mt-3">Top 10% in City</p>
+            <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit mt-3">Live Index</p>
           </div>
 
           <div className="bg-orange-50 p-6 rounded-[24px] border border-orange-100 flex flex-col justify-center transition-all hover:bg-orange-100/50">
@@ -62,10 +101,10 @@ const Home = () => {
               <span className="text-xl">⚠️</span>
             </div>
             <div className="flex items-baseline gap-2">
-              <p className="text-4xl font-black text-orange-900">2</p>
+              <p className="text-4xl font-black text-orange-900">{activeIssueCount}</p>
               <span className="text-sm font-medium text-orange-800/60">open</span>
             </div>
-            <p className="text-xs font-bold text-orange-700 bg-orange-100 px-2 py-1 rounded w-fit mt-3">1 Critical Repair</p>
+            <p className="text-xs font-bold text-orange-700 bg-orange-100 px-2 py-1 rounded w-fit mt-3">{criticalCount} Critical</p>
           </div>
         </div>
 
@@ -101,7 +140,7 @@ const Home = () => {
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-2xl font-black text-md-on-surface mb-2">Track Progress</h3>
-                  <p className="text-sm text-md-on-surface-variant font-medium">View updates on your 12 reports.</p>
+                  <p className="text-sm text-md-on-surface-variant font-medium">View updates on your {userReportCount} reports.</p>
                 </div>
                 <div className="w-12 h-12 bg-md-secondary-container rounded-2xl flex items-center justify-center text-md-on-secondary-container text-2xl group-hover:rotate-12 transition-transform">
                   📋
