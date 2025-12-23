@@ -38,15 +38,21 @@ export const createReport = async (reportData) => {
 
             const uploadPromises = reportData.images.map(async (file) => {
                 try {
-                    const storageRef = ref(storage, `reports/${reportId}/${Date.now()}_${file.name}`);
+                    // Sanitize filename and ensure unique path
+                    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+                    const storageRef = ref(storage, `reports/${reportId}/${Date.now()}_${safeName}`);
 
-                    // Race: Upload vs 15s Timeout
+                    const metadata = {
+                        contentType: file.type || 'image/jpeg',
+                    };
+
+                    // Race: Upload vs 60s Timeout (Increased for mobile/slow networks)
                     const url = await Promise.race([
                         (async () => {
-                            await uploadBytes(storageRef, file);
+                            await uploadBytes(storageRef, file, metadata);
                             return await getDownloadURL(storageRef);
                         })(),
-                        new Promise((_, reject) => setTimeout(() => reject(new Error("Upload timed out (15s)")), 15000))
+                        new Promise((_, reject) => setTimeout(() => reject(new Error("Upload timed out (60s)")), 60000))
                     ]);
 
                     return url;
