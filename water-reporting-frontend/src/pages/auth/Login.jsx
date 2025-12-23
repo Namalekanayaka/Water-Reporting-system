@@ -129,6 +129,25 @@ const Login = () => {
             <div className="w-full lg:w-1/2 flex items-center justify-center p-8 lg:p-16 relative">
                 <div className="max-w-[420px] w-full">
 
+                    {/* Mobile Report Banner - Visible only on small screens */}
+                    <div className="lg:hidden w-full h-40 mb-8 rounded-2xl overflow-hidden relative shadow-md">
+                        <img
+                            src={isAuthorityMode
+                                ? "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop"
+                                : "https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2070&auto=format&fit=crop"
+                            }
+                            className="w-full h-full object-cover"
+                            alt="Mobile Header"
+                        />
+                        <div className={`absolute inset-0 bg-gradient-to-t ${isAuthorityMode ? 'from-slate-900' : 'from-white'} to-transparent opacity-80`}></div>
+                        <div className="absolute bottom-3 left-4 flex items-center gap-3">
+                            <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center border border-white/30">
+                                <img src={logo} alt="Logo" className="w-5 h-5 object-contain" />
+                            </div>
+                            <span className={`text-sm font-black tracking-tighter ${isAuthorityMode ? 'text-white' : 'text-md-on-surface'}`}>AquaAlert</span>
+                        </div>
+                    </div>
+
                     {/* Header */}
                     <div className="mb-10">
                         {isAuthorityMode ? (

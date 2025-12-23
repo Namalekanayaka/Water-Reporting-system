@@ -115,7 +115,7 @@ const ReportIssue = () => {
     };
 
     return (
-        <div className="w-full bg-md-surface h-screen flex flex-col overflow-hidden">
+        <div className="w-full bg-md-surface min-h-screen lg:h-screen flex flex-col lg:overflow-hidden">
             {/* Header - Compact */}
             <div className="shrink-0 pt-6 pb-2 px-8 flex justify-between items-end">
                 <div>
@@ -132,11 +132,11 @@ const ReportIssue = () => {
             </div>
 
             {/* Main Content - Full Height Grid */}
-            <div className="flex-1 p-4 md:p-6 min-h-0">
-                <form onSubmit={handleSubmit(onSubmit)} className="h-full max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="flex-1 p-4 md:p-6 lg:min-h-0">
+                <form onSubmit={handleSubmit(onSubmit)} className="lg:h-full max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                     {/* Left Column: Form Controls (4 cols) */}
-                    <div className="lg:col-span-4 flex flex-col gap-4 h-full overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="lg:col-span-4 flex flex-col gap-4 lg:h-full lg:overflow-y-auto pr-0 lg:pr-2 custom-scrollbar">
                         {/* Classification Card */}
                         <div className="bg-white rounded-[24px] p-6 shadow-sm border border-md-outline/10">
                             <h2 className="text-sm font-black text-md-on-surface uppercase tracking-wide mb-4 flex items-center gap-2">
@@ -230,8 +230,8 @@ const ReportIssue = () => {
                         </div>
                     </div>
 
-                    {/* Right Column: Map (8 cols) */}
-                    <div className="hidden lg:block lg:col-span-8 h-full bg-white rounded-[32px] overflow-hidden border border-md-outline/10 shadow-md relative group">
+                    {/* Right Column: Map (8 cols) - Mobile Visible now */}
+                    <div className="col-span-1 lg:col-span-8 h-[400px] lg:h-full bg-white rounded-[32px] overflow-hidden border border-md-outline/10 shadow-md relative group">
                         <div className="absolute top-6 left-6 z-[1000] bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-md-outline/10 shadow-sm pointer-events-none">
                             <h2 className="text-xs font-black text-md-on-surface uppercase tracking-wide flex items-center gap-2">
                                 <span className="w-5 h-5 rounded-full bg-md-primary-container text-md-on-primary-container flex items-center justify-center text-[10px]">3</span>
