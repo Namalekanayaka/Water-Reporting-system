@@ -34,6 +34,7 @@ import { NotificationProvider } from './context/NotificationContext';
 import NotificationToast from './components/common/NotificationToast';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import PublicRoute from './components/auth/PublicRoute';
+import ScrollToTop from './components/common/ScrollToTop';
 
 import './App.css';
 
@@ -45,6 +46,7 @@ function App() {
           <NotificationProvider>
             <NotificationToast />
             <Router>
+              <ScrollToTop />
               <MainLayout>
                 <Routes>
                   {/* Public Routes */}
