@@ -47,12 +47,12 @@ const Register = () => {
         <div className="w-full min-h-screen flex animate-in fade-in duration-700 bg-white relative">
 
             {/* Mobile Background Image - Fixed & Full Screen */}
-            <div className="fixed inset-0 z-0 lg:hidden">
-                <img
-                    src="https://images.unsplash.com/photo-1546255152-4a005086d790?q=80&w=2070&auto=format&fit=crop"
-                    className="w-full h-full object-cover"
-                    alt=""
-                />
+            <div
+                className="fixed inset-0 z-0 lg:hidden bg-cover bg-center bg-no-repeat"
+                style={{
+                    backgroundImage: `url('https://images.unsplash.com/photo-1546255152-4a005086d790?q=80&w=2070&auto=format&fit=crop')`
+                }}
+            >
                 <div className="absolute inset-0 bg-gradient-to-t from-md-surface via-white/80 to-white/40 backdrop-blur-[2px]"></div>
             </div>
 
