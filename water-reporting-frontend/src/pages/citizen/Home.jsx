@@ -10,6 +10,7 @@ const Home = () => {
   // State for real data
   const [userReportCount, setUserReportCount] = useState(0);
   const [activeIssueCount, setActiveIssueCount] = useState(0);
+  const [resolvedCount, setResolvedCount] = useState(0);
   const [criticalCount, setCriticalCount] = useState(0);
   const [areaHealth, setAreaHealth] = useState(94); // Default strong starting point
 
@@ -37,6 +38,9 @@ const Home = () => {
         if (globalRes.success) {
           const active = globalRes.reports.filter(r => r.status !== 'resolved' && r.status !== 'closed');
           setActiveIssueCount(active.length);
+
+          const resolved = globalRes.reports.filter(r => r.status === 'resolved' || r.status === 'closed');
+          setResolvedCount(resolved.length);
 
           const critical = active.filter(r => r.priority === 'critical');
           setCriticalCount(critical.length);
@@ -95,16 +99,16 @@ const Home = () => {
             <p className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded w-fit mt-3">Live Index</p>
           </div>
 
-          <div className="bg-orange-50 p-6 rounded-[24px] border border-orange-100 flex flex-col justify-center transition-all hover:bg-orange-100/50">
+          <div className="bg-emerald-50 p-6 rounded-[24px] border border-emerald-100 flex flex-col justify-center transition-all hover:bg-emerald-100/50">
             <div className="flex justify-between items-start mb-4">
-              <h3 className="text-orange-800/70 font-bold uppercase tracking-wider text-[10px]">Active Issues</h3>
-              <span className="text-xl">⚠️</span>
+              <h3 className="text-emerald-800/70 font-bold uppercase tracking-wider text-[10px]">Resolved Issues</h3>
+              <span className="text-xl">✅</span>
             </div>
             <div className="flex items-baseline gap-2">
-              <p className="text-4xl font-black text-orange-900">{activeIssueCount}</p>
-              <span className="text-sm font-medium text-orange-800/60">open</span>
+              <p className="text-4xl font-black text-emerald-900">{resolvedCount}</p>
+              <span className="text-sm font-medium text-emerald-800/60">fixed</span>
             </div>
-            <p className="text-xs font-bold text-orange-700 bg-orange-100 px-2 py-1 rounded w-fit mt-3">{criticalCount} Critical</p>
+            <p className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-1 rounded w-fit mt-3">Community Win</p>
           </div>
         </div>
 
