@@ -81,7 +81,12 @@ const Login = () => {
         <div className={`w-full min-h-screen p-6 flex items-center justify-center transition-colors duration-500 ${isAuthorityMode ? 'bg-slate-900' : 'bg-md-surface'}`}>
             <div className="max-w-md w-full animate-in fade-in slide-in-from-bottom-8 duration-1000">
                 <div className="text-center mb-8">
-                    <span className="text-4xl mb-4 block">{isAuthorityMode ? '🛡️' : '💧'}</span>
+                    <span className="text-4xl mb-4 block animate-bounce">{isAuthorityMode ? '🛡️' : '💧'}</span>
+                    {!isAuthorityMode && (
+                        <p className="text-lg md:text-xl font-bold text-md-primary mb-2 animate-pulse bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
+                            Welcome to AquaAlert
+                        </p>
+                    )}
                     <h1 className={`text-[36px] md:text-[44px] font-black tracking-tight leading-none mb-2 ${isAuthorityMode ? 'text-white' : 'text-md-on-surface'}`}>
                         {isAuthorityMode ? "Authority Console." : "Sign In."}
                     </h1>

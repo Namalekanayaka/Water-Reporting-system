@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import logo from "../../assets/logo.png";
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
@@ -85,13 +86,11 @@ const Sidebar = ({ onClose }) => {
     <div className="w-full h-full bg-md-surface flex flex-col px-3 py-6 pointer-events-auto">
       {/* Drawer Header - M3 Logo/Title Style */}
       <div className="flex items-center gap-4 mb-8 px-4 py-2">
-        <div className="w-10 h-10 bg-md-primary-container text-md-on-primary-container rounded-[12px] flex items-center justify-center shadow-sm">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-          </svg>
+        <div className="w-10 h-10 bg-md-primary-container text-md-on-primary-container rounded-[12px] flex items-center justify-center shadow-sm overflow-hidden">
+          <img src={logo} alt="Logo" className="w-full h-full object-cover" />
         </div>
         <div>
-          <h2 className="text-[14px] font-black text-md-on-surface uppercase tracking-widest">WaterSys</h2>
+          <h2 className="text-[14px] font-black text-md-on-surface uppercase tracking-widest">AquaAlert</h2>
           <p className="text-[11px] text-md-on-surface-variant font-medium">Infrastructure v1.2</p>
         </div>
       </div>
@@ -143,7 +142,7 @@ const Sidebar = ({ onClose }) => {
               {role === 'authority' ? 'Operational efficiency at 92%' : 'Helping save 850L daily'}
             </p>
             <div className="h-1.5 bg-md-surface-variant rounded-full overflow-hidden mb-4">
-              <div className={`h-full ${role === 'authority' ? 'bg-md-error' : 'bg-md-primary'} transition-all`} style={{ width: role === 'authority' ? '25%' : '75%' }}></div>
+              <div className="h-full bg-md-primary transition-all" style={{ width: role === 'authority' ? '25%' : '75%' }}></div>
             </div>
             <Link
               to={role === 'authority' ? "/authority/issues" : "/report"}
