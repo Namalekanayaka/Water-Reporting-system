@@ -160,9 +160,7 @@ const Login = () => {
                             </p>
                         )}
 
-                        <p className={`text-sm ${isAuthorityMode ? 'text-slate-400' : 'text-md-on-surface-variant'}`}>
-                            Please enter your credentials to access the terminal.
-                        </p>
+
                     </div>
 
                     {/* Error Message */}
